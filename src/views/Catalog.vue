@@ -1,0 +1,180 @@
+<template>
+  <div class="catalog_wrapper p_page">
+    <div class="loader_wrapper" v-if="$store.state.loader">
+      <div id="cube-loader">
+        <div class="caption">
+          <div class="cube-loader">
+            <div class="cube loader-1"></div>
+            <div class="cube loader-2"></div>
+            <div class="cube loader-4"></div>
+            <div class="cube loader-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container" v-else>
+      <div v-if="CATEGORY_PRODUCTS">
+        <div class="title_page"></div>
+        <div class="nav_page">
+          <div class="breadcrumbs">
+            <router-link to="/">{{ $locale[$lang].navLang.main }}</router-link>
+            <router-link
+              v-if="CATEGORY_PRODUCTS.category_parent"
+              :to="CATEGORY_PRODUCTS.category_parent.slug"
+              >{{ CATEGORY_PRODUCTS.category_parent.title }}</router-link
+            >
+            <router-link
+              v-if="CATEGORY_PRODUCTS.category"
+              :to="CATEGORY_PRODUCTS.category.slug"
+              >{{ CATEGORY_PRODUCTS.category.title }}</router-link
+            >
+          </div>
+          <div class="sort_select m_none">
+            <p class="silver_text">{{ $locale[$lang].sortBy.title }}</p>
+            <select
+              class="select_2"
+              name="state"
+              v-model="sortedCategory"
+              @change="sortedProducts"
+            >
+              <option value="">{{ $locale[$lang].sortBy.default }}</option>
+              <option value="ASC">
+                {{ $locale[$lang].sortBy.ascendingPrice }}
+              </option>
+              <option value="DESC">
+                {{ $locale[$lang].sortBy.descendingPrice }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="catalog_content" v-if="GET_PRODUCTS">
+          <div class="row">
+            <div class="col-xl-3 col-md-4">
+              <category-select
+                :categories="CATEGORY_PRODUCTS"
+                type="filter_id"
+              />
+            </div>
+            <div class="col-xl-9 col-md-8">
+              <div v-if="filteredProducts().products">
+                <div
+                  v-if="loaderProducts"
+                  class="loader_wrapper loader_products"
+                >
+                  <div id="cube-loader">
+                    <div class="caption">
+                      <div class="cube-loader">
+                        <div class="cube loader-1"></div>
+                        <div class="cube loader-2"></div>
+                        <div class="cube loader-4"></div>
+                        <div class="cube loader-3"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="catalog_products" v-else>
+                  <products
+                    :products="filteredProducts()"
+                    type="catalogProducts"
+                  />
+                </div>
+              </div>
+              <div v-else class="pt-3 pb-3">
+                <h3>{{ $locale[$lang].noProducts }}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from "vuex";
+import CategorySelect from "../components/categorySelect.vue";
+import products from "../components/products.vue";
+
+export default {
+  components: { products, CategorySelect },
+  data: () => ({
+    lang: "ru",
+    paramUrl: null,
+    imgUrl: null,
+    filter_id: [],
+    sortedCategory: "",
+    page: 1,
+    showMorebtn: true,
+    loader: null,
+    loadingProducts: null,
+    nextPage: null,
+    categoryCount: 3,
+    moreLoader: null,
+    allCategoriesText: "Показать еще",
+  }),
+
+  methods: {
+    ...mapActions([
+      "GET_PRODUCTS",
+      "GET_PRODUCT_PAGE",
+      "FILTER_PRODUCTS",
+      "SORTED_PRODUCTS",
+      "MORE_PRODUCTS",
+    ]),
+
+    filteredProducts() {
+      if (this.CATALOG_FILTER.products) {
+        return this.CATALOG_FILTER;
+      } else {
+        return this.CATEGORY_PRODUCTS;
+      }
+    },
+
+    sortedProducts() {
+      let productUrl = this.$route.params.id;
+      this.SORTED_PRODUCTS({
+        productId: productUrl,
+        sortedProduct: this.sortedCategory,
+      });
+    },
+
+    loadProducts(id) {
+      this.loader = this.$store.state.loader;
+      this.imgUrl = this.$store.state.imgUrl;
+      if (id === undefined) {
+        var productUrl = this.$route.params.id;
+      } else {
+        var productUrl = id;
+      }
+
+      this.GET_PRODUCTS(productUrl);
+    },
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.loadProducts(to.params.id);
+    next();
+  },
+
+  computed: {
+    ...mapGetters(["CATEGORY_PRODUCTS", "CATALOG_FILTER"]),
+
+    loaderProducts() {
+      return (this.loadingProducts = this.$store.state.loadingProducts);
+    },
+  },
+
+  mounted() {
+    this.loader = this.$store.state.loader;
+    this.imgUrl = this.$store.state.imgUrl;
+    let productUrl = this.$route.params.id;
+    this.GET_PRODUCTS(productUrl);
+  },
+
+  watch: {
+    $route(to, from) {
+      this.CATALOG_FILTER.products = null;
+    },
+  },
+};
+</script>
