@@ -11,6 +11,7 @@ import { locale, lang } from './lang/localeLang';
 
 import './assets/sass/main.scss'
 
+import '@invisiburu/vue-picker/dist/vue-picker.min.css'
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$locale = locale;

@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from "@/views/auth/Login";
+import ForgotPassword from "@/views/auth/ForgotPassword";
+import Register from "@/views/auth/Register";
+import Restore from "@/views/auth/Restore";
+import SendEmailStatus from "@/views/auth/SendEmailStatus";
+import AccountPage from "@/views/AccountPage";
 
 Vue.use(VueRouter)
 
@@ -10,7 +16,7 @@ const routes = [{
         component: Home
     },
     {
-        path: '/catalog/:slug&:id',
+        path: '/catalog/:slug&id=:id',
         name: 'catalogPage',
         component: () =>
             import ('../views/Catalog.vue')
@@ -46,7 +52,7 @@ const routes = [{
             import ('../views/Brands.vue')
     },
     {
-        path: '/brands-inner/:slug&:id',
+        path: '/brands-inner/:slug&id=:id',
         name: 'brand-products',
         component: () =>
             import ('../views/BrandsPage.vue')
@@ -74,6 +80,36 @@ const routes = [{
         name: 'favorites',
         component: () =>
             import ('../views/Favorites_page.vue')
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login
+    },
+    {
+        path: '/forgot-password',
+        name: 'ForgotPassword',
+        component: ForgotPassword
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register
+    },
+    {
+        path: '/restore',
+        name: 'Restore',
+        component: Restore
+    },
+    {
+        path: '/send-email',
+        name: 'SendEmailStatus',
+        component: SendEmailStatus
+    },
+    {
+        path: '/my-account',
+        name: 'AccountPage',
+        component: AccountPage
     },
 ]
 

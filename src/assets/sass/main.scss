@@ -9,6 +9,7 @@
 @import "components/modal";
 @import "components/_components";
 @import "components/_loader";
+@import "components/order";
 //layout
 @import "layout/footer";
 @import "layout/forms";
@@ -29,6 +30,8 @@
 @import "pages/contacs";
 @import "pages/ordering_page";
 @import "pages/about";
+@import "pages/auth";
+@import "pages/account";
 //utils
 @import "utils/functions";
 @import "utils/helpers";

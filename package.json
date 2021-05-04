@@ -8,6 +8,7 @@
     },
     "dependencies": {
         "@cookieseater/vue-yandex-share": "^0.2.1",
+        "@invisiburu/vue-picker": "^1.1.2",
         "autoit-serialize-js": "^1.0.2",
         "axios": "^0.21.1",
         "core-js": "^3.6.5",
