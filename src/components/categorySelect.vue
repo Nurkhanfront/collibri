@@ -84,7 +84,7 @@ export default {
   data: () => ({
     productCategory: null,
     categoryCount: 3,
-    allCategoriesText: "Показать еще",
+    // allCategoriesText: "Показать еще",
     filter_id: [],
     mobileFilter: false
   }),
@@ -94,10 +94,8 @@ export default {
     allCategories() {
       if (this.categoryCount === 3) {
         this.categoryCount = Infinity;
-        this.allCategoriesText = "Скрыть";
       } else {
         this.categoryCount = 3;
-        this.allCategoriesText = "Показать еще";
       }
     },
 
@@ -119,10 +117,20 @@ export default {
     },
   },
 
+  computed:{
+    allCategoriesText() {
+      if (this.categoryCount === 3) {
+        return this.$locale[this.$lang].buttons.shoWmore;
+      } else {
+        return this.$locale[this.$lang].buttons.hide;
+      }
+    },
+  },
+
   watch: {
     $route(to, from) {
       this.categoryCount = 3;
-      this.allCategoriesText = "Показать еще";
+      this.allCategoriesText = this.$locale[this.$lang].buttons.shoWmore;
     },
     productCategory() {
       if (this.productCategory) {

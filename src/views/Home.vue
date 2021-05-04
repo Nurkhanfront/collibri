@@ -25,7 +25,7 @@
               <div class="slider_text col-lg-6">
                 <h2 v-if="item.title">{{ item.title }}</h2>
                 <p v-if="item.content">{{ item.content }}</p>
-                <a :href="item.url" class="btn btn_outline">{{ $locale[$lang].buttons.btnMoreDetails }}</a>
+                <a :href="item.url" class="btn btn_outline" v-if="item.url">{{ $locale[$lang].buttons.btnMoreDetails }}</a>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
               </div>
             </div>
             <router-link to="/new" class="btn btn_black"
-              >{{ $locale[$lang].btnSeeAll}}</router-link
+              >{{ $locale[$lang].buttons.btnSeeAll}}</router-link
             >
           </div>
         </div>
@@ -149,7 +149,7 @@
               </div>
             </div>
             <router-link to="/best" class="btn btn_black"
-              >{{ $locale[$lang].btnSeeAll}}</router-link
+              >{{ $locale[$lang].buttons.btnSeeAll }}</router-link
             >
           </div>
         </div>

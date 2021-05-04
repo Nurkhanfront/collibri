@@ -1,5 +1,5 @@
 <template>
-  <div class="blog_inner">
+  <div class="blog_inner" v-if="blogPage">
     <div>
       <div class="blog_banner">
         <img :src="imgUrl + blogPage.blog.image" alt="" />
@@ -44,7 +44,7 @@
                     alt="..."
                   />
                   <div class="card-body">
-                    <h5 class="card-title">{{ blog.title }}</h5>
+                    <h5 class="card-title" v-if="blog.title">{{ blog.title }}</h5>
                     <p class="card-text">13.04.2020</p>
                   </div>
                 </router-link>

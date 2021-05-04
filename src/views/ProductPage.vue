@@ -17,8 +17,9 @@
       <div v-if="PRODUCT_ITEM">
         <div class="nav_page">
           <div class="breadcrumbs">
+            
             <router-link to="/">{{ $locale[$lang].navLang.main }}</router-link>
-            <router-link to="/">Каталог</router-link>
+            <a href="#" @click.prevent="catalogDropdown">Каталог</a>
             <router-link
               :to="{
                 name: 'catalogPage',
@@ -91,11 +92,11 @@
               <div class="product_info">
                 <div class="product_info_top">
                   <p class="green_text" v-if="PRODUCT_ITEM.product.stock > 0">
-                    В НАЛИЧИИ
+                    {{ $locale[$lang].productPage.inStock }}
                   </p>
                   <div class="d-flex">
                     <p>
-                      Артикул:
+                      {{ $locale[$lang].productPage.vendorCode }}:
                       <span class="silver_text">{{
                         PRODUCT_ITEM.product.artikul
                       }}</span>
@@ -104,7 +105,7 @@
                 </div>
                 <div class="product_title">
                   <p>
-                    Бренд:
+                    {{ $locale[$lang].productPage.brand }}:
                     <span class="big_text">{{
                       PRODUCT_ITEM.product.brand_name
                     }}</span>
@@ -126,7 +127,7 @@
                     {{ PRODUCT_ITEM.product.current_price }} тг
                   </p>
                   <a href="#" class="t_block d_none m_none"
-                    >КУПИТЬ В ОДИН КЛИК</a
+                    >{{ $locale[$lang].productPage.buyInOneclick }}</a
                   >
                 </div>
                 <div class="buy_content">
@@ -143,17 +144,17 @@
                     class="btn btn_black btn_border_radius m_none"
                     @click="modal = !modal"
                   >
-                    Заказать звонок
+                    {{ $locale[$lang].productPage.requestACall }}
                   </button>
                   <a href="#" class="t_none" @click="modal = !modal"
-                    >КУПИТЬ В ОДИН КЛИК</a
+                    >{{ $locale[$lang].productPage.buyInOneclick }}</a
                   >
                 </div>
                 <button
                   class="btn btn_black btn_border_radius d_none"
                   @click="modal = !modal"
                 >
-                  Заказать звонок
+                  {{ $locale[$lang].productPage.requestACall }}
                 </button>
                 <button class="btn btn_black btn_border_radius d-none">
                   ДОБАВИТЬ В КОРЗИНУ
@@ -166,14 +167,14 @@
                     class="tab_link"
                     @click.prevent="tab = 'description'"
                     :class="{ active_tab: tab === 'description' }"
-                    >Описание товара</a
+                    >{{ $locale[$lang].productPage.productDescription }}</a
                   >
                   <a
                     href="#"
                     class="tab_link"
                     @click.prevent="tab = 'specifications'"
                     :class="{ active_tab: tab === 'specifications' }"
-                    >Характеристики</a
+                    >{{ $locale[$lang].productPage.characteristics }}</a
                   >
                 </div>
                 <div class="tabs_content" v-if="tab === 'description'">
@@ -190,7 +191,7 @@
                 </div>
               </div>
               <div class="share">
-                <p>Поделиться:</p>
+                <p>{{ $locale[$lang].productPage.share }}:</p>
                 <yandex-share
                   :services="['facebook', 'telegram', 'whatsapp']"
                   counter
@@ -205,7 +206,7 @@
           v-if="PRODUCT_ITEM.recomend_products.length"
         >
           <div class="title_block">
-            <h2>Рекомендуемый товар</h2>
+            <h2>{{ $locale[$lang].productPage.recommendedProduct }}</h2>
           </div>
           <div class="product_slider">
             <VueSlickCarousel v-bind="settingsRecomendSlider" >
@@ -238,17 +239,17 @@
               >
                 <input
                   type="text"
-                  placeholder="Имя"
+                  :placeholder="$locale[$lang].placeholders.name"
                   v-model.trim="name"
                   :class="{ invalid: $v.name.$dirty && !$v.name.required }"
                 />
                 <span v-if="$v.name.$error" class="error"
-                  >Имя не правильно заполнено!</span
+                  >{{ $locale[$lang].errors.name }}</span
                 >
                 <the-mask
                   :mask="['#(###) ###-####']"
                   v-model.trim="phone"
-                  placeholder="Номер телефона"
+                  :placeholder="$locale[$lang].placeholders.PhoneNumber"
                   :class="{
                     invalid:
                       ($v.phone.$dirty && !$v.phone.required) ||
@@ -256,12 +257,12 @@
                   }"
                 />
                 <span v-if="$v.phone.$error" class="error"
-                  >Номер телефона должен быть из 11 символов. Сейчас он
+                  >{{ $locale[$lang].errors.PhoneNumber }}
                   {{ phone.length }}</span
                 >
                 <input
                   type="text"
-                  placeholder="Email"
+                   :placeholder="$locale[$lang].placeholders.email"
                   v-model.trim="email"
                   :class="{
                     invalid:
@@ -270,11 +271,11 @@
                   }"
                 />
                 <span v-if="$v.email.$dirty && $v.email.$error" class="error"
-                  >Email не правильно заполнено!</span
+                  >{{ $locale[$lang].errors.email }}</span
                 >
                 <input
                   type="text"
-                  placeholder="Наименование организации"
+                  :placeholder="$locale[$lang].placeholders.nameOfCompany"
                   v-model="company"
                 />
                 <textarea
@@ -282,7 +283,7 @@
                   id=""
                   cols="30"
                   rows="10"
-                  placeholder="Комментарии"
+                  :placeholder="$locale[$lang].placeholders.comment"
                 ></textarea>
                 <vue-recaptcha
                   @verify="markRecaptchaAsVerified"
@@ -292,7 +293,7 @@
                 <span class="error mb-4 d-block">{{
                   loginForm.pleaseTickRecaptchaMessage
                 }}</span>
-                <button type="btn" class="btn btn_black">Отправить</button>
+                <button type="btn" class="btn btn_black">{{ $locale[$lang].buttons.send }}</button>
               </form>
             </div>
           </div>
@@ -419,6 +420,10 @@ export default {
   methods: {
     ...mapActions(["GET_PRODUCT_PAGE", "GET_PRODUCTS"]),
     ...mapMutations(["ADD_FAVORITES"]),
+
+    catalogDropdown(){
+      this.$store.commit('CATALOG_DROPDOWN')
+    },
 
     addFavorite(product) {
       this.ADD_FAVORITES(product);

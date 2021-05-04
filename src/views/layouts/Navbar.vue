@@ -8,15 +8,15 @@
           }}</router-link>
         </li>
         <li class="dropdown_link">
-          <span @click="navDropdown = !navDropdown"
+          <span @click="catalogDropdown"
             >{{ $locale[$lang].navLang.Catalog }}
             <transition name="slide-fade">
-              <span class="arrow_dropdown" v-if="navDropdown"></span>
+              <span class="arrow_dropdown" v-if="this.$store.state.catalogDropdown"></span>
             </transition>
           </span>
 
           <transition name="slide-fade">
-            <div class="nav_dropdown" v-if="navDropdown">
+            <div class="nav_dropdown" v-if="this.$store.state.catalogDropdown">
               <div class="container">
                 <div class="row">
                   <div
@@ -86,9 +86,16 @@ export default {
   data: () => ({
     navDropdown: false,
   }),
+
+  methods: {
+    catalogDropdown() {
+      this.$store.commit("CATALOG_DROPDOWN");
+    },
+  },
+
   watch: {
     $route(to, from) {
-      this.navDropdown = false;
+      this.$store.state.catalogDropdown = false;
     },
   },
 };

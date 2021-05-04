@@ -18,6 +18,7 @@ export default new Vuex.Store({
         loadingProducts: false,
         nextPage: null,
         moreLoader: null,
+        catalogDropdown: false
     },
     mutations: {
         SET_PRODUCTS(state, products) {
@@ -87,6 +88,10 @@ export default new Vuex.Store({
             setTimeout(() => {
                 window.location.reload();
             }, 500);
+        },
+
+        CATALOG_DROPDOWN(state) {
+            state.catalogDropdown = !state.catalogDropdown;
         }
     },
     actions: {

@@ -69,7 +69,7 @@
                   :class="{ invalid: $v.name.$dirty && !$v.name.required }"
                 />
                 <span v-if="$v.name.$error" class="error"
-                  >Имя не правильно заполнено!</span
+                  >{{ $locale[$lang].placeholders.name }}</span
                 >
                 <the-mask
                   :mask="['#(###) ###-####']"
@@ -82,7 +82,7 @@
                   }"
                 />
                 <span v-if="$v.phone.$error" class="error"
-                  >Номер телефона должен быть из 11 символов. Сейчас он
+                  >{{ $locale[$lang].errors.PhoneNumber }}
                   {{ phone.length }}</span
                 >
                 <input
@@ -96,7 +96,7 @@
                   }"
                 />
                 <span v-if="$v.email.$dirty && $v.email.$error" class="error"
-                  >Email не правильно заполнено!</span
+                  >{{ $locale[$lang].errors.email }}</span
                 >
                 <input
                   type="text"

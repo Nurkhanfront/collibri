@@ -130,7 +130,8 @@ a {
 
 .muddy {
     color: rgba(0, 0, 0, 0.5);
-    cursor: pointer; &:hover {
+    cursor: pointer;
+    &:hover {
         color: #000000;
     }
 }
@@ -166,4 +167,8 @@ a {
     color: #000000;
     padding: 16px 10px;
     cursor: pointer;
+}
+
+.disabled {
+    pointer-events: none;
 }

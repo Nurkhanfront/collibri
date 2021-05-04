@@ -13,7 +13,9 @@ let locale = {
         buttons: {
             btnMoreDetails: 'Подробнее',
             btnSeeAll: 'Смотреть все',
+            shoWmore: 'Показать еще',
             send: 'Отправить',
+            hide: 'Скрыть'
         },
         sortBy: {
             title: 'Сортировать по',
@@ -40,6 +42,22 @@ let locale = {
             email: 'Email',
             nameOfCompany: 'Наименование организации',
             comment: 'Комментарии',
+        },
+        productPage: {
+            inStock: 'В НАЛИЧИИ',
+            vendorCode: 'Артикул',
+            buyInOneclick: 'купить в один клик',
+            productDescription: 'Описание товара',
+            characteristics: 'Характеристики',
+            share: 'Поделиться',
+            recommendedProduct: 'Рекомендуемый товар',
+            brand: "Брэнд",
+            requestACall: "Заказать звонок"
+        },
+        errors: {
+            name: 'Имя не правильно заполнено!',
+            PhoneNumber: 'Номер телефона должен быть из 11 символов. Сейчас он 0',
+            email: 'Email не правильно заполнено!',
         }
     },
 
@@ -59,6 +77,8 @@ let locale = {
             btnMoreDetails: 'More details',
             btnSeeAll: 'See all',
             send: 'Send',
+            shoWmore: 'Show more',
+            hide: 'Hide'
         },
         sortBy: {
             title: 'Sort by',
@@ -85,6 +105,22 @@ let locale = {
             email: 'Email',
             nameOfCompany: 'Name of company',
             comment: 'Comments',
+        },
+        productPage: {
+            inStock: 'IN STOCK',
+            vendorCode: 'vendor code',
+            buyInOneclick: 'buy in one click',
+            productDescription: 'Product description',
+            characteristics: 'Characteristics',
+            share: 'Share',
+            recommendedProduct: 'Recommended product',
+            brand: "Brand",
+            requestACall: "Request a call"
+        },
+        errors: {
+            name: 'The name is not filled in correctly!',
+            PhoneNumber: 'The phone number must be 11 characters long. Now he ',
+            email: 'Email is not filled in correctly!',
         }
     },
     kz: {

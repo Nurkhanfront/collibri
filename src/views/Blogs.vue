@@ -24,7 +24,7 @@
                   alt="..."
                 />
                 <div class="card-body">
-                  <h5 class="card-title">{{ blog.title.slice(0, 50) + " ..." }}</h5>
+                  <h5 class="card-title" v-if="blog.title">{{ blog.title.slice(0, 50) + " ..." }}</h5>
                   <p class="card-text">{{ dateBlog(blog.created_at) }}</p>
                 </div>
               </router-link>

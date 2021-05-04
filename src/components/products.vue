@@ -74,7 +74,7 @@ export default {
     moreLoaderShow() {
       this.moreLoader = this.$store.state.moreLoader;
       if (!this.moreLoader) {
-        return "Показать еще";
+        return this.$locale[this.$lang].buttons.btnSeeAll;
       } else {
         return "";
       }

@@ -24,8 +24,9 @@
               >{{ CATEGORY_PRODUCTS.category_parent.title }}</router-link
             >
             <router-link
+              class="disabled" aria-disabled="true"
               v-if="CATEGORY_PRODUCTS.category"
-              :to="CATEGORY_PRODUCTS.category.slug"
+              to="#"
               >{{ CATEGORY_PRODUCTS.category.title }}</router-link
             >
           </div>
@@ -110,7 +111,6 @@ export default {
     nextPage: null,
     categoryCount: 3,
     moreLoader: null,
-    allCategoriesText: "Показать еще",
   }),
 
   methods: {
