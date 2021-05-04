@@ -75,6 +75,35 @@
     }
 }
 
+.btn_gray {
+    background: #F0F0F0;
+    font-weight: 500;
+    padding: 16px 50px;
+    border-radius: 0;
+    z-index: 10;
+    position: relative;
+    &::after {
+        content: '';
+        width: 0;
+        left: auto;
+        right: 0;
+        top: 0;
+        height: 100%;
+        position: absolute;
+        background-color: #000;
+        transition: all .5s ease;
+        z-index: -1;
+    }
+    &:hover {
+        color: #fff;
+        &::after {
+            width: 100%;
+            left: 0;
+            right: auto;
+        }
+    }
+}
+
 .btn_black {
     width: fit-content;
     padding: 15px 70px;

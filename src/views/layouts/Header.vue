@@ -67,6 +67,9 @@
                 <a href="#"
                   ><img src="@/assets/images/shop_icon.svg" alt=""
                 /></a>
+                <router-link to="/login">
+                  <img src="@/assets/images/user.svg" alt="">
+                </router-link>
                 <div class="lang">
                   <span @click="changeLanguage">{{ switchLang }}</span>
                 </div>
