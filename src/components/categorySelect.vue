@@ -84,7 +84,6 @@ export default {
   data: () => ({
     productCategory: null,
     categoryCount: 3,
-    // allCategoriesText: "Показать еще",
     filter_id: [],
     mobileFilter: false
   }),

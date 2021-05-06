@@ -11,7 +11,10 @@
           <span @click="catalogDropdown"
             >{{ $locale[$lang].navLang.Catalog }}
             <transition name="slide-fade">
-              <span class="arrow_dropdown" v-if="this.$store.state.catalogDropdown"></span>
+              <span
+                class="arrow_dropdown"
+                v-if="this.$store.state.catalogDropdown"
+              ></span>
             </transition>
           </span>
 

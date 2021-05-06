@@ -17,9 +17,7 @@
       <div v-if="PRODUCT_ITEM">
         <div class="nav_page">
           <div class="breadcrumbs">
-            
             <router-link to="/">{{ $locale[$lang].navLang.main }}</router-link>
-            <a href="#" @click.prevent="catalogDropdown">Каталог</a>
             <router-link
               :to="{
                 name: 'catalogPage',
@@ -30,9 +28,16 @@
               }"
               >{{ PRODUCT_ITEM.category_parent.title }}</router-link
             >
-            <router-link :to="PRODUCT_ITEM.category.title">{{
-              PRODUCT_ITEM.category.title
-            }}</router-link>
+            <router-link
+              :to="{
+                name: 'catalogPage',
+                params: {
+                  id: PRODUCT_ITEM.category.category_id,
+                  slug: PRODUCT_ITEM.category.slug,
+                },
+              }"
+              >{{ PRODUCT_ITEM.category.title }}</router-link
+            >
           </div>
           <div class="like">
             <i
@@ -126,9 +131,9 @@
                   <p class="bold_text">
                     {{ PRODUCT_ITEM.product.current_price }} тг
                   </p>
-                  <a href="#" class="t_block d_none m_none"
-                    >{{ $locale[$lang].productPage.buyInOneclick }}</a
-                  >
+                  <a href="#" class="t_block d_none m_none">{{
+                    $locale[$lang].productPage.buyInOneclick
+                  }}</a>
                 </div>
                 <div class="buy_content">
                   <div class="product_count">
@@ -146,9 +151,9 @@
                   >
                     {{ $locale[$lang].productPage.requestACall }}
                   </button>
-                  <a href="#" class="t_none" @click="modal = !modal"
-                    >{{ $locale[$lang].productPage.buyInOneclick }}</a
-                  >
+                  <a href="#" class="t_none" @click="modal = !modal">{{
+                    $locale[$lang].productPage.buyInOneclick
+                  }}</a>
                 </div>
                 <button
                   class="btn btn_black btn_border_radius d_none"
@@ -169,13 +174,13 @@
                     :class="{ active_tab: tab === 'description' }"
                     >{{ $locale[$lang].productPage.productDescription }}</a
                   >
-                  <a
+                  <!-- <a
                     href="#"
                     class="tab_link"
                     @click.prevent="tab = 'specifications'"
                     :class="{ active_tab: tab === 'specifications' }"
                     >{{ $locale[$lang].productPage.characteristics }}</a
-                  >
+                  > -->
                 </div>
                 <div class="tabs_content" v-if="tab === 'description'">
                   <div
@@ -183,12 +188,12 @@
                     v-html="PRODUCT_ITEM.product.description"
                   ></div>
                 </div>
-                <div class="tabs_content" v-if="tab === 'specifications'">
+                <!-- <div class="tabs_content" v-if="tab === 'specifications'">
                   <div
                     class="silver_text"
                     v-html="PRODUCT_ITEM.product.specifications"
                   ></div>
-                </div>
+                </div> -->
               </div>
               <div class="share">
                 <p>{{ $locale[$lang].productPage.share }}:</p>
@@ -209,7 +214,7 @@
             <h2>{{ $locale[$lang].productPage.recommendedProduct }}</h2>
           </div>
           <div class="product_slider">
-            <VueSlickCarousel v-bind="settingsRecomendSlider" >
+            <VueSlickCarousel v-bind="settingsRecomendSlider">
               <productCard
                 v-for="(slide, idx) in PRODUCT_ITEM.recomend_products"
                 :key="idx"
@@ -225,9 +230,9 @@
                 ><img src="@/assets/images/close.svg" alt=""
               /></span>
               <div class="title text-center m-0">
-                <h3>Отправить звонок</h3>
+                <h3>{{ $locale[$lang].productPage.requestACall }}</h3>
                 <p class="typo__p" v-if="submitStatus === 'OK'">
-                  Заявка отправлена
+                  {{ $locale[$lang].productPage.applicationSent }}
                 </p>
               </div>
 
@@ -243,9 +248,9 @@
                   v-model.trim="name"
                   :class="{ invalid: $v.name.$dirty && !$v.name.required }"
                 />
-                <span v-if="$v.name.$error" class="error"
-                  >{{ $locale[$lang].errors.name }}</span
-                >
+                <span v-if="$v.name.$error" class="error">{{
+                  $locale[$lang].errors.name
+                }}</span>
                 <the-mask
                   :mask="['#(###) ###-####']"
                   v-model.trim="phone"
@@ -262,7 +267,7 @@
                 >
                 <input
                   type="text"
-                   :placeholder="$locale[$lang].placeholders.email"
+                  :placeholder="$locale[$lang].placeholders.email"
                   v-model.trim="email"
                   :class="{
                     invalid:
@@ -270,9 +275,9 @@
                       ($v.email.$dirty && !$v.email.email),
                   }"
                 />
-                <span v-if="$v.email.$dirty && $v.email.$error" class="error"
-                  >{{ $locale[$lang].errors.email }}</span
-                >
+                <span v-if="$v.email.$dirty && $v.email.$error" class="error">{{
+                  $locale[$lang].errors.email
+                }}</span>
                 <input
                   type="text"
                   :placeholder="$locale[$lang].placeholders.nameOfCompany"
@@ -293,7 +298,9 @@
                 <span class="error mb-4 d-block">{{
                   loginForm.pleaseTickRecaptchaMessage
                 }}</span>
-                <button type="btn" class="btn btn_black">{{ $locale[$lang].buttons.send }}</button>
+                <button type="btn" class="btn btn_black">
+                  {{ $locale[$lang].buttons.send }}
+                </button>
               </form>
             </div>
           </div>
@@ -421,8 +428,8 @@ export default {
     ...mapActions(["GET_PRODUCT_PAGE", "GET_PRODUCTS"]),
     ...mapMutations(["ADD_FAVORITES"]),
 
-    catalogDropdown(){
-      this.$store.commit('CATALOG_DROPDOWN')
+    catalogDropdown() {
+      this.$store.commit("CATALOG_DROPDOWN");
     },
 
     addFavorite(product) {
@@ -496,11 +503,17 @@ export default {
     },
   },
 
+  beforeRouteUpdate(to, from, next) {
+    this.productUrl(to.params.id);
+    // this.GET_PRODUCT_PAGE(to.params.id);
+    next();
+  },
+
   mounted() {
     this.imgUrl = this.$store.state.imgUrl;
     let vm = this;
     let productUrl = this.$route.params.id;
-    this.productData = this.GET_PRODUCT_PAGE(productUrl);
+    this.GET_PRODUCT_PAGE(productUrl);
 
     document.addEventListener("click", function (e) {
       if (e.target === vm.$refs["modal"]) {

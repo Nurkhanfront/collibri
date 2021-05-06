@@ -21,11 +21,10 @@
           v-for="brand in allBrands.popular"
           :key="brand.id"
           :id="brand.id"
-          @click="categoryUrl(brand.id)"
         >
           <router-link
             :to="{
-              name: 'brand-products',
+              name: 'brandProducts',
               params: { id: brand.id, slug: brand.slug },
             }"
             ><img :src="imgUrl + brand.image" alt=""
@@ -53,8 +52,8 @@
                 >
                   <router-link
                     :to="{
-                      name: 'brand-products',
-                      params: { id: brand.id, slug: brand.slug },
+                      name: 'brandProducts',
+                      params: { id: brand.id, slug: brand.title },
                     }"
                     >{{ brand.title }}</router-link
                   >

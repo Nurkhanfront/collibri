@@ -1,5 +1,5 @@
 <template>
-  <div class="product_card" @click="productUrl(productCard.slug)">
+  <div class="product_card">
     <span class="like" @click.stop="addFavorite(productCard)"
       ><i class="far fa-heart" :class="{ fas: favoriteActive }"></i>
     </span>
@@ -23,7 +23,7 @@
     </router-link>
     <div class="product_card_footer">
       <p>{{ productCard.current_price }} тг.</p>
-      <a href="#cart"><img src="@/assets/images/shop_icon_small.svg" alt="" /></a>
+      <span @click="addToCart(productCard)"><img src="@/assets/images/shop_icon_small.svg" alt="" /></span>
     </div>
   </div>
 </template>
@@ -70,15 +70,16 @@ export default {
       }
     },
 
-    productUrl(url) {
-      this.GET_PRODUCT_PAGE(url);
-    },
 
     addFavorite(product) {
       this.favoriteActive = !this.favoriteActive;
       this.ADD_FAVORITES(product);
       this.favoriteList = JSON.parse(localStorage.getItem("favorite"));
     },
+
+    addToCart(product){
+      this.$store.commit('ADD_TO_CART', product)
+    }
   },
 
   mounted() {

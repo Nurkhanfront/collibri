@@ -413,6 +413,11 @@
 }
 
 @media only screen and (max-width: 576px) {
+    .header_content_right {
+        a {
+            margin-right: 0 !important;
+        }
+    }
     .modal {
         padding: 0 15px;
     }

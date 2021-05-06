@@ -1,6 +1,5 @@
 <template>
   <div class="p_page">
-    <p v-if="loading">Загрузка</p>
     <div class="container">
       <div class="title_small">
         <h1>Избранные товары</h1>

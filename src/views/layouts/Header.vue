@@ -148,7 +148,7 @@ export default {
       let vm = this;
       if (e.length > 3) {
         this.$axios
-          .get(`${this.$store.state.apiUrl}search?lang=${this.lang}&text=${e}`)
+          .get(`${this.$store.state.apiUrl}search?lang=${this.$lang}&text=${e}`)
           .then(function (response) {
             if (response.data.data.length) {
               vm.searchData = response.data;

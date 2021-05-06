@@ -50,7 +50,6 @@ export default {
       let lastPage = this.products.products.last_page;
       if (this.page < lastPage) {
         this.page++;
-        console.log(this.page);
       }
       if (this.page === lastPage) {
         this.showMorebtn = false;

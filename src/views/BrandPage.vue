@@ -17,10 +17,14 @@
         <h1>{{ $locale[$lang].brandPageTitle }}</h1>
       </div>
       <div class="nav_page" v-if="brandData">
-        <div class="breadcrumbs" >
+        <div class="breadcrumbs">
           <router-link to="/">{{ $locale[$lang].navLang.main }}</router-link>
-          <router-link to="/brands">{{ $locale[$lang].brandPageTitle }}</router-link>
-          <router-link to="#" class="off_link">{{ BRAND_PRODUCTS.brand.title }}</router-link>
+          <router-link to="/brands">{{
+            $locale[$lang].brandPageTitle
+          }}</router-link>
+          <router-link to="#" class="off_link">{{
+            BRAND_PRODUCTS.brand.title
+          }}</router-link>
         </div>
       </div>
 
@@ -30,7 +34,7 @@
             <category-select :categories="BRAND_PRODUCTS" type="brand_id" />
           </div>
           <div class="col-xl-9 col-md-8">
-              <products :products="filteredProducts()" type="brandProducts"/>
+            <products :products="filteredProducts()" type="brandProducts" />
           </div>
         </div>
       </div>
@@ -53,11 +57,8 @@ export default {
 
   methods: {
     ...mapActions([
-      "GET_PRODUCTS",
-      "GET_PRODUCT_PAGE",
       "GET_BRAND_PRODUCTS",
       "FILTER_BRAND_PRODUCTS",
-      "SORTED_PRODUCTS",
       "MORE_BRAND_PRODUCTS",
     ]),
 
@@ -81,19 +82,33 @@ export default {
     toggleFilter() {
       this.productCategory = !this.productCategory;
     },
+
+    // loadProducts(id) {
+    //   if (id === undefined) {
+    //     var productUrl = this.$route.params.id;
+    //   } else {
+    //     var productUrl = id;
+    //   }
+
+    //   this.GET_BRAND_PRODUCTS(productUrl);
+    // },
   },
 
   computed: {
     ...mapGetters(["BRAND_PRODUCTS", "CATALOG_FILTER"]),
   },
 
-  mounted() {
+  // beforeRouteUpdate(to, from, next) {
+  //   this.loadProducts(to.params.id);
+  //   next();
+  // },
+
+  created() {
+    console.log('brand_page');
     this.CATALOG_FILTER.products = null;
     let productUrl = this.$route.params.id;
     this.GET_BRAND_PRODUCTS(productUrl);
     this.brandData = this.BRAND_PRODUCTS;
   },
-
-
 };
 </script>

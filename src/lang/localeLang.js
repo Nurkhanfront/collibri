@@ -52,7 +52,8 @@ let locale = {
             share: 'Поделиться',
             recommendedProduct: 'Рекомендуемый товар',
             brand: "Брэнд",
-            requestACall: "Заказать звонок"
+            requestACall: "Заказать звонок",
+            applicationSent: "Заявка отправлена",
         },
         errors: {
             name: 'Имя не правильно заполнено!',
@@ -115,7 +116,8 @@ let locale = {
             share: 'Share',
             recommendedProduct: 'Recommended product',
             brand: "Brand",
-            requestACall: "Request a call"
+            requestACall: "Request a call",
+            applicationSent: "Application sent",
         },
         errors: {
             name: 'The name is not filled in correctly!',

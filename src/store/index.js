@@ -18,7 +18,8 @@ export default new Vuex.Store({
         loadingProducts: false,
         nextPage: null,
         moreLoader: null,
-        catalogDropdown: false
+        catalogDropdown: false,
+        cartArray: []
     },
     mutations: {
         SET_PRODUCTS(state, products) {
@@ -56,7 +57,7 @@ export default new Vuex.Store({
             let favoriteStorage = JSON.parse(localStorage.getItem('favorite'));
             if (favoriteStorage == null) {
                 localStorage.setItem('favorite', JSON.stringify([product]))
-            } else if (state.favoritesArray == []) {;
+            } else if (state.favoritesArray == []) {
                 favoriteStorage.push(product)
                 localStorage.setItem('favorite', JSON.stringify(favoriteStorage))
                 state.favoritesArray = favoriteStorage.length
@@ -92,7 +93,14 @@ export default new Vuex.Store({
 
         CATALOG_DROPDOWN(state) {
             state.catalogDropdown = !state.catalogDropdown;
-        }
+        },
+
+        ADD_TO_CART(state, product) {
+
+            state.cartArray.push(product)
+
+            console.log(...state.cartArray);
+        },
     },
     actions: {
         GET_PRODUCTS({ commit, state }, id) {

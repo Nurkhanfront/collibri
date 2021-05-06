@@ -20,11 +20,18 @@
             <router-link to="/">{{ $locale[$lang].navLang.main }}</router-link>
             <router-link
               v-if="CATEGORY_PRODUCTS.category_parent"
-              :to="CATEGORY_PRODUCTS.category_parent.slug"
+              :to="{
+                name: 'catalogPage',
+                params: {
+                  id: CATEGORY_PRODUCTS.category_parent.parent_id,
+                  slug: CATEGORY_PRODUCTS.category_parent.slug,
+                },
+              }"
               >{{ CATEGORY_PRODUCTS.category_parent.title }}</router-link
             >
             <router-link
-              class="disabled" aria-disabled="true"
+              class="disabled"
+              aria-disabled="true"
               v-if="CATEGORY_PRODUCTS.category"
               to="#"
               >{{ CATEGORY_PRODUCTS.category.title }}</router-link
@@ -121,6 +128,10 @@ export default {
       "SORTED_PRODUCTS",
       "MORE_PRODUCTS",
     ]),
+
+    catalogDropdown() {
+      this.$store.commit("CATALOG_DROPDOWN");
+    },
 
     filteredProducts() {
       if (this.CATALOG_FILTER.products) {
