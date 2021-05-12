@@ -137,11 +137,11 @@
                 </div>
                 <div class="buy_content">
                   <div class="product_count">
-                    <button class="btn btn_add" @click="decrementValue">
+                    <button class="btn btn_add" @click="minusValue">
                       <span>-</span>
                     </button>
                     <span class="total_count">{{ countValue }}</span>
-                    <button class="btn btn_add" @click="incrementValue">
+                    <button class="btn btn_add" @click="plusValue">
                       <span>+</span>
                     </button>
                   </div>
@@ -442,13 +442,13 @@ export default {
       this.loginForm.recaptchaVerified = true;
     },
 
-    decrementValue() {
+    minusValue() {
       if (this.countValue > 1) {
         this.countValue--;
       }
     },
 
-    incrementValue() {
+    plusValue() {
       this.countValue++;
     },
 

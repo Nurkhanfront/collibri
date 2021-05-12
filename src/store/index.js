@@ -53,6 +53,25 @@ export default new Vuex.Store({
             state.catalogData = products;
         },
 
+        CHANGE_LANGUAGE(state) {
+            state.lang = localStorage.getItem('lang')
+            if (state.lang === 'en') {
+                state.lang = 'ru'
+                localStorage.setItem('lang', 'ru');
+            } else {
+                state.lang = 'en'
+                localStorage.setItem('lang', state.lang)
+            }
+            document.body.classList.add('langLoader')
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        },
+
+        CATALOG_DROPDOWN(state) {
+            state.catalogDropdown = !state.catalogDropdown;
+        },
+
         ADD_FAVORITES(state, product) {
             let favoriteStorage = JSON.parse(localStorage.getItem('favorite'));
             if (favoriteStorage == null) {
@@ -76,28 +95,38 @@ export default new Vuex.Store({
             }
         },
 
-        CHANGE_LANGUAGE(state) {
-            state.lang = localStorage.getItem('lang')
-            if (state.lang === 'en') {
-                state.lang = 'ru'
-                localStorage.setItem('lang', 'ru');
-            } else {
-                state.lang = 'en'
-                localStorage.setItem('lang', state.lang)
-            }
-            document.body.classList.add('langLoader')
-            setTimeout(() => {
-                window.location.reload();
-            }, 500);
-        },
-
-        CATALOG_DROPDOWN(state) {
-            state.catalogDropdown = !state.catalogDropdown;
-        },
 
         ADD_TO_CART(state, product) {
-            state.cartArray.push(product)
+            let cartList = JSON.parse(localStorage.getItem('cart_products'));
+
+            if (cartList == null) {
+                localStorage.setItem('cart_products', JSON.stringify([product.id]))
+            } else if (state.cartList == []) {
+                cartList.push(product.id)
+                localStorage.setItem('cart_products', JSON.stringify(cartList))
+                state.cartList = cartList.length
+            } else if (cartList.find(item => item == product.id)) {
+                cartList.forEach((item, index) => {
+                    if (item == product.id) {
+                        cartList.splice(index, 1)
+                    }
+                })
+                localStorage.setItem('cart_products', JSON.stringify(cartList))
+                state.cartList = cartList.length
+            } else {
+                cartList.push(product.id)
+                state.cartList = cartList.length
+                localStorage.setItem('cart_products', JSON.stringify(cartList))
+            }
         },
+
+        // DELETE_PRODUCT(state, index) {
+        //     let cartList = JSON.parse(localStorage.getItem("cart_products"));
+        //     cartList.splice(index, 1);
+        //     localStorage.setItem("cart_products", JSON.stringify(cartList));
+        // }
+
+
     },
     actions: {
         GET_PRODUCTS({ commit, state }, id) {

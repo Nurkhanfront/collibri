@@ -64,9 +64,9 @@
                   ><i class="far fa-heart"></i>
                   <span v-if="favLength">{{ favLength }}</span>
                 </router-link>
-                <a href="#"
+                <router-link to="/cart"
                   ><img src="@/assets/images/shop_icon.svg" alt=""
-                /></a>
+                /></router-link>
                 <a href="#" @click.prevent="goToProfilePage">
                   <img src="@/assets/images/user.svg" alt="">
                 </a>

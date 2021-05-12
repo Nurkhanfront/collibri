@@ -23,7 +23,14 @@
     </router-link>
     <div class="product_card_footer">
       <p>{{ productCard.current_price }} тг.</p>
-      <span @click="addToCart(productCard)"><img src="@/assets/images/shop_icon_small.svg" alt="" /></span>
+      <span
+        class="add_cart"
+        :class="{ active: activeCart }"
+        @click="addToCart(productCard)"
+      >
+        <img src="@/assets/images/bag_bg.svg" alt="" v-if="activeCart" />
+        <img src="@/assets/images/bag_outline.svg" alt="" v-else
+      /></span>
     </div>
   </div>
 </template>
@@ -35,11 +42,11 @@ export default {
   data: () => ({
     imgUrl: "",
     favoriteActive: false,
-    favoriteList: JSON.parse(localStorage.getItem("favorite")),
+    activeCart: false,
+    favoriteList: null,
+    cartList: null,
   }),
   computed: {
-    ...mapGetters(["GET_FAVOURITE_COUNT"]),
-
     activeFavorite() {
       if (this.favoriteList) {
         this.favoriteList.filter((i) => {
@@ -49,8 +56,18 @@ export default {
         });
       }
     },
+
+    inTheCart() {
+      if (this.cartList) {
+        this.cartList.filter((i) => {
+          if (i === this.productCard.id) {
+            this.activeCart = true;
+          }
+        });
+      }
+    },
   },
-  
+
   methods: {
     ...mapActions(["GET_PRODUCT_PAGE"]),
     ...mapMutations(["ADD_FAVORITES"]),
@@ -70,21 +87,26 @@ export default {
       }
     },
 
-
     addFavorite(product) {
       this.favoriteActive = !this.favoriteActive;
       this.ADD_FAVORITES(product);
-      this.favoriteList = JSON.parse(localStorage.getItem("favorite"));
     },
 
-    addToCart(product){
-      this.$store.commit('ADD_TO_CART', product)
-    }
+    addToCart(product) {
+      this.activeCart = !this.activeCart;
+      this.$store.commit("ADD_TO_CART", product);
+    },
   },
 
   mounted() {
+    this.inTheCart;
     this.activeFavorite;
     this.imgUrl = this.$store.state.imgUrl;
+  },
+
+  created() {
+    this.favoriteList = JSON.parse(localStorage.getItem("favorite"));
+    this.cartList = JSON.parse(localStorage.getItem("cart_products"));
   },
 };
 </script>

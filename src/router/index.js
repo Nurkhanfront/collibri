@@ -82,6 +82,18 @@ const routes = [{
             import ('../views/Favorites_page.vue')
     },
     {
+        path: '/cart',
+        name: 'cart',
+        component: () =>
+            import ('../views/Cart_page.vue')
+    },
+    {
+        path: '/OrderingPage',
+        name: 'OrderingPage',
+        component: () =>
+            import ('../views/OrderingPage.vue')
+    },
+    {
         path: '/login',
         name: 'Login',
         component: Login

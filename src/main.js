@@ -14,9 +14,16 @@ import './assets/sass/main.scss'
 
 import '@invisiburu/vue-picker/dist/vue-picker.min.css'
 
+const getImageFunc = {
+    staticImgUrl: (img) => {
+        return 'https://cdn.collibri.kz/' + img
+    }
+}
+
 Vue.prototype.$axios = axios;
 Vue.prototype.$locale = locale;
 Vue.prototype.$lang = localStorage.getItem('lang') !== null ? localStorage.getItem('lang') : 'ru';
+Vue.prototype.$staticImageUrl = getImageFunc;
 Vue.use(Vuelidate);
 Vue.use(VueTheMask);
 Vue.component('yandex-share', YandexShare);
