@@ -172,3 +172,15 @@
         font-size: 14px;
     }
 }
+
+.success_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    .loader {
+        position: absolute;
+        right: 1rem;
+        margin: 0;
+    }
+}

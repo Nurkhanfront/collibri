@@ -7,6 +7,7 @@ import axios from 'axios'
 import VueTheMask from 'vue-the-mask'
 import YandexShare from '@cookieseater/vue-yandex-share'
 import VueSkeletonLoader from 'skeleton-loader-vue'
+import VueCookies from 'vue-cookies'
 import { locale, lang } from './lang/localeLang';
 
 import './assets/sass/main.scss'
@@ -16,10 +17,12 @@ import '@invisiburu/vue-picker/dist/vue-picker.min.css'
 Vue.prototype.$axios = axios;
 Vue.prototype.$locale = locale;
 Vue.prototype.$lang = localStorage.getItem('lang') !== null ? localStorage.getItem('lang') : 'ru';
-Vue.use(Vuelidate)
-Vue.use(VueTheMask)
+Vue.use(Vuelidate);
+Vue.use(VueTheMask);
 Vue.component('yandex-share', YandexShare);
 Vue.component('vue-skeleton-loader', VueSkeletonLoader);
+Vue.use(VueCookies)
+
 
 
 import "vue-slick-carousel/dist/vue-slick-carousel.css";

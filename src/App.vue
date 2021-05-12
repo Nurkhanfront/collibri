@@ -32,9 +32,16 @@ export default {
     loader: false,
   }),
   created() {
+    console.log(new Date().getTimezoneOffset());
     setTimeout(() => {
       this.loader = true;
     }, 500);
+  },
+
+  watch: {
+    $route(to, from) {
+      console.log(to);
+    },
   },
 };
 </script>

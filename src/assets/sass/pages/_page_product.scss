@@ -183,7 +183,10 @@
 
 .product_slider_wrapper {
     .product_slider {
-        margin: 70px -5px 0;
+        margin: 70px -15px 0;
+        .slick-slide {
+            padding: 0 15px;
+        }
         .slick-arrow {
             top: -85px;
             width: 20px;

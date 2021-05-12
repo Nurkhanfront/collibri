@@ -67,9 +67,9 @@
                 <a href="#"
                   ><img src="@/assets/images/shop_icon.svg" alt=""
                 /></a>
-                <router-link to="/login">
+                <a href="#" @click.prevent="goToProfilePage">
                   <img src="@/assets/images/user.svg" alt="">
-                </router-link>
+                </a>
                 <div class="lang">
                   <span @click="changeLanguage">{{ switchLang }}</span>
                 </div>
@@ -178,6 +178,14 @@ export default {
     productUrl(url) {
       this.GET_PRODUCT_PAGE(url);
     },
+
+    goToProfilePage(){
+      if($cookies.isKey('userToken')){
+        this.$router.push("/my-account");
+      }else{
+        this.$router.push("/login");
+      }
+    }
   },
   mounted() {
     this.lang = localStorage.getItem("lang");

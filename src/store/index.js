@@ -96,10 +96,7 @@ export default new Vuex.Store({
         },
 
         ADD_TO_CART(state, product) {
-
             state.cartArray.push(product)
-
-            console.log(...state.cartArray);
         },
     },
     actions: {

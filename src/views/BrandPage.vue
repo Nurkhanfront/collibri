@@ -82,29 +82,13 @@ export default {
     toggleFilter() {
       this.productCategory = !this.productCategory;
     },
-
-    // loadProducts(id) {
-    //   if (id === undefined) {
-    //     var productUrl = this.$route.params.id;
-    //   } else {
-    //     var productUrl = id;
-    //   }
-
-    //   this.GET_BRAND_PRODUCTS(productUrl);
-    // },
   },
 
   computed: {
     ...mapGetters(["BRAND_PRODUCTS", "CATALOG_FILTER"]),
   },
 
-  // beforeRouteUpdate(to, from, next) {
-  //   this.loadProducts(to.params.id);
-  //   next();
-  // },
-
   created() {
-    console.log('brand_page');
     this.CATALOG_FILTER.products = null;
     let productUrl = this.$route.params.id;
     this.GET_BRAND_PRODUCTS(productUrl);
