@@ -17,12 +17,12 @@
         ><i class="far fa-heart" :class="{ fas: favoriteActive }"></i>
       </span>
       <div class="product_count">
-        <button class="btn btn_add" @click="minusValue"><span>-</span></button>
-        <span class="total_count">{{ countValue }}</span>
-        <button class="btn btn_add" @click="plusValue(productCard.price)"><span>+</span></button>
+        <button class="btn btn_add" @click="minusValue(productCard.count--)"><span>-</span></button>
+        <span class="total_count">{{ productCard.count }}</span>
+        <button class="btn btn_add" @click="plusValue(productCard.count++)"><span>+</span></button>
       </div>
       <div class="price">
-        <p class="bold_text">{{ productPrice }} KZT</p>
+        <p class="bold_text">{{ productCard.price }} KZT</p>
       </div>
     </div>
     <div class="delete_product" @click="$emit('deleteProduct')">
@@ -51,10 +51,6 @@ export default {
         });
       }
     },
-
-    productPrice(){
-     return this.productCard.price * this.countValue
-    }
   },
 
   methods: {
@@ -66,14 +62,14 @@ export default {
     },
 
     minusValue() {
-      if (this.countValue > 1) {
-        this.countValue--;
+      if (this.productCard.count > 1) {
+        this.productCard.count--;
       }
     },
 
-    plusValue(price) {
-      this.countValue++;
-      this.$emit('plusValue', this.productPrice)
+    plusValue(count) {
+      console.log(count);
+      this.$store.commit("CART_TOTAL_PRICE", count);
     },
   },
 

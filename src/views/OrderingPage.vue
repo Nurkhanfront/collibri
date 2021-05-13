@@ -112,7 +112,7 @@
               />
             </div>
             <div class="total">
-              <p>Итого: 6000 KZT</p>
+              <p>Итого: KZT</p>
             </div>
           </div>
           <div class="text-center d_none w-100 mt-5">

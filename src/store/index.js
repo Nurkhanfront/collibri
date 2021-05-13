@@ -19,7 +19,8 @@ export default new Vuex.Store({
         nextPage: null,
         moreLoader: null,
         catalogDropdown: false,
-        cartArray: []
+        cartData: [],
+        totalPrice: []
     },
     mutations: {
         SET_PRODUCTS(state, products) {
@@ -95,7 +96,6 @@ export default new Vuex.Store({
             }
         },
 
-
         ADD_TO_CART(state, product) {
             let cartList = JSON.parse(localStorage.getItem('cart_products'));
 
@@ -120,11 +120,25 @@ export default new Vuex.Store({
             }
         },
 
-        // DELETE_PRODUCT(state, index) {
-        //     let cartList = JSON.parse(localStorage.getItem("cart_products"));
-        //     cartList.splice(index, 1);
-        //     localStorage.setItem("cart_products", JSON.stringify(cartList));
-        // }
+        DELETE_PRODUCT(state, index) {
+            let cartList = JSON.parse(localStorage.getItem("cart_products"));
+            cartList.splice(index, 1);
+            localStorage.setItem("cart_products", JSON.stringify(cartList));
+        },
+
+        CART_TOTAL_PRICE(state, count) {
+            for (let item of state.cartData) {
+                Vue.set(item, 'count', 1)
+                state.totalPrice.push(item.price * item.count);
+            }
+
+            state.totalPrice = state.totalPrice.reduce(function(sum, el) {
+                return sum + el;
+            });
+
+            // return state.totalPrice;
+        }
+
 
 
     },
@@ -271,7 +285,25 @@ export default new Vuex.Store({
                 .catch((error) => {
                     console.log(error);
                 });
-        }
+        },
+
+        GET_CART_PRODUCTS({ commit, state }) {
+            let cartProductsId = JSON.parse(localStorage.getItem("cart_products"));
+            if (cartProductsId !== null && cartProductsId.length) {
+                axios.get(`${state.apiUrl}card-product`, {
+                        params: {
+                            product_id: cartProductsId,
+                            lang: state.lang,
+                        },
+                    })
+                    .then((response) => {
+                        state.cartData = response.data;
+                        commit('CART_TOTAL_PRICE')
+                    });
+            }
+        },
+
+
     },
     getters: {
         CATEGORY_PRODUCTS(state) {
@@ -291,6 +323,14 @@ export default new Vuex.Store({
         },
         GET_FAVOURITE_COUNT(state) {
             return state.favoritesArray
-        }
+        },
+
+        CART_PRODUCTS(state) {
+            return state.cartData
+        },
+
+        totalPrice(state) {
+            return state.totalPrice
+        },
     }
 })

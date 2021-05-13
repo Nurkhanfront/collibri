@@ -10,19 +10,20 @@
         <div class="title_small">
           <h1>Корзина</h1>
         </div>
-        <div class="cart_content" v-if="cartData">
+        <div class="cart_content" v-if="CART_PRODUCTS">
           <cardCart
-            v-for="(card, index) in cartData"
+            v-for="(card, index) in CART_PRODUCTS"
             :key="card.id"
             :productCard="card"
-            @plusValue="plusValue"
             @deleteProduct="deleteProduct(index)"
           />
           <div class="total_cart_price">
             <p>
               Итого: <span class="price">{{ totalPrice }} KZT</span>
             </p>
-            <router-link to="/OrderingPage" tag="button" class="btn_black">ОФОРМЛЕНИЕ ЗАКАЗА</router-link>
+            <button class="btn_black" @click="placementOfOrder()">
+                ОФОРМЛЕНИЕ ЗАКАЗА
+            </button>
           </div>
         </div>
         <div class="cartIsEmpty mt-5 text-center" v-else>
@@ -35,6 +36,7 @@
 
 <script>
 import cardCart from "./../components/cardCartProduct";
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -48,41 +50,28 @@ export default {
   }),
 
   methods: {
-    plusValue(e) {
-      this.count++;
+    placementOfOrder(){
+      this.$router.push('/OrderingPage')
+      
     },
 
     deleteProduct(index) {
-      console.log(index);
       this.cartData.splice(index, 1);
-      let cartList = JSON.parse(localStorage.getItem("cart_products"));
-      console.log(cartList);
-      cartList.splice(index, 1);
-      localStorage.setItem("cart_products", JSON.stringify(cartList));
-      if(this.cartData.length === 0){
-        this.cartData = null
+
+      if (this.cartData.length === 0) {
+        this.cartData = null;
       }
+
+      this.$store.commit("DELETE_PRODUCT", index);
     },
   },
 
   computed: {
-    totalPrice() {
-      return console.log(this.count);
-    },
+    ...mapGetters(['CART_PRODUCTS', 'totalPrice'])
   },
 
   mounted() {
-    let cartProductsId = JSON.parse(localStorage.getItem("cart_products"));
-    if (cartProductsId !== null && cartProductsId.length) {
-      this.$axios
-        .get(`${this.$store.state.apiUrl}card-product`, {
-          params: {
-            product_id: cartProductsId,
-            lang: this.$store.state.lang,
-          },
-        })
-        .then((response) => (this.cartData = response.data));
-    }
+    this.$store.dispatch('GET_CART_PRODUCTS');
   },
 };
 </script>
