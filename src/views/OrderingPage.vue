@@ -9,8 +9,8 @@
 
     <div class="container">
       <div class="back_link">
-        <a href="#" class="silver_text"
-          ><img src="@/assets/images/BACK.svg" alt="" />Вернуться к покупкам</a
+        <a href="#" class="silver_text" @click.prevent="$router.go(-1)"
+          ><img src="@/assets/images/BACK.svg" alt=""  />Вернуться к покупкам</a
         >
       </div>
       <div class="ordering_wrapper">

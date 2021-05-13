@@ -2,8 +2,8 @@
   <div class="cart p_page">
     <div class="container">
       <div class="back_link">
-        <a href="#" class="silver_text"
-          ><img src="@/assets/images/BACK.svg" alt="" /> Вернуться к покупкам</a
+        <a href="#" class="silver_text" @click.prevent="$router.go(-1)"
+          ><img src="@/assets/images/BACK.svg" alt=""  /> Вернуться к покупкам</a
         >
       </div>
       <div class="cart_wrapper">
@@ -21,8 +21,7 @@
             <p>
               Итого: <span class="price">{{ totalPrice }} KZT</span>
             </p>
-            <button class="btn_black" @click="placementOfOrder(totalPrice)">
-              >ОФОРМЛЕНИЕ ЗАКАЗА
+            <button class="btn_black" @click="placementOfOrder(totalPrice)">ОФОРМЛЕНИЕ ЗАКАЗА
             </button>
           </div>
         </div>
