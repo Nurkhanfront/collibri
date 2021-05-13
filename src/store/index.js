@@ -20,7 +20,7 @@ export default new Vuex.Store({
         moreLoader: null,
         catalogDropdown: false,
         cartData: [],
-        totalPrice: []
+        totalPrice: null
     },
     mutations: {
         SET_PRODUCTS(state, products) {

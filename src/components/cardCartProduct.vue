@@ -17,9 +17,9 @@
         ><i class="far fa-heart" :class="{ fas: favoriteActive }"></i>
       </span>
       <div class="product_count">
-        <button class="btn btn_add" @click="minusValue(productCard.count--)"><span>-</span></button>
+        <button class="btn btn_add" @click="minusValue"><span>-</span></button>
         <span class="total_count">{{ productCard.count }}</span>
-        <button class="btn btn_add" @click="plusValue(productCard.count++)"><span>+</span></button>
+        <button class="btn btn_add" @click="plusValue(productCard.price)"><span>+</span></button>
       </div>
       <div class="price">
         <p class="bold_text">{{ productCard.price }} KZT</p>
@@ -67,14 +67,14 @@ export default {
       }
     },
 
-    plusValue(count) {
-      console.log(count);
-      this.$store.commit("CART_TOTAL_PRICE", count);
+    plusValue() {
+      this.productCard.count++;
     },
   },
 
   mounted() {
     this.activeFavorite;
+    this.$set(this.productCard, 'count', 1)
   },
 
   created() {

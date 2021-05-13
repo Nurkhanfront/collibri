@@ -10,9 +10,9 @@
         <div class="title_small">
           <h1>Корзина</h1>
         </div>
-        <div class="cart_content" v-if="CART_PRODUCTS">
+        <div class="cart_content" v-if="cartData">
           <cardCart
-            v-for="(card, index) in CART_PRODUCTS"
+            v-for="(card, index) in cartData"
             :key="card.id"
             :productCard="card"
             @deleteProduct="deleteProduct(index)"
@@ -21,8 +21,8 @@
             <p>
               Итого: <span class="price">{{ totalPrice }} KZT</span>
             </p>
-            <button class="btn_black" @click="placementOfOrder()">
-                ОФОРМЛЕНИЕ ЗАКАЗА
+            <button class="btn_black" @click="placementOfOrder(totalPrice)">
+              >ОФОРМЛЕНИЕ ЗАКАЗА
             </button>
           </div>
         </div>
@@ -36,7 +36,6 @@
 
 <script>
 import cardCart from "./../components/cardCartProduct";
-import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -50,9 +49,17 @@ export default {
   }),
 
   methods: {
-    placementOfOrder(){
-      this.$router.push('/OrderingPage')
-      
+    placementOfOrder(totalPrice) {
+      this.$router.push("/OrderingPage");
+      let products = [];
+      for (let item of this.cartData) {
+        let productData = {
+          id: item.id,
+          count: item.count,
+        }
+        products.push(productData)
+      };
+      localStorage.setItem('productsData', JSON.stringify(products))
     },
 
     deleteProduct(index) {
@@ -67,11 +74,34 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['CART_PRODUCTS', 'totalPrice'])
+    totalPrice() {
+      let result = [];
+
+      for (let item of this.cartData) {
+        result.push(item.price * item.count);
+      }
+
+      result = result.reduce(function (sum, el) {
+        return sum + el;
+      });
+
+      localStorage.setItem("totalPrice", result);
+      return result;
+    },
   },
 
   mounted() {
-    this.$store.dispatch('GET_CART_PRODUCTS');
+    let cartProductsId = JSON.parse(localStorage.getItem("cart_products"));
+    if (cartProductsId !== null && cartProductsId.length) {
+      this.$axios
+        .get(`${this.$store.state.apiUrl}card-product`, {
+          params: {
+            product_id: cartProductsId,
+            lang: this.$store.state.lang,
+          },
+        })
+        .then((response) => (this.cartData = response.data));
+    }
   },
 };
 </script>

@@ -473,7 +473,7 @@ export default {
       };
 
       this.$v.$touch();
-      if (this.$v.$invalid && !this.loginForm.recaptchaVerified) {
+      if (this.$v.$invalid || !this.loginForm.recaptchaVerified) {
         this.loginForm.pleaseTickRecaptchaMessage =
           "Подтвердите что вы не робот!";
         return false;

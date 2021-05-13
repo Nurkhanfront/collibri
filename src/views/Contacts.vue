@@ -72,7 +72,7 @@
                   >{{ $locale[$lang].placeholders.name }}</span
                 >
                 <the-mask
-                  :mask="['#(###) ###-####']"
+                  :mask="['+7(###) ###-##-##']"
                   v-model.trim="phone"
                   :placeholder="$locale[$lang].placeholders.PhoneNumber"
                   :class="{
