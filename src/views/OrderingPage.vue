@@ -10,7 +10,7 @@
     <div class="container">
       <div class="back_link">
         <a href="#" class="silver_text" @click.prevent="$router.go(-1)"
-          ><img src="@/assets/images/BACK.svg" alt=""  />Вернуться к покупкам</a
+          ><img src="@/assets/images/BACK.svg" alt="" />Вернуться к покупкам</a
         >
       </div>
       <div class="ordering_wrapper">
@@ -36,8 +36,10 @@
                   </div>
                   <div class="col-xl-6">
                     <the-mask
-                      :mask="['#(###) ###-##-##']"
+                      :mask="['+7(###) ###-##-##']"
                       v-model.trim="phone"
+                      type="text"
+                      :masked="true"
                       :placeholder="$locale[$lang].placeholders.PhoneNumber"
                       :class="{
                         invalid:
@@ -157,10 +159,10 @@
             <div v-if="cartData">
               <div class="your_order">
                 <cardOrderProduct
-                  v-for="card in cartData"
+                  v-for="(card, index) in cartData"
                   :key="card.id"
                   :productCard="card"
-                  @deleteProduct="deleteProduct(index)"
+                  @deleteProduct="deleteProduct(index, card.id)"
                 />
               </div>
               <div class="total">
@@ -195,7 +197,6 @@ export default {
   components: { cardOrderProduct, loader },
   data: () => ({
     cartData: null,
-    totalPrice: null,
     name: "",
     phone: "",
     email: "",
@@ -236,12 +237,14 @@ export default {
   },
 
   methods: {
-    deleteProduct(index) {
-      this.cartData.splice(index, 1);
+    deleteProduct(index, id) {
+      this.cartData = this.cartData.filter((t) => t.id !== id);
+
       if (this.cartData.length === 0) {
         this.cartData = null;
       }
-      this.$store.commit("DELETE_PRODUCT", index);
+
+      this.$store.commit("DELETE_PRODUCT", id);
     },
 
     submit() {
@@ -287,8 +290,27 @@ export default {
     },
   },
 
+  computed: {
+    totalPrice() {
+      let result = [];
+      this.cartData.filter((item, i) => {
+        for (let i of JSON.parse(localStorage.getItem("productsData"))) {
+          if (item.id === i.id) {
+            this.$set(item, "count", i.count);
+            result.push(item.price * i.count);
+          }
+        }
+      });
+
+      result = result.reduce(function (sum, el) {
+        return sum + el;
+      });
+
+      return result;
+    },
+  },
+
   mounted() {
-    this.totalPrice = localStorage.getItem("totalPrice");
     let cartProductsId = JSON.parse(localStorage.getItem("cart_products"));
     if (cartProductsId !== null && cartProductsId.length) {
       this.$axios
@@ -304,5 +326,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

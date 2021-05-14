@@ -64,11 +64,12 @@
                   ><i class="far fa-heart"></i>
                   <span v-if="favLength">{{ favLength }}</span>
                 </router-link>
-                <router-link to="/cart"
-                  ><img src="@/assets/images/shop_icon.svg" alt=""
-                /></router-link>
+                <router-link to="/cart" class="countFavorites">
+                  <img src="@/assets/images/shop_icon.svg" alt="" />
+                  <span v-if="cartLength">{{ cartLength }}</span>
+                </router-link>
                 <a href="#" @click.prevent="goToProfilePage">
-                  <img src="@/assets/images/user.svg" alt="">
+                  <img src="@/assets/images/user.svg" alt="" />
                 </a>
                 <div class="lang">
                   <span @click="changeLanguage">{{ switchLang }}</span>
@@ -122,7 +123,7 @@ export default {
     mobileSearch: false,
   }),
   computed: {
-    ...mapGetters(["GET_FAVOURITE_COUNT"]),
+    ...mapGetters(["GET_FAVOURITE_COUNT", "GET_CART_LENGTH"]),
 
     favLength() {
       if (
@@ -130,6 +131,14 @@ export default {
         JSON.parse(localStorage.getItem("favorite"))
       ) {
         return JSON.parse(localStorage.getItem("favorite")).length;
+      }
+    },
+
+    cartLength() {
+      if (
+        this.GET_CART_LENGTH && JSON.parse(localStorage.getItem("cart_products"))
+      ) {
+        return JSON.parse(localStorage.getItem("cart_products")).length;
       }
     },
 
@@ -157,7 +166,7 @@ export default {
             }
           });
       } else {
-          vm.searchData = null;
+        vm.searchData = null;
       }
     },
 
@@ -179,17 +188,16 @@ export default {
       this.GET_PRODUCT_PAGE(url);
     },
 
-    goToProfilePage(){
-      if($cookies.isKey('userToken')){
+    goToProfilePage() {
+      if ($cookies.isKey("userToken")) {
         this.$router.push("/my-account");
-      }else{
+      } else {
         this.$router.push("/login");
       }
-    }
+    },
   },
   mounted() {
     this.lang = localStorage.getItem("lang");
-    this.favoriteList = JSON.parse(localStorage.getItem("favorite"));
     this.$axios
       .get(
         `${this.$store.state.apiUrl}get-header?lang=${this.$store.state.lang}`

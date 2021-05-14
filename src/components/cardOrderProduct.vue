@@ -3,9 +3,11 @@
     <div class="ordering_cart_info">
       <div class="card_cart_img">
         <img
+          v-if="productCard.images"
           :src="$staticImageUrl.staticImgUrl(productCard.images.image)"
           alt=""
         />
+        <img v-else src="../assets/images/image-not.svg" alt="" />
       </div>
       <div class="card_descr">
         <p class="silver_text">
@@ -21,7 +23,6 @@
             </p>
           </div>
         </div>
-        <p class="silver_text small_text">30 ml</p>
       </div>
     </div>
     <div class="price d_none text-right">
@@ -39,9 +40,7 @@
 export default {
   props: ["productCard"],
 
-  methods: {
-
-  },
+  methods: {},
 };
 </script>
 

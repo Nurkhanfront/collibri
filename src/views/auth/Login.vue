@@ -58,7 +58,7 @@ export default {
     email: "",
     password: "",
     loader: null,
-    registrationError: ''
+    registrationError: "",
   }),
 
   validations: {
@@ -77,6 +77,7 @@ export default {
       this.$v.$touch();
       this.loader = true;
       if (this.$v.$invalid) {
+        this.loader = null;
         return false;
       } else {
         this.$axios
@@ -87,17 +88,20 @@ export default {
           .then((response) => {
             const userToken = response.data.user.token;
             const userId = response.data.user.id;
-            $cookies.set("userToken", userToken, "30MIN");
-            $cookies.set("userId", userId, "30MIN");
+            $cookies.set("userToken", userToken, 18000);
+            $cookies.set("userId", userId, 18000);
+            $cookies.set("token_time", new Date(), 18000);
             setTimeout(() => {
               this.$router.push("my-account");
               this.loader = false;
             }, 1000);
           })
-          .catch((e)=>{
-            this.registrationError = "Неправильный логин или пароль"
-          })
-          
+          .catch((e) => {
+            this.registrationError = "Неправильный логин или пароль";
+            setTimeout(() => {
+              this.loader = null
+            }, 500);
+          });
       }
     },
   },

@@ -14,6 +14,7 @@ export default new Vuex.Store({
         productItem: null,
         catalogFilter: [],
         favoritesArray: [],
+        cartLength: [],
         loader: false,
         loadingProducts: false,
         nextPage: null,
@@ -98,13 +99,12 @@ export default new Vuex.Store({
 
         ADD_TO_CART(state, product) {
             let cartList = JSON.parse(localStorage.getItem('cart_products'));
-
             if (cartList == null) {
                 localStorage.setItem('cart_products', JSON.stringify([product.id]))
-            } else if (state.cartList == []) {
+            } else if (state.cartLength == []) {
                 cartList.push(product.id)
                 localStorage.setItem('cart_products', JSON.stringify(cartList))
-                state.cartList = cartList.length
+                state.cartLength = cartList.length
             } else if (cartList.find(item => item == product.id)) {
                 cartList.forEach((item, index) => {
                     if (item == product.id) {
@@ -112,17 +112,21 @@ export default new Vuex.Store({
                     }
                 })
                 localStorage.setItem('cart_products', JSON.stringify(cartList))
-                state.cartList = cartList.length
+                state.cartLength = cartList.length
             } else {
                 cartList.push(product.id)
-                state.cartList = cartList.length
+                state.cartLength = cartList.length
                 localStorage.setItem('cart_products', JSON.stringify(cartList))
             }
         },
 
-        DELETE_PRODUCT(state, index) {
+        DELETE_PRODUCT(state, id) {
             let cartList = JSON.parse(localStorage.getItem("cart_products"));
-            cartList.splice(index, 1);
+
+            cartList = cartList.filter((t) => t !== id);
+
+            state.cartLength = cartList.length
+
             localStorage.setItem("cart_products", JSON.stringify(cartList));
         },
 
@@ -321,8 +325,13 @@ export default new Vuex.Store({
         IMG_URL(state) {
             return state.imgUrl;
         },
+
         GET_FAVOURITE_COUNT(state) {
             return state.favoritesArray
+        },
+
+        GET_CART_LENGTH(state) {
+            return state.cartLength
         },
 
         CART_PRODUCTS(state) {

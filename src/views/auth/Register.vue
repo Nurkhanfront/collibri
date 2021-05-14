@@ -160,8 +160,9 @@ export default {
     submit() {
       this.$v.$touch();
       this.loader = true;
-      
-      if (!this.loginForm.recaptchaVerified || this.$v.$invalid) {
+
+      if (!this.loginForm.recaptchaVerified && this.$v.$invalid) {
+        this.loader = null;
         this.loginForm.pleaseTickRecaptchaMessage =
           "Подтвердите что вы не робот!";
         return false;
@@ -178,16 +179,22 @@ export default {
           .then((response) => {
             const userToken = response.data.user.token;
             const userId = response.data.user.id;
+
+            $cookies.set("userToken", userToken, 18000);
+            $cookies.set("userId", userId, 18000);
+            $cookies.set("token_time", new Date(), 18000);
+            
             setTimeout(() => {
-              this.loader = false;
+              this.loader = null;
               $cookies.set("userToken", userToken, "30MIN");
               $cookies.set("userId", userId, "30MIN");
               this.$router.push("/my-account");
             }, 1000);
           })
           .catch((error) => {
-            this.registrationError =
-              "Пользователь с такими данными уже существует!";
+            setTimeout(() => {
+              this.loader = null;
+            }, 500);
           });
       }
     },

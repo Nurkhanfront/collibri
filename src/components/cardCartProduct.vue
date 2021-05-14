@@ -3,9 +3,11 @@
     <div class="card_cart_info">
       <div class="card_cart_img">
         <img
+          v-if="productCard.images"
           :src="$staticImageUrl.staticImgUrl(productCard.images.image)"
           alt=""
         />
+        <img v-else src="../assets/images/image-not.svg" alt="" />
       </div>
       <div class="card_descr">
         <p class="silver_text">{{ productCard.brand_name }}</p>
@@ -19,7 +21,9 @@
       <div class="product_count">
         <button class="btn btn_add" @click="minusValue"><span>-</span></button>
         <span class="total_count">{{ productCard.count }}</span>
-        <button class="btn btn_add" @click="plusValue(productCard.price)"><span>+</span></button>
+        <button class="btn btn_add" @click="plusValue(productCard.price)">
+          <span>+</span>
+        </button>
       </div>
       <div class="price">
         <p class="bold_text">{{ productCard.price }} KZT</p>
@@ -38,7 +42,7 @@ export default {
   data: () => ({
     favoriteActive: false,
     favoriteList: null,
-    countValue: 1
+    countValue: 1,
   }),
 
   computed: {
@@ -74,7 +78,7 @@ export default {
 
   mounted() {
     this.activeFavorite;
-    this.$set(this.productCard, 'count', 1)
+    this.$set(this.productCard, "count", 1);
   },
 
   created() {

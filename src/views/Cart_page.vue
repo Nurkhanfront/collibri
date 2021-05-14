@@ -3,7 +3,7 @@
     <div class="container">
       <div class="back_link">
         <a href="#" class="silver_text" @click.prevent="$router.go(-1)"
-          ><img src="@/assets/images/BACK.svg" alt=""  /> Вернуться к покупкам</a
+          ><img src="@/assets/images/BACK.svg" alt="" /> Вернуться к покупкам</a
         >
       </div>
       <div class="cart_wrapper">
@@ -15,13 +15,14 @@
             v-for="(card, index) in cartData"
             :key="card.id"
             :productCard="card"
-            @deleteProduct="deleteProduct(index)"
+            @deleteProduct="deleteProduct(index, card.id)"
           />
           <div class="total_cart_price">
             <p>
               Итого: <span class="price">{{ totalPrice }} KZT</span>
             </p>
-            <button class="btn_black" @click="placementOfOrder(totalPrice)">ОФОРМЛЕНИЕ ЗАКАЗА
+            <button class="btn_black" @click="placementOfOrder(totalPrice)">
+              ОФОРМЛЕНИЕ ЗАКАЗА
             </button>
           </div>
         </div>
@@ -55,20 +56,20 @@ export default {
         let productData = {
           id: item.id,
           count: item.count,
-        }
-        products.push(productData)
-      };
-      localStorage.setItem('productsData', JSON.stringify(products))
+        };
+        products.push(productData);
+      }
+      localStorage.setItem("productsData", JSON.stringify(products));
     },
 
-    deleteProduct(index) {
-      this.cartData.splice(index, 1);
-
+    deleteProduct(index, id) {
+      this.cartData = this.cartData.filter((t) => t.id !== id);
+      
       if (this.cartData.length === 0) {
         this.cartData = null;
       }
-
-      this.$store.commit("DELETE_PRODUCT", index);
+      
+      this.$store.commit("DELETE_PRODUCT", id);
     },
   },
 
