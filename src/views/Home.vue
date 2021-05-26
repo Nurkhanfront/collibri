@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <div class="loader_wrapper" v-if="loader">
       <div id="cube-loader">
         <div class="caption">
@@ -47,7 +47,7 @@
                     params: { id: category.id, slug: category.slug },
                   }"
                 >
-                  <img :src="`${imgUrl + category.image}`" alt="" />
+                  <v-lazy-image :src="`${imgUrl + category.image}`" alt="" :src-placeholder="require('../assets/images/load_image.svg')" />
                   <p>{{ category.title }}</p>
                 </router-link>
               </div>
@@ -64,7 +64,7 @@
                     params: { id: category.id, slug: category.slug },
                   }"
                 >
-                  <img :src="`${imgUrl + category.image}`" alt="" />
+                  <v-lazy-image :src="`${imgUrl + category.image}`" alt="" :src-placeholder="require('../assets/images/load_image.svg')" />
                   <p>{{ category.title }}</p>
                 </router-link>
               </div>
@@ -172,7 +172,7 @@
                   </p>
                 </div>
                 <div class="main_blog_img d_none">
-                  <img src="@/assets/images/blog_img.png" alt="" />
+                  <v-lazy-image src="@/assets/images/blog_img.png" alt="" />
                 </div>
                 <router-link
                   class="btn btn_black"
@@ -185,7 +185,7 @@
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 m_none">
                 <div class="main_blog_img">
-                  <img :src="imgUrl + mainData.block_blog.image" alt="" />
+                  <v-lazy-image :src="imgUrl + mainData.block_blog.image" :src-placeholder="require('../assets/images/load_image.svg')" alt=""  />
                 </div>
               </div>
             </div>

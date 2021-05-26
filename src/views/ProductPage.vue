@@ -115,8 +115,9 @@
                       PRODUCT_ITEM.product.brand_name
                     }}</span>
                   </p>
-                  <h2>{{ PRODUCT_ITEM.title }}</h2>
+                  <h2 v-if="PRODUCT_ITEM.title">{{ PRODUCT_ITEM.title }}</h2>
                 </div>
+                <p class="product_text" v-if="PRODUCT_ITEM.product.country_name">Страна:{{ PRODUCT_ITEM.product.country_name }}</p>
                 <div
                   class="product_text"
                   v-html="PRODUCT_ITEM.product.title"
@@ -131,9 +132,12 @@
                   <p class="bold_text">
                     {{ PRODUCT_ITEM.product.current_price }} тг
                   </p>
-                  <a href="#" class="t_block d_none m_none">{{
-                    $locale[$lang].productPage.buyInOneclick
-                  }}</a>
+                  <button
+                    class="t_block d_none m_none btn btn_black btn_border_radius"
+                    @click="addToCart(PRODUCT_ITEM.product)"
+                  >
+                    {{ $locale[$lang].productPage.addToCard }}
+                  </button>
                 </div>
                 <div class="buy_content">
                   <div class="product_count">
@@ -151,9 +155,12 @@
                   >
                     {{ $locale[$lang].productPage.requestACall }}
                   </button>
-                  <a href="#" class="t_none" @click="modal = !modal">{{
-                    $locale[$lang].productPage.buyInOneclick
-                  }}</a>
+                  <button
+                    class="t_none m_none btn btn_black btn_border_radius"
+                    @click="addToCart(PRODUCT_ITEM.product)"
+                  >
+                    {{ $locale[$lang].productPage.addToCard }}
+                  </button>
                 </div>
                 <button
                   class="btn btn_black btn_border_radius d_none"
@@ -161,8 +168,11 @@
                 >
                   {{ $locale[$lang].productPage.requestACall }}
                 </button>
-                <button class="btn btn_black btn_border_radius d-none">
-                  ДОБАВИТЬ В КОРЗИНУ
+                <button
+                  class="btn btn_black btn_border_radius d_none"
+                  @click="addToCart(PRODUCT_ITEM.product)"
+                >
+                  {{ $locale[$lang].productPage.addToCard }}
                 </button>
               </div>
               <div class="description_tabs">
@@ -174,13 +184,6 @@
                     :class="{ active_tab: tab === 'description' }"
                     >{{ $locale[$lang].productPage.productDescription }}</a
                   >
-                  <!-- <a
-                    href="#"
-                    class="tab_link"
-                    @click.prevent="tab = 'specifications'"
-                    :class="{ active_tab: tab === 'specifications' }"
-                    >{{ $locale[$lang].productPage.characteristics }}</a
-                  > -->
                 </div>
                 <div class="tabs_content" v-if="tab === 'description'">
                   <div
@@ -188,12 +191,6 @@
                     v-html="PRODUCT_ITEM.product.description"
                   ></div>
                 </div>
-                <!-- <div class="tabs_content" v-if="tab === 'specifications'">
-                  <div
-                    class="silver_text"
-                    v-html="PRODUCT_ITEM.product.specifications"
-                  ></div>
-                </div> -->
               </div>
               <div class="share">
                 <p>{{ $locale[$lang].productPage.share }}:</p>
@@ -252,7 +249,8 @@
                   $locale[$lang].errors.name
                 }}</span>
                 <the-mask
-                  :mask="['#(###) ###-####']"
+                  :mask="['+7(###) ###-####']"
+                  :masked="true"
                   v-model.trim="phone"
                   :placeholder="$locale[$lang].placeholders.PhoneNumber"
                   :class="{
@@ -334,6 +332,8 @@ export default {
     rec: false,
     favoriteActive: false,
     favoriteList: JSON.parse(localStorage.getItem("favorite")),
+    cartProductsList: JSON.parse(localStorage.getItem("cart_products")),
+    cartBtnText: "",
     settingsRecomendSlider: {
       arrows: true,
       dots: false,
@@ -393,10 +393,7 @@ export default {
       required,
       minLength: minLength(3),
     },
-    comment: {
-      required,
-      minLength: minLength(15),
-    },
+
     phone: {
       required,
       minLength: minLength(11),
@@ -412,12 +409,11 @@ export default {
     ...mapGetters(["PRODUCT_ITEM"]),
 
     activeFavorite() {
+      this.favoriteActive = false;
       if (this.favoriteList && this.PRODUCT_ITEM) {
         this.favoriteList.filter((i) => {
-          if (i.id === this.PRODUCT_ITEM.product.id) {
+          if (i.id == this.PRODUCT_ITEM.product.id) {
             this.favoriteActive = true;
-          } else {
-            this.favoriteActive = false;
           }
         });
       }
@@ -473,14 +469,17 @@ export default {
       };
 
       this.$v.$touch();
-      if (this.$v.$invalid || !this.loginForm.recaptchaVerified) {
+
+      if (this.$v.$invalid) {
+        return false;
+      } else if (!this.loginForm.recaptchaVerified) {
         this.loginForm.pleaseTickRecaptchaMessage =
           "Подтвердите что вы не робот!";
-        return false;
       } else {
+        this.loginForm.pleaseTickRecaptchaMessage = "";
         this.submitStatus = "PENDING";
         this.$axios
-          .post(`${this.$store.state.apiUrl}order`, {
+          .post(`${this.$store.state.apiUrl}callback`, {
             formData,
           })
           .then((response) => {
@@ -501,17 +500,32 @@ export default {
           });
       }
     },
+
+    addToCart(product) {
+      this.$store.commit("ADD_TO_CART", product);
+      this.cartProductsList = JSON.parse(localStorage.getItem("cart_products"));
+    },
   },
 
   beforeRouteUpdate(to, from, next) {
     this.productUrl(to.params.id);
-    // this.GET_PRODUCT_PAGE(to.params.id);
     next();
+  },
+
+  watch: {
+    modal(e) {
+      if (e) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "scroll";
+      }
+    },
   },
 
   mounted() {
     this.imgUrl = this.$store.state.imgUrl;
     let vm = this;
+
     let productUrl = this.$route.params.id;
     this.GET_PRODUCT_PAGE(productUrl);
 

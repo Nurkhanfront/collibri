@@ -617,6 +617,19 @@
     }
 }
 
+@media screen and (max-width: 576px) {
+    .countFavorites {
+        span {
+            position: absolute;
+            right: -6px;
+            top: -8px;
+            width: 15px;
+            height: 15px;
+            font-size: 12px;
+        }
+    }
+}
+
 @media screen and (max-width: 1024px) {
     .header_content_right {
         padding-left: 0 !important;

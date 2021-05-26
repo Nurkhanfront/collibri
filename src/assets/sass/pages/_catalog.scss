@@ -6,6 +6,20 @@
 
 .catalog_content {
     margin-top: 48px;
+    .btn_fixed {
+        border: 2px solid #000;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 5%;
+        right: 5%;
+        background-color: #fff;
+        z-index: 99;
+    }
     .products_select_wrapper {
         .category_select {
             margin-bottom: 60px;
@@ -66,6 +80,10 @@
             display: block;
             margin: 0 auto;
         }
+        .btn_black {
+            margin: 40px 0 0;
+            width: 100%;
+        }
         .products_select_mobile {
             position: fixed;
             width: 100%;
@@ -74,12 +92,18 @@
             left: 0;
             background-color: #fff;
             z-index: 99999;
-            padding: 80px 30px;
+            padding: 40px 30px;
             overflow-y: scroll;
+        }
+        .category_select {
+            margin-bottom: 30px !important;
         }
     }
     .catalog_products {
         margin-top: 60px;
+    }
+    .btn_fixed {
+        display: flex !important;
     }
 }
 

@@ -31,6 +31,9 @@
 
 .btn_border_radius {
     border-radius: 30px !important;
+    &::after {
+        border-radius: 30px !important;
+    }
 }
 
 .btn_outline_dark {

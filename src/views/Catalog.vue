@@ -112,7 +112,6 @@ export default {
     filter_id: [],
     sortedCategory: "",
     page: 1,
-    showMorebtn: true,
     loader: null,
     loadingProducts: null,
     nextPage: null,
@@ -152,19 +151,15 @@ export default {
     loadProducts(id) {
       this.loader = this.$store.state.loader;
       this.imgUrl = this.$store.state.imgUrl;
+      let page = this.$route.params.page;
       if (id === undefined) {
         var productUrl = this.$route.params.id;
       } else {
         var productUrl = id;
       }
 
-      this.GET_PRODUCTS(productUrl);
+      this.MORE_PRODUCTS({ productId: productUrl, page: page });
     },
-  },
-
-  beforeRouteUpdate(to, from, next) {
-    this.loadProducts(to.params.id);
-    next();
   },
 
   computed: {
@@ -179,7 +174,13 @@ export default {
     this.loader = this.$store.state.loader;
     this.imgUrl = this.$store.state.imgUrl;
     let productUrl = this.$route.params.id;
-    this.GET_PRODUCTS(productUrl);
+    let page = this.$route.params.page;
+    this.MORE_PRODUCTS({ productId: productUrl, page: page });
+    // if (this.$route.params.page === 1) {
+    //   this.GET_PRODUCTS(productUrl);
+    // } else {
+    //   this.MORE_PRODUCTS({ productId: productUrl, page: page });
+    // }
   },
 
   watch: {

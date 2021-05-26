@@ -32,6 +32,11 @@ export default {
     loader: false,
   }),
   created() {
+    if ($cookies.isKey("userToken") && document.location.pathname === '/login') {
+      this.$router.push("/my-account");
+    } else {
+    }
+
     setTimeout(() => {
       this.loader = true;
     }, 500);
@@ -44,26 +49,20 @@ export default {
         let minute = date / 60000;
         if (minute > 25) {
           this.$axios
-          .post(`${this.$store.state.apiUrl}register`, {
-            
-          })
-          .then((response) => {
-            const userToken = response.data.user.token;
-            const userId = response.data.user.id;
+            .post(`${this.$store.state.apiUrl}refresh`, {
+              token: $cookies.get("userToken")
+            })
+            .then((response) => {
+              const userToken = response.data.token;
 
-            $cookies.set("userToken", userToken, 18000);
-            $cookies.set("userId", userId, 18000);
-            $cookies.set("token_time", new Date(), 18000);
-            
-            setTimeout(() => {
-              $cookies.set("userToken", userToken, "30MIN");
-              $cookies.set("userId", userId, "30MIN");
-              this.$router.push("/my-account");
-            }, 1000);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+              $cookies.set("userToken", userToken, 18000);
+              $cookies.set("token_time", new Date(), 18000);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }else{
+          // this.$router.push("/my-account");
         }
       }
     },

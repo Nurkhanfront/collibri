@@ -3,30 +3,30 @@
     <div class="order_loader" v-if="loader">
       <loader />
       <div class="loader_order_text">
-        <h3>Обработка запроса...</h3>
+        <h3>{{ $locale[$lang].processingRequest }}...</h3>
       </div>
     </div>
 
     <div class="container">
       <div class="back_link">
         <a href="#" class="silver_text" @click.prevent="$router.go(-1)"
-          ><img src="@/assets/images/BACK.svg" alt="" />Вернуться к покупкам</a
+          ><img src="@/assets/images/BACK.svg" alt="" />{{$locale[$lang].buttons.backtoShopping}}</a
         >
       </div>
       <div class="ordering_wrapper">
         <div class="title_small">
-          <h1>Оформление заказа</h1>
+          <h1>{{$locale[$lang].orderingPage.checkout}}</h1>
         </div>
         <div class="row contacts_data">
           <div class="col-xl-6 col-lg-6">
             <div class="title_block">
-              <h2>Контактные данные</h2>
+              <h2>{{$locale[$lang].orderingPage.contactDetails}}</h2>
               <form action="" class="ordering_form">
                 <div class="row">
                   <div class="col-xl-6">
                     <input
                       type="text"
-                      placeholder="Имя и фамилия"
+                      :placeholder="$locale[$lang].placeholders.name"
                       v-model.trim="name"
                       :class="{ invalid: $v.name.$dirty && !$v.name.required }"
                     />
@@ -71,18 +71,18 @@
                   </div>
                   <div class="col-xl-12 ordering_padding">
                     <div class="ordering_tabs">
-                      <p>Доставка</p>
+                      <p>{{$locale[$lang].orderingPage.delivery}}</p>
                     </div>
                   </div>
                   <div class="col-xl-12">
                     <div class="title_block ordering_padding">
-                      <p>Адрес</p>
+                      <p>{{$locale[$lang].orderingPage.address}}</p>
                     </div>
                     <div class="row">
                       <div class="col-xl-8 m_input">
                         <input
                           type="text"
-                          placeholder="Улица"
+                          :placeholder="$locale[$lang].placeholders.street"
                           v-model.trim="street"
                           :class="{
                             invalid: $v.street.$dirty && !$v.street.required,
@@ -92,7 +92,7 @@
                       <div class="col-xl-4 m_input">
                         <input
                           type="text"
-                          placeholder="Дом"
+                          :placeholder="$locale[$lang].placeholders.house"
                           v-model="house"
                           :class="{
                             invalid: $v.house.$dirty && !$v.house.required,
@@ -102,24 +102,24 @@
                       <div class="col-xl-3 m_input">
                         <input
                           type="text"
-                          placeholder="Корпус"
+                          :placeholder="$locale[$lang].placeholders.housing"
                           v-model.trim="building"
                         />
                       </div>
                       <div class="col-xl-3 m_input">
                         <input
                           type="text"
-                          placeholder="Подъезд"
+                          :placeholder="$locale[$lang].placeholders.entrance"
                           v-model="entrance"
                         />
                       </div>
                       <div class="col-xl-3 m_input">
-                        <input type="text" placeholder="Этаж" v-model="floor" />
+                        <input type="text" :placeholder="$locale[$lang].placeholders.floor" v-model="floor" />
                       </div>
                       <div class="col-xl-3 m_input">
                         <input
                           type="text"
-                          placeholder="Квартира"
+                          :placeholder="$locale[$lang].placeholders.flat"
                           v-model="apartment"
                         />
                       </div>
@@ -127,7 +127,7 @@
                   </div>
                   <div class="col-xl-12 ordering_padding">
                     <div class="title_block">
-                      <p>Комментарии к заказу</p>
+                      <p>{{$locale[$lang].orderingPage.commentsOrder}}</p>
                     </div>
                     <div class="row">
                       <div class="col-xl-12">
@@ -136,7 +136,8 @@
                           id=""
                           cols="30"
                           rows="10"
-                          placeholder="Комментарии"
+                          v-model="comment"
+                          :placeholder="$locale[$lang].orderingPage.commentsOrder"
                         ></textarea>
                       </div>
                     </div>
@@ -147,14 +148,14 @@
                   class="btn btn_black mt-5 m-0 m_none"
                   @click="submit"
                 >
-                  Перейти к оплате
+                  {{ $locale[$lang].buttons.proceedToCheckout }}
                 </button>
               </form>
             </div>
           </div>
           <div class="col-xl-6 col-lg-6">
             <div class="title_block">
-              <h2>Ваш заказ</h2>
+              <h2>{{$locale[$lang].orderingPage.yourOrder}}</h2>
             </div>
             <div v-if="cartData">
               <div class="your_order">
@@ -166,11 +167,11 @@
                 />
               </div>
               <div class="total">
-                <p>Итого: {{ totalPrice }} KZT</p>
+                <p>{{$locale[$lang].orderingPage.total}}: {{ totalPrice }} KZT</p>
               </div>
             </div>
             <div v-else>
-              <h3>Корзина пуста</h3>
+              <h3>{{$locale[$lang].cartisEmpty}}</h3>
             </div>
           </div>
           <div class="text-center d_none w-100 mt-5">
@@ -179,7 +180,7 @@
               class="btn btn_black mt-5 m-auto"
               @click="submit"
             >
-              Перейти к оплате
+              {{$locale[$lang].orderingPage.yourOrder}}
             </button>
           </div>
         </div>
@@ -255,13 +256,14 @@ export default {
         entrance: this.entrance,
         floor: this.floor,
         apartment: this.apartment,
-        Comment: this.comment,
       };
 
-      let contacts = {
+      let main_info = {
+        comment: this.comment,
         name: this.name,
         phone: this.phone,
         email: this.email,
+        token: $cookies.get("userToken"),
       };
 
       let products = JSON.parse(localStorage.getItem("productsData"));
@@ -270,18 +272,36 @@ export default {
 
       if (this.$v.$invalid) {
         return false;
-      } else {
+      } else if ($cookies.isKey("userToken")) {
         this.loader = true;
         this.$axios
           .post(`${this.$store.state.apiUrl}get-order`, {
             address,
-            contacts,
+            main_info,
             products,
           })
           .then((response) => {
             let url = response.data.url;
             window.location.href = url;
             this.loader = true;
+            localStorage.removeItem('cart_products')
+          })
+          .catch((error) => {
+            this.loader = false;
+          });
+      }else{
+        this.loader = true;
+        this.$axios
+          .post(`${this.$store.state.apiUrl}get-order`, {
+            address,
+            main_info,
+            products,
+          })
+          .then((response) => {
+            let url = response.data.url;
+            window.location.href = url;
+            this.loader = true;
+            localStorage.removeItem('cart_products')
           })
           .catch((error) => {
             this.loader = false;
@@ -318,9 +338,35 @@ export default {
           params: {
             product_id: cartProductsId,
             lang: this.$store.state.lang,
+            token: $cookies.get("userToken"),
           },
         })
         .then((response) => (this.cartData = response.data));
+    }
+
+    const userToken = $cookies.get("userToken");
+    const userId = $cookies.get("userId");
+    if(userToken !== null && userId !== null){
+      this.$axios
+      .post(`${this.$store.state.apiUrl}user-profile`, {
+        token: userToken,
+        user_id: userId,
+      })
+      .then((response) => {
+        let userData = response.data.user;
+        this.name = userData?.name;
+        this.email = userData?.email;
+        this.phone = userData?.phone;
+        this.street = userData?.street;
+        this.house = userData?.house;
+        this.building = userData?.building;
+        this.entrance = userData?.entrance;
+        this.floor = userData?.floor;
+        this.apartment = userData?.apartment;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
   },
 };

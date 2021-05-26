@@ -6,13 +6,12 @@
     <router-link
       :to="{
         name: 'product',
-        params: { id: productCard.slug },
+        params: { id: productCard.slug || productCard.product_slug },
       }"
     >
-      <img
-        class="product_card_img"
+      <v-lazy-image
         :src="this.productImage(productCard)"
-        alt=""
+        class="product_card_img"
       />
 
       <div class="product_card_body">
@@ -22,7 +21,7 @@
       </div>
     </router-link>
     <div class="product_card_footer">
-      <p>{{ productCard.current_price }} тг.</p>
+      <p>{{ productCard.current_price }} {{$locale[$lang].tg}}.</p>
       <span
         class="add_cart"
         :class="{ active: activeCart }"
@@ -50,7 +49,7 @@ export default {
     activeFavorite() {
       if (this.favoriteList) {
         this.favoriteList.filter((i) => {
-          if (i.id === this.productCard.id) {
+          if (i.id == this.productCard.id) {
             this.favoriteActive = true;
           }
         });
@@ -71,6 +70,7 @@ export default {
   methods: {
     ...mapActions(["GET_PRODUCT_PAGE"]),
     ...mapMutations(["ADD_FAVORITES"]),
+    ...mapGetters(["GET_FAVOURITE_COUNT"]),
 
     productImage(product) {
       if (product.images === null) {

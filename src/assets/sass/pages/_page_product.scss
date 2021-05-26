@@ -59,6 +59,7 @@
 .product_title {
     font-size: 20px;
     font-family: manrope_bold;
+    margin-bottom: 20px;
     p {
         margin-bottom: 0;
     }
@@ -69,7 +70,7 @@
 }
 
 .product_text {
-    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 .product_price {
@@ -95,9 +96,11 @@
         text-transform: uppercase;
     }
     .btn_black {
+        // width: 35%;
         padding-left: 20px;
         padding-right: 20px;
         border-radius: 30px;
+        margin: 0;
         &::after {
             border-radius: 30px;
         }
@@ -149,7 +152,7 @@
         a {
             padding: 0 0 15px;
             font-family: manrope_semi_bold;
-            width: 50%;
+            width: 100%;
             text-align: center;
             color: #9A9A9A;
             font-size: 18px;
@@ -248,8 +251,12 @@
             margin-top: 30px;
         }
         .btn_black {
+            margin-top: 20px;
             padding: 15px 40px;
         }
+    }
+    .description_tabs {
+        margin-top: 30px;
     }
     .buy_content {
         .btn_black {
@@ -280,11 +287,21 @@
     .product_slider_wrapper {
         .title_block {
             h2 {
-                font-size: 16px;
+                font-size: 18px;
             }
         }
-        .product_slider .product_card {
+        .product_slider {
+            margin-top: 45px !important;
             left: -45px;
+            .slick-arrow {
+                top: -60px !important;
+            }
+            .product_card {
+                left: -45px;
+            }
+            .slick-slide {
+                padding: 20px 15px;
+            }
         }
     }
 }
@@ -297,6 +314,13 @@
         .slider-for {
             img {
                 width: 55%;
+            }
+        }
+    }
+    .product_slider_wrapper {
+        .product_slider {
+            .slick-slide {
+                padding: 20px 15px;
             }
         }
     }
@@ -319,6 +343,9 @@
         justify-content: space-between;
         a {
             color: #000
+        }
+        .t_block.btn {
+            margin: 0;
         }
     }
     .product_content {

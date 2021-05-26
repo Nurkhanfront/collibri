@@ -2,7 +2,7 @@
   <div class="p_page">
     <div class="container">
       <div class="title_small">
-        <h1>Избранные товары</h1>
+        <h1>{{ $locale[$lang].navLang.favorites }}</h1>
       </div>
       <div class="row mt-5">
         <div class="col-xl-3 col-md-6 col-lg-4" v-for="item in favorites" :key="item.id">

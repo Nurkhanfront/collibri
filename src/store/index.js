@@ -45,10 +45,7 @@ export default new Vuex.Store({
         },
 
         MORE_PRODUCTS(state, products) {
-            state.nextPage = products.products.next_page_url;
-            products.products.data.forEach((element) => {
-                state.catalogData.products.data.push(element)
-            })
+            state.catalogData = products
         },
 
         SORTED_PRODUCTS(state, products) {
@@ -99,6 +96,7 @@ export default new Vuex.Store({
 
         ADD_TO_CART(state, product) {
             let cartList = JSON.parse(localStorage.getItem('cart_products'));
+            localStorage.setItem('cart_products', JSON.stringify([product.id]))
             if (cartList == null) {
                 localStorage.setItem('cart_products', JSON.stringify([product.id]))
             } else if (state.cartLength == []) {
@@ -235,7 +233,7 @@ export default new Vuex.Store({
         },
 
         MORE_PRODUCTS({ commit, state }, { productId, page }) {
-            state.moreLoader = true,
+            state.loader = true,
                 axios
                 .get(`${state.apiUrl}get-products`, {
                     params: {
@@ -245,12 +243,10 @@ export default new Vuex.Store({
                     }
                 })
                 .then(function(response) {
-                    setTimeout(() => {
-                        state.moreLoader = null;
-                        const products = response.data;
-                        state.nextPage = products.products.next_page_url;
-                        commit('MORE_PRODUCTS', products)
-                    }, 1000);
+                    state.loader = null;
+                    const products = response.data;
+                    state.nextPage = products.products.next_page_url;
+                    commit('MORE_PRODUCTS', products)
                 });
         },
 

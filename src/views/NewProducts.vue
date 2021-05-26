@@ -24,7 +24,7 @@
           </div>
         </div>
         <div v-else>
-          <h2>В данной категорий нет продуктов!</h2>
+          <h2>{{ $locale[$lang].noProducts }}</h2>
         </div>
       </div>
     </div>
@@ -44,11 +44,7 @@ export default {
   mounted() {
     this.$axios
       .get(`${this.$store.state.apiUrl}new?lang=${this.$store.state.lang}`)
-      .then(
-        (response) => (
-          (this.newProductData = response.data)
-        )
-      );
+      .then((response) => (this.newProductData = response.data));
   },
 };
 </script>

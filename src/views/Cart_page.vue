@@ -3,12 +3,12 @@
     <div class="container">
       <div class="back_link">
         <a href="#" class="silver_text" @click.prevent="$router.go(-1)"
-          ><img src="@/assets/images/BACK.svg" alt="" /> Вернуться к покупкам</a
+          ><img src="@/assets/images/BACK.svg" alt="" /> {{$locale[$lang].buttons.backtoShopping}}</a
         >
       </div>
       <div class="cart_wrapper">
         <div class="title_small">
-          <h1>Корзина</h1>
+          <h1>{{$locale[$lang].cart}}</h1>
         </div>
         <div class="cart_content" v-if="cartData">
           <cardCart
@@ -19,15 +19,15 @@
           />
           <div class="total_cart_price">
             <p>
-              Итого: <span class="price">{{ totalPrice }} KZT</span>
+              {{$locale[$lang].orderingPage.total}}: <span class="price">{{ totalPrice }} KZT</span>
             </p>
             <button class="btn_black" @click="placementOfOrder(totalPrice)">
-              ОФОРМЛЕНИЕ ЗАКАЗА
+              {{$locale[$lang].buttons.ordering}}
             </button>
           </div>
         </div>
         <div class="cartIsEmpty mt-5 text-center" v-else>
-          <h2>Корзина пуста</h2>
+          <h2>{{$locale[$lang].cartisEmpty}}</h2>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@ export default {
 
   methods: {
     placementOfOrder(totalPrice) {
-      this.$router.push("/OrderingPage");
+      this.$router.push("/ordering-page");
       let products = [];
       for (let item of this.cartData) {
         let productData = {

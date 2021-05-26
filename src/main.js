@@ -9,6 +9,13 @@ import YandexShare from '@cookieseater/vue-yandex-share'
 import VueSkeletonLoader from 'skeleton-loader-vue'
 import VueCookies from 'vue-cookies'
 import { locale, lang } from './lang/localeLang';
+import Paginate from 'vuejs-paginate'
+
+import VueLazyload from 'vue-lazyload'
+
+import { VLazyImagePlugin } from "v-lazy-image";
+
+
 
 import './assets/sass/main.scss'
 
@@ -27,8 +34,20 @@ Vue.prototype.$staticImageUrl = getImageFunc;
 Vue.use(Vuelidate);
 Vue.use(VueTheMask);
 Vue.component('yandex-share', YandexShare);
+Vue.component('paginate', Paginate)
 Vue.component('vue-skeleton-loader', VueSkeletonLoader);
-Vue.use(VueCookies)
+Vue.use(VueCookies);
+Vue.use(VueLazyload);
+Vue.use(VLazyImagePlugin);
+
+
+Vue.use(VueLazyload, {
+    preLoad: 1.3,
+    error: '',
+    loading: '',
+    attempt: 1
+})
+
 
 
 

@@ -10,7 +10,7 @@
         <input
           type="text"
           placeholder="Поиск товара"
-          @keyup="searchMobile(mobileSearchValue)"
+          @input="searchMobile(mobileSearchValue)"
           v-model="mobileSearchValue"
         />
       </form>
@@ -33,7 +33,7 @@
           </li>
         </ul>
       </div>
-      
+
       <div
         class="formResults"
         v-else-if="!searchData && mobileSearchValue.length > 4"
@@ -133,12 +133,12 @@ export default {
   props: ["headerData", "mobileMenu", "mobileSearch", "searchData"],
   data: () => ({
     mobileDropdown: null,
-    mobileSearchValue: ''
+    mobileSearchValue: "",
   }),
 
   methods: {
-    searchMobile(){
-      this.$emit('searchMobileValue', this.mobileSearchValue)
+    searchMobile() {
+      this.$emit("searchMobileValue", this.mobileSearchValue);
     },
 
     dropdownToggle(category) {
@@ -150,6 +150,23 @@ export default {
     },
   },
   watch: {
+    mobileSearchValue(e) {
+      console.log(this.searchData);
+      let vm = this;
+      if (e.length > 3) {
+        this.$axios
+          .get(`${this.$store.state.apiUrl}search?lang=${this.$lang}&text=${e}`)
+          .then(function (response) {
+            if (response.data.data.length) {
+              vm.searchData = response.data;
+            } else {
+              vm.searchData = null;
+            }
+          });
+      } else {
+        vm.searchData = null;
+      }
+    },
     mobileMenu(item) {
       if (item) {
         document.body.style.overflow = "hidden";

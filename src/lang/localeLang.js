@@ -10,12 +10,20 @@ let locale = {
         contactsUs: 'Свяжитесь с нами',
         noProducts: 'В данной категорий нет продуктов!',
         toShare: 'Поделиться',
+        cartisEmpty: 'Корзина пуста',
+        cart: 'Корзина',
+        processingRequest: 'Обработка запроса',
+        noProducts: 'В данной категорий нет продуктов!',
+        tg: 'тг',
         buttons: {
             btnMoreDetails: 'Подробнее',
             btnSeeAll: 'Смотреть все',
             shoWmore: 'Показать еще',
             send: 'Отправить',
-            hide: 'Скрыть'
+            hide: 'Скрыть',
+            proceedToCheckout: 'Перейти к оплате ',
+            ordering: 'ОФОРМЛЕНИЕ ЗАКАЗА',
+            backtoShopping: 'Вернуться к покупкам'
         },
         sortBy: {
             title: 'Сортировать по',
@@ -30,6 +38,7 @@ let locale = {
             aboutCompany: 'О компании',
             blog: 'Блог',
             contacts: 'Контакты',
+            favorites: 'Избранные товары',
         },
         footerCategories: {
             information: 'Информация',
@@ -42,11 +51,17 @@ let locale = {
             email: 'Email',
             nameOfCompany: 'Наименование организации',
             comment: 'Комментарии',
+            street: 'Улица',
+            house: 'Дом',
+            housing: 'Корпус',
+            entrance: 'Подъезд',
+            floor: 'Этаж',
+            flat: 'Квартира',
         },
         productPage: {
             inStock: 'В НАЛИЧИИ',
             vendorCode: 'Артикул',
-            buyInOneclick: 'купить в один клик',
+            addToCard: 'ДОБАВИТЬ В КОРЗИНУ',
             productDescription: 'Описание товара',
             characteristics: 'Характеристики',
             share: 'Поделиться',
@@ -54,6 +69,15 @@ let locale = {
             brand: "Брэнд",
             requestACall: "Заказать звонок",
             applicationSent: "Заявка отправлена",
+        },
+        orderingPage: {
+            checkout: 'Оформление заказа',
+            contactDetails: 'Контактные данные',
+            delivery: 'Доставка',
+            address: 'Адрес',
+            commentsOrder: 'Комментарии к заказу',
+            yourOrder: 'Ваш заказ',
+            total: 'Итого'
         },
         errors: {
             name: 'Имя не правильно заполнено!',
@@ -74,12 +98,20 @@ let locale = {
         contactsUs: 'Contact us',
         noProducts: 'There are no products in this category!',
         toShare: 'To share',
+        cartisEmpty: 'Cart is empty',
+        cart: 'Cart',
+        processingRequest: 'Processing request',
+        noProducts: 'There are no products in this category.!',
+        tg: 'tg',
         buttons: {
             btnMoreDetails: 'More details',
             btnSeeAll: 'See all',
             send: 'Send',
             shoWmore: 'Show more',
-            hide: 'Hide'
+            hide: 'Hide',
+            proceedToCheckout: 'Proceed to checkout',
+            ordering: 'PLACEMENT OF ORDER',
+            backtoShopping: 'Back to shopping'
         },
         sortBy: {
             title: 'Sort by',
@@ -94,6 +126,7 @@ let locale = {
             aboutCompany: 'About company',
             blog: 'Blog',
             contacts: 'Contacts',
+            favorites: 'Favorites products',
         },
         footerCategories: {
             information: 'Information',
@@ -106,11 +139,17 @@ let locale = {
             email: 'Email',
             nameOfCompany: 'Name of company',
             comment: 'Comments',
+            street: 'Street',
+            house: 'House',
+            housing: 'Housing',
+            entrance: 'Entrance',
+            floor: 'Floor',
+            flat: 'Flat',
         },
         productPage: {
             inStock: 'IN STOCK',
             vendorCode: 'vendor code',
-            buyInOneclick: 'buy in one click',
+            addToCard: 'ADD TO SHOPPING CART',
             productDescription: 'Product description',
             characteristics: 'Characteristics',
             share: 'Share',
@@ -119,15 +158,21 @@ let locale = {
             requestACall: "Request a call",
             applicationSent: "Application sent",
         },
+        orderingPage: {
+            checkout: 'Checkout',
+            contactDetails: 'Contact details',
+            delivery: 'Delivery',
+            address: 'Address',
+            commentsOrder: 'Comments on the order',
+            yourOrder: 'Your order',
+            total: 'Total'
+        },
         errors: {
             name: 'The name is not filled in correctly!',
             PhoneNumber: 'The phone number must be 11 characters long. Now he ',
             email: 'Email is not filled in correctly!',
         }
     },
-    kz: {
-        hi: "Салем"
-    }
 };
 
 export { locale };

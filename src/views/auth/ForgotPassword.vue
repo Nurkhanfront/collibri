@@ -6,8 +6,16 @@
           <h3>Забыли пароль?</h3>
         </div>
         <form>
-          <input class="mb-2" type="email" placeholder="Email">
-          <button @click="handleClick" class="btn btn_black mt-4">Продолжить</button>
+          <input
+            class="mb-2"
+            type="email"
+            placeholder="Email"
+            v-model="email"
+          />
+          <button @click.prevent="submit" class="btn btn_black mt-4">
+            Продолжить
+          </button>
+          <p v-if="emailSuccess">На вашу почту</p>
         </form>
       </div>
     </div>
@@ -17,14 +25,27 @@
 <script>
 export default {
   name: "ForgotPassword",
+  data: () => ({
+    email: "",
+    emailSuccess: false,
+  }),
+
   methods: {
-    handleClick() {
-      this.$router.push({ name: 'SendEmailStatus'})
-    }
-  }
-}
+    submit() {
+      this.$axios
+        .get(`${this.$store.state.apiUrl}password/email`, {
+          params: {
+            email: this.email,
+          },
+        })
+        .then((response) => {
+          this.orderData = response.data;
+        })
+        .catch((error) => {});
+    },
+  },
+};
 </script>
 
 <style scoped>
-
 </style>

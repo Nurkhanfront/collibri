@@ -27,9 +27,12 @@
               invalid: $v.password.$dirty && !$v.password.required,
             }"
           />
-          <span class="error" v-if="!$v.password.required"
+          <span class="error" v-if="$v.password.$dirty && !$v.password.required"
             >Введите пароль!</span
           >
+          <span class="error" v-if="!$v.password.minLength">
+            Пароль должен быть из 6 символов.
+          </span>
           <div class="flex_text">
             <router-link to="/forgot-password">Не помните пароль?</router-link>
             <router-link class="muddy" to="/register">Регистрация</router-link>
@@ -74,6 +77,7 @@ export default {
 
   methods: {
     submit() {
+      console.log(this.$v.password.$params);
       this.$v.$touch();
       this.loader = true;
       if (this.$v.$invalid) {
@@ -86,20 +90,18 @@ export default {
             password: this.password,
           })
           .then((response) => {
-            const userToken = response.data.user.token;
-            const userId = response.data.user.id;
+            this.$router.push("/my-account");
+
+            const userToken = response.data.token;
+            const userId = response.data.user_id;
             $cookies.set("userToken", userToken, 18000);
             $cookies.set("userId", userId, 18000);
             $cookies.set("token_time", new Date(), 18000);
-            setTimeout(() => {
-              this.$router.push("my-account");
-              this.loader = false;
-            }, 1000);
           })
           .catch((e) => {
             this.registrationError = "Неправильный логин или пароль";
             setTimeout(() => {
-              this.loader = null
+              this.loader = null;
             }, 500);
           });
       }

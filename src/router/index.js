@@ -16,7 +16,7 @@ const routes = [{
         component: Home
     },
     {
-        path: '/catalog/:slug/:id',
+        path: '/catalog/:slug/:id/page/:page',
         name: 'catalogPage',
         component: () =>
             import ('../views/Catalog.vue')
@@ -88,8 +88,8 @@ const routes = [{
             import ('../views/Cart_page.vue')
     },
     {
-        path: '/OrderingPage',
-        name: 'OrderingPage',
+        path: '/ordering-page',
+        name: 'ordering-page',
         component: () =>
             import ('../views/OrderingPage.vue')
     },

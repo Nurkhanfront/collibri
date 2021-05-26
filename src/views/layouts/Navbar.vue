@@ -32,7 +32,7 @@
                         class="category_title"
                         :to="{
                           name: 'catalogPage',
-                          params: { id: category.id, slug: category.slug },
+                          params: { id: category.id, slug: category.slug, page: 1 },
                         }"
                         >{{ category.title }}</router-link
                       >

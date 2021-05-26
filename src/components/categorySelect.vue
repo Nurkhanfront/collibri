@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button class="btn btn_outline_dark d_none" @click="mobileFilter = true">
-      Показать фильтры
+    <button class="btn d_none btn_fixed" @click="mobileFilter = true">
+      <i class="fas fa-filter"></i>
     </button>
     <div
       class="products_select_wrapper products_select_mobile d_none"
@@ -38,6 +38,9 @@
         v-if="categories.filters.length > 3"
         >{{ allCategoriesText }}</a
       >
+      <button class="d_none btn btn_black" @click="mobileFilter = false">
+        Показать результаты
+      </button>
     </div>
     <div
       class="products_select_wrapper products_select_mobile m_none"
@@ -85,7 +88,7 @@ export default {
     productCategory: null,
     categoryCount: 3,
     filter_id: [],
-    mobileFilter: false
+    mobileFilter: false,
   }),
   methods: {
     ...mapActions(["FILTER_PRODUCTS", "FILTER_BRAND_PRODUCTS"]),
@@ -116,7 +119,7 @@ export default {
     },
   },
 
-  computed:{
+  computed: {
     allCategoriesText() {
       if (this.categoryCount === 3) {
         return this.$locale[this.$lang].buttons.shoWmore;
@@ -127,12 +130,17 @@ export default {
   },
 
   watch: {
-    $route(to, from) {
-      this.categoryCount = 3;
-      this.allCategoriesText = this.$locale[this.$lang].buttons.shoWmore;
-    },
+
     productCategory() {
       if (this.productCategory) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "scroll";
+      }
+    },
+    mobileFilter(e) {
+      console.log(e);
+      if (e === true) {
         document.body.style.overflow = "hidden";
       } else {
         document.body.style.overflow = "scroll";

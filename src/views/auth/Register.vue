@@ -21,7 +21,8 @@
             $locale[$lang].errors.name
           }}</span>
           <the-mask
-            :mask="['#(###) ###-####']"
+            :mask="['+7(###) ###-####']"
+             :masked="true"
             v-model.trim="phone"
             :placeholder="$locale[$lang].placeholders.PhoneNumber"
             autocomplete="off"
@@ -121,6 +122,7 @@ export default {
     phone: "",
     password: "",
     repeatPassword: "",
+    errors: "",
     loginForm: {
       recaptchaVerified: false,
       pleaseTickRecaptchaMessage: "",
@@ -161,12 +163,13 @@ export default {
       this.$v.$touch();
       this.loader = true;
 
-      if (!this.loginForm.recaptchaVerified && this.$v.$invalid) {
+      if (this.loginForm.recaptchaVerified || this.$v.$invalid) {
         this.loader = null;
         this.loginForm.pleaseTickRecaptchaMessage =
           "Подтвердите что вы не робот!";
         return false;
       } else {
+        this.loginForm.pleaseTickRecaptchaMessage = "";
         this.submitStatus = "PENDING";
         this.$axios
           .post(`${this.$store.state.apiUrl}register`, {
@@ -177,21 +180,10 @@ export default {
             password_confirmation: this.repeatPassword,
           })
           .then((response) => {
-            const userToken = response.data.user.token;
-            const userId = response.data.user.id;
-
-            $cookies.set("userToken", userToken, 18000);
-            $cookies.set("userId", userId, 18000);
-            $cookies.set("token_time", new Date(), 18000);
-            
-            setTimeout(() => {
-              this.loader = null;
-              $cookies.set("userToken", userToken, "30MIN");
-              $cookies.set("userId", userId, "30MIN");
-              this.$router.push("/my-account");
-            }, 1000);
+            this.$router.push("/login");
           })
           .catch((error) => {
+            this.registrationError = 'Пользователь уже существует'
             setTimeout(() => {
               this.loader = null;
             }, 500);

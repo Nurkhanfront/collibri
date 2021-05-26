@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { required, email, minLength } from "vuelidate/lib/validators";
+
 export default {
   name: "Restore"
 }

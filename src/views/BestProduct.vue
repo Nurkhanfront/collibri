@@ -24,7 +24,7 @@
           </div>
         </div>
         <div v-else>
-          <h2>В данной категорий нет продуктов!</h2>
+           <h2>{{$locale[$lang].noProducts}}</h2>
         </div>
       </div>
     </div>

@@ -13,6 +13,9 @@ body {
             margin-bottom: 0;
             margin-right: 20px;
         }
+        select {
+            cursor: pointer;
+        }
     }
 }
 
@@ -25,6 +28,7 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: scroll;
     .contacts_form {
         max-width: 500px;
         margin: 1.5rem auto;
@@ -72,6 +76,7 @@ body {
         right: 20px;
         font-size: 24px;
         cursor: pointer;
+        z-index: 9;
         .fas {
             color: #EA6C6C;
         }
@@ -170,4 +175,13 @@ body {
 
 .ya-share2__badge {
     background-color: #000 !important;
+}
+
+.v-lazy-image {
+    filter: blur(15px);
+    transition: filter 0.7s;
+}
+
+.v-lazy-image-loaded {
+    filter: blur(0);
 }

@@ -68,11 +68,12 @@
                   v-model.trim="name"
                   :class="{ invalid: $v.name.$dirty && !$v.name.required }"
                 />
-                <span v-if="$v.name.$error" class="error"
-                  >{{ $locale[$lang].placeholders.name }}</span
-                >
+                <span v-if="$v.name.$error" class="error">{{
+                  $locale[$lang].placeholders.name
+                }}</span>
                 <the-mask
                   :mask="['+7(###) ###-##-##']"
+                  :masked="true"
                   v-model.trim="phone"
                   :placeholder="$locale[$lang].placeholders.PhoneNumber"
                   :class="{
@@ -95,9 +96,9 @@
                       ($v.email.$dirty && !$v.email.email),
                   }"
                 />
-                <span v-if="$v.email.$dirty && $v.email.$error" class="error"
-                  >{{ $locale[$lang].errors.email }}</span
-                >
+                <span v-if="$v.email.$dirty && $v.email.$error" class="error">{{
+                  $locale[$lang].errors.email
+                }}</span>
                 <input
                   type="text"
                   :placeholder="$locale[$lang].placeholders.nameOfCompany"
@@ -118,7 +119,9 @@
                 <span class="error mb-4 d-block">{{
                   loginForm.pleaseTickRecaptchaMessage
                 }}</span>
-                <button type="btn" class="btn btn_black">{{ $locale[$lang].buttons.send }}</button>
+                <button type="btn" class="btn btn_black">
+                  {{ $locale[$lang].buttons.send }}
+                </button>
               </form>
             </div>
           </div>
@@ -154,11 +157,6 @@ export default {
       minLength: minLength(3),
     },
 
-    comment: {
-      required,
-      minLength: minLength(15),
-    },
-    
     phone: {
       required,
       minLength: minLength(11),
@@ -187,12 +185,15 @@ export default {
       };
 
       this.$v.$touch();
-      if (!this.loginForm.recaptchaVerified && this.$v.$invalid) {
+
+      if (this.$v.$invalid) {
+        return false;
+      } else if (!this.loginForm.recaptchaVerified) {
         this.loginForm.pleaseTickRecaptchaMessage =
           "Подтвердите что вы не робот!";
-        return false;
       } else {
-        this.submitStatus = "PENDING";
+        (this.loginForm.pleaseTickRecaptchaMessage = ""),
+          (this.submitStatus = "PENDING");
         this.$axios
           .post(`${this.$store.state.apiUrl}callback`, {
             formData,

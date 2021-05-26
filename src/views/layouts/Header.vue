@@ -14,7 +14,7 @@
               <input
                 type="text"
                 placeholder="Поиск товара"
-                @keyup="keyUpSearch(searchValue)"
+                @input="keyUpSearch(searchValue)"
                 v-model="searchValue"
               />
             </form>
@@ -136,7 +136,8 @@ export default {
 
     cartLength() {
       if (
-        this.GET_CART_LENGTH && JSON.parse(localStorage.getItem("cart_products"))
+        this.GET_CART_LENGTH &&
+        JSON.parse(localStorage.getItem("cart_products"))
       ) {
         return JSON.parse(localStorage.getItem("cart_products")).length;
       }
@@ -205,6 +206,22 @@ export default {
       .then((response) => (this.headerData = response.data));
   },
   watch: {
+    searchValue(e) {
+      let vm = this;
+      if (e.length > 3) {
+        this.$axios
+          .get(`${this.$store.state.apiUrl}search?lang=${this.$lang}&text=${e}`)
+          .then(function (response) {
+            if (response.data.data.length) {
+              vm.searchData = response.data;
+            } else {
+              vm.searchData = null;
+            }
+          });
+      } else {
+        vm.searchData = null;
+      }
+    },
     mobileSearch(item) {
       if (item) {
         document.body.style.overflow = "hidden";
@@ -215,6 +232,7 @@ export default {
     $route(to, from) {
       this.navDropdown = false;
       this.mobileSearch = false;
+      this.mobileMenu = false
     },
   },
 };
