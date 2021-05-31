@@ -117,7 +117,7 @@
                   </p>
                   <h2 v-if="PRODUCT_ITEM.title">{{ PRODUCT_ITEM.title }}</h2>
                 </div>
-                <p class="product_text" v-if="PRODUCT_ITEM.product.country_name">Страна:{{ PRODUCT_ITEM.product.country_name }}</p>
+                <p class="product_text" v-if="PRODUCT_ITEM.product.country_name">{{ $locale[$lang].country }}:{{ PRODUCT_ITEM.product.country_name }}</p>
                 <div
                   class="product_text"
                   v-html="PRODUCT_ITEM.product.title"

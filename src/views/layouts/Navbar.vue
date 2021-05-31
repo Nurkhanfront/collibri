@@ -27,12 +27,16 @@
                     v-for="category in categories"
                     :key="category.id"
                   >
-                    <div>
+                    <div @click="closeDropdown(category.slug)">
                       <router-link
                         class="category_title"
                         :to="{
                           name: 'catalogPage',
-                          params: { id: category.id, slug: category.slug, page: 1 },
+                          params: {
+                            id: category.id,
+                            slug: category.slug,
+                            page: 1,
+                          },
                         }"
                         >{{ category.title }}</router-link
                       >
@@ -40,6 +44,7 @@
                     <div
                       v-for="subCategory in category.subcategories"
                       :key="subCategory.id"
+                      @click="closeDropdown(subCategory.slug)"
                     >
                       <router-link
                         :to="{
@@ -47,6 +52,7 @@
                           params: {
                             id: subCategory.id,
                             slug: subCategory.slug,
+                            page: 1,
                           },
                         }"
                         >{{ subCategory.title }}</router-link
@@ -93,6 +99,12 @@ export default {
   methods: {
     catalogDropdown() {
       this.$store.commit("CATALOG_DROPDOWN");
+    },
+    closeDropdown(slug) {
+      let routeSlug = this.$route.params.slug;
+      if (routeSlug === slug) {
+        this.$store.state.catalogDropdown = false;
+      }
     },
   },
 

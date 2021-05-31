@@ -3,12 +3,12 @@
     <div class="auth_card_content">
       <div class="contacts_form">
         <div class="title text-center m-0">
-          <h3>Регистрация</h3>
+          <h3>{{$locale[$lang].regist.registTitle}}</h3>
           <p class="error">{{ registrationError }}</p>
         </div>
         <form>
           <div class="register_type">
-            <p>Контактные данные:</p>
+            <p>{{$locale[$lang].regist.contactData}}</p>
           </div>
           <input
             type="text"
@@ -51,28 +51,28 @@
           }}</span>
 
           <div class="register_type">
-            <p>Пароль</p>
+            <p>{{$locale[$lang].errors.password}}</p>
           </div>
 
           <input
             type="password"
-            placeholder="Пароль"
+            :placeholder="$locale[$lang].placeholders.password"
             v-model.trim="password"
             autocomplete="off"
             :class="{
               invalid: $v.password.$dirty && !$v.password.required,
             }"
           />
-          <span class="error" v-if="!$v.password.required"
-            >Введите пароль!</span
+          <span class="error" v-if="$v.password.$dirty && !$v.password.required"
+            >{{$locale[$lang].errors.enterPassword}}</span
           >
           <span class="error" v-if="!$v.password.minLength">
-            Пароль должен быть из 6 символов. Сейчас он
+            {{$locale[$lang].errors.passwordMust}}
             {{ $v.password.$params.minLength.min }}.
           </span>
           <input
             type="password"
-            placeholder="Повторить пароль"
+            :placeholder="$locale[$lang].placeholders.passwordConfirm"
             v-model.trim="repeatPassword"
             autocomplete="off"
             :class="{
@@ -82,7 +82,7 @@
           <span
             class="error"
             v-if="$v.password.$dirty && !$v.repeatPassword.sameAsPassword"
-            >Пароли не совпадают!</span
+            >{{$locale[$lang].errors.passwordMismatch}}</span
           >
 
           <vue-recaptcha
@@ -98,7 +98,7 @@
             @click.prevent="submit"
             :class="{ disabled: loader !== null }"
           >
-            Подтвердить
+            {{$locale[$lang].buttons.confirm}}
             <div class="loader" v-if="loader !== null"></div>
           </button>
         </form>
@@ -165,8 +165,7 @@ export default {
 
       if (this.loginForm.recaptchaVerified || this.$v.$invalid) {
         this.loader = null;
-        this.loginForm.pleaseTickRecaptchaMessage =
-          "Подтвердите что вы не робот!";
+        this.loginForm.pleaseTickRecaptchaMessage = this.$locale[this.$lang].errors.confirmRobot;
         return false;
       } else {
         this.loginForm.pleaseTickRecaptchaMessage = "";

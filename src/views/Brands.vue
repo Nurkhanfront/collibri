@@ -25,7 +25,7 @@
           <router-link
             :to="{
               name: 'brandProducts',
-              params: { id: brand.id, slug: brand.slug },
+              params: { id: brand.id, slug: brand.slug, page: 1 },
             }"
             ><img :src="imgUrl + brand.image" alt=""
           /></router-link>

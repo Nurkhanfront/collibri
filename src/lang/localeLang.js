@@ -15,6 +15,8 @@ let locale = {
         processingRequest: 'Обработка запроса',
         noProducts: 'В данной категорий нет продуктов!',
         tg: 'тг',
+        recovery: 'Восстановление',
+        country: 'Страна',
         buttons: {
             btnMoreDetails: 'Подробнее',
             btnSeeAll: 'Смотреть все',
@@ -23,7 +25,13 @@ let locale = {
             hide: 'Скрыть',
             proceedToCheckout: 'Перейти к оплате ',
             ordering: 'ОФОРМЛЕНИЕ ЗАКАЗА',
-            backtoShopping: 'Вернуться к покупкам'
+            confirm: 'Подтвердить',
+            backtoShopping: 'Вернуться к покупкам',
+            toComeIn: 'Войти',
+            proceed: 'Продолжить',
+            saved: 'Сохранить',
+            edit: 'Изменить',
+            goOut: 'Выйти'
         },
         sortBy: {
             title: 'Сортировать по',
@@ -33,6 +41,7 @@ let locale = {
         },
         navLang: {
             main: 'Главная',
+            account: 'Аккаунт',
             Catalog: 'Каталог',
             Brands: 'Бренды',
             aboutCompany: 'О компании',
@@ -47,7 +56,9 @@ let locale = {
         },
         placeholders: {
             name: 'Имя',
+            surname: 'Фамилия',
             PhoneNumber: 'Номер телефона',
+            phone: 'Телефон:',
             email: 'Email',
             nameOfCompany: 'Наименование организации',
             comment: 'Комментарии',
@@ -57,6 +68,10 @@ let locale = {
             entrance: 'Подъезд',
             floor: 'Этаж',
             flat: 'Квартира',
+            password: 'Пароль',
+            oldPassword: 'Старый пароль',
+            newPassword: 'Новый пароль',
+            passwordConfirm: 'Повторить пароль',
         },
         productPage: {
             inStock: 'В НАЛИЧИИ',
@@ -83,7 +98,41 @@ let locale = {
             name: 'Имя не правильно заполнено!',
             PhoneNumber: 'Номер телефона должен быть из 11 символов. Сейчас он ',
             email: 'Email не правильно заполнено!',
+            password: 'Пароль',
+            enterPassword: 'Введите пароль!',
+            passwordMust: 'Пароль должен быть из 6 символов. Сейчас он',
+            passwordMismatch: 'Пароли не совпадают!',
+            confirmRobot: 'Подтвердите что вы не робот!',
+            newPassword: 'Введите новый пароль!',
+        },
+        regist: {
+            registTitle: "Регистрация",
+            contactData: 'Контактные данные:'
+        },
+        authorization: {
+            title: 'Авторизация',
+            forgotPassword: 'Не помните пароль?',
+        },
+        forgotYourPassword: {
+            title: 'Забыли пароль?',
+            success: 'На вашу почту придет письмо с потверждением. Пожалуйста перейдите по ссылке для восстановления пароля'
+        },
+        accountPage: {
+            myAccount: 'Мой аккаунт',
+            myDetails: 'Мои данные',
+            data: 'Данные',
+            orders: 'Заказы',
+            city: 'Город: Алматы',
+            newDataSaved: 'Новые данные сохранены'
+        },
+        orders: {
+            title: 'Ваши заказы',
+            status: 'Статус заказа',
+            deliveryDate: 'Дата доставки',
+            deliveryAddress: 'Адрес доставки',
+            toPay: 'К оплате:',
         }
+
     },
 
     en: {
@@ -103,6 +152,8 @@ let locale = {
         processingRequest: 'Processing request',
         noProducts: 'There are no products in this category.!',
         tg: 'tg',
+        recovery: 'Recovery',
+        country: 'Country',
         buttons: {
             btnMoreDetails: 'More details',
             btnSeeAll: 'See all',
@@ -111,7 +162,13 @@ let locale = {
             hide: 'Hide',
             proceedToCheckout: 'Proceed to checkout',
             ordering: 'PLACEMENT OF ORDER',
-            backtoShopping: 'Back to shopping'
+            backtoShopping: 'Back to shopping',
+            confirm: 'Confirm',
+            toComeIn: 'To come in',
+            proceed: 'Proceed',
+            saved: 'Save',
+            edit: 'Edit',
+            goOut: 'Go out'
         },
         sortBy: {
             title: 'Sort by',
@@ -121,6 +178,7 @@ let locale = {
         },
         navLang: {
             main: 'Main',
+            account: 'Account',
             Catalog: 'Catalog',
             Brands: 'Brands',
             aboutCompany: 'About company',
@@ -135,7 +193,9 @@ let locale = {
         },
         placeholders: {
             name: 'Name',
+            surname: 'Surname',
             PhoneNumber: 'Phone number',
+            phone: 'Phone:',
             email: 'Email',
             nameOfCompany: 'Name of company',
             comment: 'Comments',
@@ -145,6 +205,10 @@ let locale = {
             entrance: 'Entrance',
             floor: 'Floor',
             flat: 'Flat',
+            password: 'Password',
+            passwordConfirm: 'Repeat password',
+            oldPassword: 'Old Password',
+            newPassword: 'New password',
         },
         productPage: {
             inStock: 'IN STOCK',
@@ -171,7 +235,41 @@ let locale = {
             name: 'The name is not filled in correctly!',
             PhoneNumber: 'The phone number must be 11 characters long. Now he ',
             email: 'Email is not filled in correctly!',
+            password: 'Password',
+            enterPassword: 'Enter password!',
+            passwordMust: 'Password must be 6 characters long. Now he',
+            passwordMismatch: 'Password mismatch!',
+            confirmRobot: 'Confirm that you are not a robot!',
+            newPassword: 'Enter a new password!',
+        },
+        regist: {
+            registTitle: "Check in",
+            contactData: 'Contact details:'
+        },
+        authorization: {
+            title: 'Authorization',
+            forgotPassword: 'Forgot your password?',
+        },
+        forgotYourPassword: {
+            title: 'Forgot your password?',
+            success: 'A confirmation letter will be sent to your mail. Please follow the link to reset your password'
+        },
+        accountPage: {
+            myAccount: 'My account',
+            myDetails: 'My details',
+            data: 'Data',
+            orders: 'Orders',
+            city: 'Сity: Almaty',
+            newDataSaved: 'New data saved'
+        },
+        orders: {
+            title: 'Your orders',
+            status: 'Order status',
+            deliveryDate: 'Delivery date',
+            deliveryAddress: 'Delivery address',
+            toPay: 'To pay:',
         }
+
     },
 };
 

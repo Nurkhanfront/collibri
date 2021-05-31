@@ -1,7 +1,7 @@
 <template>
   <div class="pagination_content">
     <div class="pagination">
-      <ul>
+      <!-- <ul>
         <li class="action_btn prev" @click="prevPage()" v-if="currentPage > 1">
           <i class="fas fa-chevron-left"></i>
         </li>
@@ -28,10 +28,30 @@
             paginationData.last_page
           }}</span>
         </li>
-        <li class="action_btn next" @click="nextPage()" v-if="currentPage < paginationData.last_page">
+        <li
+          class="action_btn next"
+          @click="nextPage()"
+          v-if="currentPage < paginationData.last_page"
+        >
           <i class="fas fa-chevron-right"></i>
         </li>
-      </ul>
+      </ul> -->
+    </div>
+
+    <div>
+      <paginate
+        v-model="currentPage"
+        :page-count="paginationData.last_page"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="togglePage"
+        :prev-text="'<span><</span>'"
+        :next-text="'<span>></span>'"
+        :container-class="'pagination'"
+        :page-class="'page-item'"
+        class="pagination m-0"
+      >
+      </paginate>
     </div>
   </div>
 </template>
@@ -92,6 +112,7 @@ export default {
 
   watch: {
     $route(to, from) {
+      console.log(this.$route.params.page);
       this.currentPage = Number(this.$route.params.page);
     },
   },

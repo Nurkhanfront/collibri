@@ -34,7 +34,9 @@ export default {
   created() {
     if ($cookies.isKey("userToken") && document.location.pathname === '/login') {
       this.$router.push("/my-account");
-    } else {
+    }
+    if($cookies.get("userToken") == null && document.location.pathname === '/my-account'){
+      this.$router.push("/login");
     }
 
     setTimeout(() => {

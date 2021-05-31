@@ -251,7 +251,7 @@ export default new Vuex.Store({
         },
 
         MORE_BRAND_PRODUCTS({ commit, state }, { productId, page }) {
-            state.moreLoader = true,
+            state.loader = true,
                 axios
                 .get(`${state.apiUrl}get-brand-products`, {
                     params: {
@@ -261,12 +261,10 @@ export default new Vuex.Store({
                     }
                 })
                 .then(function(response) {
-                    setTimeout(() => {
-                        state.moreLoader = null;
-                        const products = response.data;
-                        state.nextPage = products.products.next_page_url;
-                        commit('MORE_PRODUCTS', products)
-                    }, 1000);
+                    state.loader = null;
+                    const products = response.data;
+                    state.nextPage = products.products.next_page_url;
+                    commit('MORE_PRODUCTS', products)
                 });
         },
 

@@ -3,15 +3,17 @@
     <div class="container">
       <div class="nav_page m_none">
         <div class="breadcrumbs">
-          <router-link to="/">Главная</router-link>
-          <router-link to="/my-account">Аккаунт</router-link>
+          <router-link to="/">{{ $locale[$lang].navLang.main }}</router-link>
+          <router-link to="/my-account">{{
+            $locale[$lang].navLang.account
+          }}</router-link>
         </div>
       </div>
       <div class="page_title m_none">
-        <p>Мой аккаунт</p>
+        <p>{{ $locale[$lang].accountPage.myAccount }}</p>
       </div>
       <div class="page_title d_none">
-        <p>Мои данные</p>
+        <p>{{ $locale[$lang].accountPage.myDetails }}</p>
       </div>
       <div class="row">
         <div class="col-xl-3 col-lg-3 col-md-12 order_2">
@@ -21,13 +23,13 @@
                 :class="{ tab_background_dark: current === 'data' }"
                 @click="updateTab('data')"
               >
-                Данные
+                {{ $locale[$lang].accountPage.data }}
               </p>
               <p
                 :class="{ tab_background_dark: current === 'order' }"
                 @click="updateTab('order')"
               >
-                Заказы
+                {{ $locale[$lang].accountPage.orders }}
               </p>
             </div>
           </div>
@@ -40,14 +42,18 @@
                   <div class="row">
                     <div class="col-xl-6 col-md-6">
                       <div class="inputs">
-                        <input type="text" placeholder="Имя" v-model="name" />
+                        <input
+                          type="text"
+                          :placeholder="$locale[$lang].placeholders.name"
+                          v-model="name"
+                        />
                       </div>
                     </div>
                     <div class="col-xl-6 col-md-6">
                       <div class="inputs">
                         <input
                           type="text"
-                          placeholder="Фамилия"
+                          :placeholder="$locale[$lang].placeholders.surname"
                           v-model="first_name"
                         />
                       </div>
@@ -70,24 +76,21 @@
                         />
                       </div>
                     </div>
-                    <!-- <div class="col-xl-10 col-10">
-                      <p>lorem@ipsum.com</p>
-                    </div> -->
                   </div>
                   <div class="row my-4">
                     <div class="col-xl-2">
                       <div class="font_600">
-                        <p class="mb-0 mt-4">Пароль:</p>
+                        <p class="mb-0 mt-4">{{$locale[$lang].placeholders.password}}</p>
                       </div>
                     </div>
                     <div class="col-xl-10 change_password">
                       <div class="row" v-if="changePassword">
                         <div class="col-xl-4">
-                          <label for="">Старый пароль</label>
+                          <label for="">{{$locale[$lang].placeholders.oldPassword}}</label>
                           <input
                             type="password"
                             name="password"
-                            placeholder="Пароль"
+                            :placeholder="$locale[$lang].placeholders.oldPassword"
                             v-model.trim="oldPassword"
                             :class="{
                               invalid:
@@ -100,15 +103,15 @@
                             v-if="
                               $v.oldPassword.$dirty && !$v.oldPassword.required
                             "
-                            >Введите новый пароль!</span
+                            >{{ $locale[$lang].errors.passwordMust }}</span
                           >
                           <span class="error" v-if="!$v.oldPassword.minLength">
-                            Пароль должен быть из 6 символов. Сейчас он
+                            {{ $locale[$lang].errors.passwordMust }}
                             {{ $v.oldPassword.$model.length }}.
                           </span>
                         </div>
                         <div class="col-xl-4">
-                          <label for="">Новый пароль</label>
+                          <label for="">{{ $locale[$lang].placeholders.newPassword }}</label>
                           <input
                             type="password"
                             v-model.trim="password"
@@ -120,15 +123,15 @@
                           <span
                             class="error"
                             v-if="$v.password.$dirty && !$v.password.required"
-                            >Введите новый пароль!</span
+                            >{{ $locale[$lang].errors.newPassword }}</span
                           >
                           <span class="error" v-if="!$v.password.minLength">
-                            Пароль должен быть из 6 символов. Сейчас он
+                            {{ $locale[$lang].errors.passwordMust }}
                             {{ $v.password.$model.length }}.
                           </span>
                         </div>
                         <div class="col-xl-4">
-                          <label for="">Подтвердите пароль</label>
+                          <label for="">{{$locale[$lang].placeholders.passwordConfirm}}</label>
                           <input
                             type="password"
                             v-model.trim="password_confirmation"
@@ -143,7 +146,7 @@
                               $v.password.$dirty &&
                               !$v.password_confirmation.sameAsPassword
                             "
-                            >Пароли не совпадают!</span
+                            >{{$locale[$lang].errors.passwordMismatch}}</span
                           >
                         </div>
                       </div>
@@ -155,14 +158,14 @@
                               v-if="!changePassword"
                               @click.prevent="changePassword = true"
                             >
-                              Изменить
+                              {{$locale[$lang].buttons.edit}}
                             </button>
                             <button
                               class="btn btn_outline_dark mt-2"
                               v-if="changePassword"
                               @click.prevent="saveNewPassword"
                             >
-                              Сохранить
+                              {{$locale[$lang].buttons.saved}}
                             </button>
                           </div>
                         </div>
@@ -179,44 +182,32 @@
                   <div class="margin_input phone">
                     <div class="row align-items-center">
                       <p class="col-xl-2 col-md-2 mb-0 font_600 m_title">
-                        Телефон:
+                        {{ $locale[$lang].placeholders.phone }}
                       </p>
                       <the-mask
                         class="col-xl-6 col-md-6"
                         :mask="['+7(###) ###-##-##']"
                         :masked="true"
                         v-model="phone"
-                        placeholder="+7 (777) 777-77-77"
+                        :placeholder="$locale[$lang].placeholders.PhoneNumber"
                       />
                     </div>
                   </div>
                   <div class="margin_input">
                     <div class="address_text">
-                      <p class="font_600">Адрес</p>
+                      <p class="font_600">{{$locale[$lang].orderingPage.address}}</p>
                     </div>
                     <div class="row my-3">
                       <div class="col-xl-6 col-md-6">
-                        <p class="font_600">Город: Алматы</p>
-                        <!-- <vue-picker v-model="options">
-                          <vue-picker-option value="Город">{{
-                            options
-                          }}</vue-picker-option>
-                        </vue-picker> -->
+                        <p class="font_600">{{ $locale[$lang].accountPage.city }}</p>
                       </div>
-                      <!-- <div class="col-xl-6 col-md-6"> -->
-                      <!-- <vue-picker v-model="options">
-                          <vue-picker-option value="Город"
-                            >Город</vue-picker-option
-                          >
-                        </vue-picker> -->
-                      <!-- </div> -->
                     </div>
                     <div class="row my-4">
                       <div class="col-xl-9 col-md-9">
                         <div class="inputs">
                           <input
                             type="text"
-                            placeholder="Улица"
+                            :placeholder="$locale[$lang].placeholders.street"
                             v-model="street"
                           />
                         </div>
@@ -225,7 +216,7 @@
                         <div class="inputs">
                           <input
                             type="text"
-                            placeholder="Дом"
+                            :placeholder="$locale[$lang].placeholders.house"
                             v-model="house"
                           />
                         </div>
@@ -236,7 +227,7 @@
                         <div class="inputs">
                           <input
                             type="text"
-                            placeholder="Корпус"
+                            :placeholder="$locale[$lang].placeholders.housing"
                             v-model="building"
                           />
                         </div>
@@ -245,7 +236,7 @@
                         <div class="inputs">
                           <input
                             type="text"
-                            placeholder="Подъезд"
+                            :placeholder="$locale[$lang].placeholders.entrance"
                             v-model="entrance"
                           />
                         </div>
@@ -254,7 +245,7 @@
                         <div class="inputs">
                           <input
                             type="text"
-                            placeholder="Этаж"
+                            :placeholder="$locale[$lang].placeholders.floor"
                             v-model="floor"
                           />
                         </div>
@@ -263,7 +254,7 @@
                         <div class="inputs">
                           <input
                             type="text"
-                            placeholder="Квартира"
+                            :placeholder="$locale[$lang].placeholders.flat"
                             v-model="apartment"
                           />
                         </div>
@@ -273,11 +264,11 @@
                 </div>
                 <div class="account_bottom_btn">
                   <button class="btn btn_gray" @click.prevent="saveUserData">
-                    Сохранить
+                    {{ $locale[$lang].buttons.saved }}
                   </button>
-                  <p v-if="savedUserData">Новые данные сохранены</p>
+                  <p v-if="savedUserData">{{ $locale[$lang].accountPage.newDataSaved }}</p>
                   <button class="btn btn_black" @click.prevent="logOut">
-                    Выйти
+                    {{ $locale[$lang].buttons.goOut }}
                   </button>
                 </div>
               </form>
@@ -385,7 +376,7 @@ export default {
           this.apartment = userData?.apartment;
           this.savedUserData = true;
           setTimeout(() => {
-            this.savedUserData = false
+            this.savedUserData = false;
           }, 1000);
         })
         .catch((error) => {
@@ -402,7 +393,7 @@ export default {
       } else {
         this.$axios
           .post(`${this.$store.state.apiUrl}password-update`, {
-            old_password : this.oldPassword,
+            old_password: this.oldPassword,
             password: this.password,
             password_confirmation: this.password_confirmation,
             token: $cookies.get("userToken"),
@@ -410,8 +401,7 @@ export default {
           .then((response) => {
             this.password_saved = true;
             setTimeout(() => {
-              this.changePassword = false,
-              this.password_saved = false
+              (this.changePassword = false), (this.password_saved = false);
             }, 1000);
           })
           .catch((error) => {});
@@ -428,8 +418,8 @@ export default {
           $cookies.remove("userToken");
           $cookies.remove("userId");
           $cookies.remove("token_time");
-          localStorage.removeItem('cart_products');
-          this.$store.state.cartLength = 0
+          localStorage.removeItem("cart_products");
+          this.$store.state.cartLength = 0;
           this.$router.push("/");
         })
         .catch((error) => {});

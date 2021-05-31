@@ -3,7 +3,7 @@
     <div class="auth_card_content">
       <div class="contacts_form">
         <div class="title text-center m-0">
-          <h3>Авторизация</h3>
+          <h3>{{$locale[$lang].authorization.title}}</h3>
         </div>
         <form>
           <input
@@ -21,28 +21,28 @@
           }}</span>
           <input
             type="password"
-            placeholder="Пароль"
+           :placeholder="$locale[$lang].placeholders.password"
             v-model.trim="password"
             :class="{
               invalid: $v.password.$dirty && !$v.password.required,
             }"
           />
           <span class="error" v-if="$v.password.$dirty && !$v.password.required"
-            >Введите пароль!</span
+            >{{$locale[$lang].errors.enterPassword}}</span
           >
           <span class="error" v-if="!$v.password.minLength">
-            Пароль должен быть из 6 символов.
+            {{$locale[$lang].errors.passwordMismatch}}
           </span>
           <div class="flex_text">
-            <router-link to="/forgot-password">Не помните пароль?</router-link>
-            <router-link class="muddy" to="/register">Регистрация</router-link>
+            <router-link to="/forgot-password">{{$locale[$lang].authorization.forgotPassword}}</router-link>
+            <router-link class="muddy" to="/register">{{$locale[$lang].regist.registTitle}}</router-link>
           </div>
           <button
             class="btn btn_black success_btn"
             @click.prevent="submit"
             :class="{ disabled: loader !== null }"
           >
-            Войти
+            {{$locale[$lang].buttons.toComeIn}}
             <div class="loader" v-if="loader !== null"></div>
           </button>
           <span class="error mt-3 d-block">{{ registrationError }}</span>
@@ -91,7 +91,6 @@ export default {
           })
           .then((response) => {
             this.$router.push("/my-account");
-
             const userToken = response.data.token;
             const userId = response.data.user_id;
             $cookies.set("userToken", userToken, 18000);
