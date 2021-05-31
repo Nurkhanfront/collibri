@@ -37,23 +37,8 @@
               >{{ CATEGORY_PRODUCTS.category.title }}</router-link
             >
           </div>
-          <div class="sort_select m_none">
-            <p class="silver_text">{{ $locale[$lang].sortBy.title }}</p>
-            <select
-              class="select_2"
-              name="state"
-              v-model="sortedCategory"
-              @change="sortedProducts"
-            >
-              <option value="">{{ $locale[$lang].sortBy.default }}</option>
-              <option value="ASC">
-                {{ $locale[$lang].sortBy.ascendingPrice }}
-              </option>
-              <option value="DESC">
-                {{ $locale[$lang].sortBy.descendingPrice }}
-              </option>
-            </select>
-          </div>
+
+          <sortedSelect/>
         </div>
         <div class="catalog_content" v-if="GET_PRODUCTS">
           <div class="row">
@@ -102,15 +87,19 @@
 import { mapGetters, mapActions } from "vuex";
 import CategorySelect from "../components/categorySelect.vue";
 import products from "../components/products.vue";
+import sortedSelect from "../components/sortedSelect";
 
 export default {
-  components: { products, CategorySelect },
+  components: { 
+    products, 
+    CategorySelect, 
+    sortedSelect 
+  },
   data: () => ({
     lang: "ru",
     paramUrl: null,
     imgUrl: null,
     filter_id: [],
-    sortedCategory: "",
     page: 1,
     loader: null,
     loadingProducts: null,
@@ -138,14 +127,6 @@ export default {
       } else {
         return this.CATEGORY_PRODUCTS;
       }
-    },
-
-    sortedProducts() {
-      let productUrl = this.$route.params.id;
-      this.SORTED_PRODUCTS({
-        productId: productUrl,
-        sortedProduct: this.sortedCategory,
-      });
     },
 
     loadProducts(id) {
@@ -176,11 +157,6 @@ export default {
     let productUrl = this.$route.params.id;
     let page = this.$route.params.page;
     this.MORE_PRODUCTS({ productId: productUrl, page: page });
-    // if (this.$route.params.page === 1) {
-    //   this.GET_PRODUCTS(productUrl);
-    // } else {
-    //   this.MORE_PRODUCTS({ productId: productUrl, page: page });
-    // }
   },
 
   watch: {

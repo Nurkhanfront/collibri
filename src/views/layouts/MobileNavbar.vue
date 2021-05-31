@@ -10,8 +10,10 @@
         <input
           type="text"
           placeholder="Поиск товара"
-          @input="searchMobile(mobileSearchValue)"
+          autocomplete="off"
+          @input="searchMobile"
           v-model="mobileSearchValue"
+          id="input"
         />
       </form>
       <div class="formResults" v-if="searchData">
@@ -32,11 +34,10 @@
             >
           </li>
         </ul>
-      </div>
-
+      </div> 
       <div
         class="formResults"
-        v-else-if="!searchData && mobileSearchValue.length > 4"
+        v-else-if="searchData === null"
       >
         <p class="m-0">Совпадении нет !</p>
       </div>
@@ -130,15 +131,32 @@
 
 <script>
 export default {
-  props: ["headerData", "mobileMenu", "mobileSearch", "searchData"],
+  props: ["headerData", "mobileMenu", "mobileSearch"],
   data: () => ({
     mobileDropdown: null,
     mobileSearchValue: "",
+    searchData: '',
   }),
 
   methods: {
-    searchMobile() {
-      this.$emit("searchMobileValue", this.mobileSearchValue);
+    searchMobile(e) {
+      let mobileSearchValue = document.getElementById("input").value
+      let vm = this;
+      if (mobileSearchValue.length > 2) {
+        this.$axios
+          .get(
+            `${this.$store.state.apiUrl}search?lang=${this.$lang}&text=${mobileSearchValue}`
+          )
+          .then(function (response) {
+            if (response.data.data.length) {
+              vm.searchData = response.data;
+            } else {
+              vm.searchData = null;
+            }
+          });
+      }else{
+        vm.searchData = '';
+      }
     },
 
     dropdownToggle(category) {
@@ -150,21 +168,11 @@ export default {
     },
   },
   watch: {
-    mobileSearchValue(e) {
-      console.log(this.searchData);
-      let vm = this;
-      if (e.length > 3) {
-        this.$axios
-          .get(`${this.$store.state.apiUrl}search?lang=${this.$lang}&text=${e}`)
-          .then(function (response) {
-            if (response.data.data.length) {
-              vm.searchData = response.data;
-            } else {
-              vm.searchData = null;
-            }
-          });
-      } else {
-        vm.searchData = null;
+    mobileSearch(e){
+      if(!e){
+        document.getElementById("input").focus()
+        this.mobileSearchValue = ''
+        this.searchData = ''
       }
     },
     mobileMenu(item) {

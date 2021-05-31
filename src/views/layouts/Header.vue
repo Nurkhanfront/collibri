@@ -15,7 +15,7 @@
                 type="text"
                 placeholder="Поиск товара"
                 @input="keyUpSearch(searchValue)"
-                v-model="searchValue"
+                v-model.trim="searchValue"
               />
             </form>
             <div class="formResults" v-if="searchData">
@@ -156,7 +156,7 @@ export default {
 
     keyUpSearch(e) {
       let vm = this;
-      if (e.length > 3) {
+      if (e.length > 2) {
         this.$axios
           .get(`${this.$store.state.apiUrl}search?lang=${this.$lang}&text=${e}`)
           .then(function (response) {
@@ -206,22 +206,6 @@ export default {
       .then((response) => (this.headerData = response.data));
   },
   watch: {
-    searchValue(e) {
-      let vm = this;
-      if (e.length > 3) {
-        this.$axios
-          .get(`${this.$store.state.apiUrl}search?lang=${this.$lang}&text=${e}`)
-          .then(function (response) {
-            if (response.data.data.length) {
-              vm.searchData = response.data;
-            } else {
-              vm.searchData = null;
-            }
-          });
-      } else {
-        vm.searchData = null;
-      }
-    },
     mobileSearch(item) {
       if (item) {
         document.body.style.overflow = "hidden";

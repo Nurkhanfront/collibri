@@ -3,12 +3,12 @@
     <div class="auth_card_content">
       <div class="contacts_form">
         <div class="title text-center m-0">
-          <h3>{{$locale[$lang].regist.registTitle}}</h3>
+          <h3>{{ $locale[$lang].regist.registTitle }}</h3>
           <p class="error">{{ registrationError }}</p>
         </div>
         <form>
           <div class="register_type">
-            <p>{{$locale[$lang].regist.contactData}}</p>
+            <p>{{ $locale[$lang].regist.contactData }}</p>
           </div>
           <input
             type="text"
@@ -22,7 +22,7 @@
           }}</span>
           <the-mask
             :mask="['+7(###) ###-####']"
-             :masked="true"
+            :masked="true"
             v-model.trim="phone"
             :placeholder="$locale[$lang].placeholders.PhoneNumber"
             autocomplete="off"
@@ -51,7 +51,7 @@
           }}</span>
 
           <div class="register_type">
-            <p>{{$locale[$lang].errors.password}}</p>
+            <p>{{ $locale[$lang].errors.password }}</p>
           </div>
 
           <input
@@ -63,11 +63,13 @@
               invalid: $v.password.$dirty && !$v.password.required,
             }"
           />
-          <span class="error" v-if="$v.password.$dirty && !$v.password.required"
-            >{{$locale[$lang].errors.enterPassword}}</span
+          <span
+            class="error"
+            v-if="$v.password.$dirty && !$v.password.required"
+            >{{ $locale[$lang].errors.enterPassword }}</span
           >
           <span class="error" v-if="!$v.password.minLength">
-            {{$locale[$lang].errors.passwordMust}}
+            {{ $locale[$lang].errors.passwordMust }}
             {{ $v.password.$params.minLength.min }}.
           </span>
           <input
@@ -82,7 +84,7 @@
           <span
             class="error"
             v-if="$v.password.$dirty && !$v.repeatPassword.sameAsPassword"
-            >{{$locale[$lang].errors.passwordMismatch}}</span
+            >{{ $locale[$lang].errors.passwordMismatch }}</span
           >
 
           <vue-recaptcha
@@ -98,7 +100,7 @@
             @click.prevent="submit"
             :class="{ disabled: loader !== null }"
           >
-            {{$locale[$lang].buttons.confirm}}
+            {{ $locale[$lang].buttons.confirm }}
             <div class="loader" v-if="loader !== null"></div>
           </button>
         </form>
@@ -163,10 +165,11 @@ export default {
       this.$v.$touch();
       this.loader = true;
 
-      if (this.loginForm.recaptchaVerified || this.$v.$invalid) {
-        this.loader = null;
-        this.loginForm.pleaseTickRecaptchaMessage = this.$locale[this.$lang].errors.confirmRobot;
+      if (this.$v.$invalid) {
         return false;
+      } else if (!this.loginForm.recaptchaVerified) {
+        this.loginForm.pleaseTickRecaptchaMessage =
+          "Подтвердите что вы не робот!";
       } else {
         this.loginForm.pleaseTickRecaptchaMessage = "";
         this.submitStatus = "PENDING";
@@ -182,7 +185,7 @@ export default {
             this.$router.push("/login");
           })
           .catch((error) => {
-            this.registrationError = 'Пользователь уже существует'
+            this.registrationError = "Пользователь уже существует";
             setTimeout(() => {
               this.loader = null;
             }, 500);
