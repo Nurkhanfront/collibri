@@ -124,12 +124,12 @@
                 ></div>
                 <div class="product_price">
                   <p
-                    class="small_text silver_text"
+                    class="small_text silver_text percent_price"
                     v-if="PRODUCT_ITEM.product.sale > 0"
                   >
                     {{ PRODUCT_ITEM.product.price }} тг
                   </p>
-                  <p class="bold_text">
+                  <p class="bold_text ">
                     {{ PRODUCT_ITEM.product.current_price }} тг
                   </p>
                   <button

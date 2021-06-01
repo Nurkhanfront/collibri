@@ -35,6 +35,8 @@
                           params: {
                             id: category.id,
                             slug: category.slug,
+                          },
+                          query: {
                             page: 1,
                           },
                         }"
@@ -52,6 +54,8 @@
                           params: {
                             id: subCategory.id,
                             slug: subCategory.slug,
+                          },
+                          query: {
                             page: 1,
                           },
                         }"
@@ -101,6 +105,7 @@ export default {
       this.$store.commit("CATALOG_DROPDOWN");
     },
     closeDropdown(slug) {
+      localStorage.removeItem("filter_id");
       let routeSlug = this.$route.params.slug;
       if (routeSlug === slug) {
         this.$store.state.catalogDropdown = false;

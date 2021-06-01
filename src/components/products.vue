@@ -37,40 +37,21 @@ export default {
   }),
 
   methods: {
-    ...mapActions(["MORE_BRAND_PRODUCTS", "MORE_PRODUCTS"]),
+    ...mapActions(["MORE_BRAND_PRODUCTS", "MORE_PRODUCTS", "SORTED_PRODUCTS"]),
 
     currentPage(num) {
       let productUrl = this.$route.params.id;
       if (this.type === "catalogProducts") {
         this.$router
-          .push({ name: "catalogPage", params: { page: num } })
+          .push({ query: { page: num, sort: this.$route.query.sort } })
           .catch((err) => {});
-        this.MORE_PRODUCTS({ productId: productUrl, page: num });
+        this.MORE_PRODUCTS({ productId: productUrl, page: num, sort: this.$route.query.sort });
       } else if (this.type === "brandProducts") {
-        this.$router
-          .push({ name: "brandProducts", params: { page: num } })
-          .catch((err) => {});
+        this.$router.push({ query: { page: num } }).catch((err) => {});
         this.MORE_BRAND_PRODUCTS({ productId: productUrl, page: num });
       }
     },
   },
-
-  watch: {
-    $route(to, from) {
-      this.currentPage(to.params.page);
-    },
-  },
-
-  // updated() {
-  //   if (this.products.products) {
-  //     let lastPage = this.products.products.last_page;
-  //     if (lastPage === this.page) {
-  //       this.showMorebtn = false;
-  //     } else {
-  //       this.showMorebtn = true;
-  //     }
-  //   }
-  // },
 };
 </script>
 

@@ -107,7 +107,7 @@ export default {
 
   mounted() {
     this.lastPage();
-    this.currentPage = Number(this.$route.params.page);
+    this.currentPage = Number(this.$route.query.page);
   },
 
   watch: {

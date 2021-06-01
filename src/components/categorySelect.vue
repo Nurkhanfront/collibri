@@ -11,11 +11,11 @@
         ><img src="@/assets/images/close.svg" alt=""
       /></span>
       <div
-        class="category_select"
+        
         v-for="item in categories.filters.slice(0, categoryCount)"
         :key="item.id"
       >
-        <div v-if="item.filter_items.length">
+        <div v-if="item.filter_items.length" class="category_select">
           <p class="bold_text">{{ item.title }}</p>
           <ul>
             <li v-for="filter in item.filter_items" :key="filter.id">
@@ -48,11 +48,11 @@
     >
       <span class="close_btn" alt=""></span>
       <div
-        class="category_select"
+        
         v-for="item in categories.filters.slice(0, categoryCount)"
         :key="item.id"
       >
-        <div v-if="item.filter_items.length">
+        <div v-if="item.filter_items.length" class="category_select">
           <p class="bold_text">{{ item.title }}</p>
           <ul>
             <li v-for="filter in item.filter_items" :key="filter.id">
@@ -102,14 +102,23 @@ export default {
     },
 
     addFilter() {
+      this.$route.query.page = 1;
+      console.log(this.$route.query);
+      localStorage.setItem("filter_id", JSON.stringify(this.filter_id));
       let productUrl = this.$route.params.id;
       let allFilterId = this.filter_id;
       if (this.type === "filter_id") {
-        this.FILTER_PRODUCTS({ productId: productUrl, filterId: allFilterId });
+        this.FILTER_PRODUCTS({
+          productId: productUrl,
+          filterId: allFilterId,
+          sort: this.$route.query?.sort,
+          page: 1,
+        });
       } else if (this.type === "brand_id") {
         this.FILTER_BRAND_PRODUCTS({
           productId: productUrl,
           brandId: allFilterId,
+          page: 1,
         });
       }
     },
@@ -129,8 +138,32 @@ export default {
     },
   },
 
-  watch: {
+  mounted() {
+    let localFilterId = JSON.parse(localStorage.getItem("filter_id"));
+    let productUrl = this.$route.params.id;
+    if (localFilterId !== null) {
+      localFilterId.forEach((elem) => {
+        this.filter_id.push(elem);
+      });
+    }
+    if (this.type === "filter_id") {
+      this.FILTER_PRODUCTS({
+        productId: productUrl,
+        filterId: localFilterId,
+        page: this.$route.query.page,
+        sort: this.$route.query?.sort,
+      });
+    } else if (this.type === "brand_id") {
+      this.FILTER_BRAND_PRODUCTS({
+        productId: productUrl,
+        brandId: localFilterId,
+        page: this.$route.query.page,
+        sort: this.$route.query?.sort,
+      });
+    }
+  },
 
+  watch: {
     productCategory() {
       if (this.productCategory) {
         document.body.style.overflow = "hidden";
@@ -139,7 +172,6 @@ export default {
       }
     },
     mobileFilter(e) {
-      console.log(e);
       if (e === true) {
         document.body.style.overflow = "hidden";
       } else {

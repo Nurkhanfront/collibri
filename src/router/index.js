@@ -16,8 +16,9 @@ const routes = [{
         component: Home
     },
     {
-        path: '/catalog/:slug/:id&page=:page',
+        path: '/catalog/:slug/:id',
         name: 'catalogPage',
+        props: true,
         component: () =>
             import ('../views/Catalog.vue')
     },
@@ -124,7 +125,6 @@ const routes = [{
         component: AccountPage
     },
 ]
-
 
 const router = new VueRouter({
     mode: 'history',

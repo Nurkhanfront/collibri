@@ -199,7 +199,7 @@ export default new Vuex.Store({
                 });
         },
 
-        FILTER_PRODUCTS({ commit, state }, { productId, filterId }) {
+        FILTER_PRODUCTS({ commit, state }, { productId, filterId, sort, page }) {
             let filter_id = filterId;
             state.loadingProducts = true
             axios.get(`${state.apiUrl}get-products`, {
@@ -207,6 +207,8 @@ export default new Vuex.Store({
                         lang: state.lang,
                         category_id: productId,
                         filter_id: filter_id,
+                        order_by: sort,
+                        page: page,
                     }
                 })
                 .then((response) => {
@@ -232,14 +234,15 @@ export default new Vuex.Store({
                 });
         },
 
-        MORE_PRODUCTS({ commit, state }, { productId, page }) {
+        MORE_PRODUCTS({ commit, state }, { productId, page, sort }) {
             state.loader = true,
                 axios
                 .get(`${state.apiUrl}get-products`, {
                     params: {
                         lang: state.lang,
                         category_id: productId,
-                        page: page
+                        page: page,
+                        order_by: sort,
                     }
                 })
                 .then(function(response) {

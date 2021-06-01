@@ -7,12 +7,32 @@
       v-model="sortedCategory"
       @change="sortedProducts"
     >
-      <option value="">{{ $locale[$lang].sortBy.default }}</option>
+      <option value="">
+        {{ $locale[$lang].sortBy.default }}
+      </option>
       <option value="ASC">
-        {{ $locale[$lang].sortBy.ascendingPrice }}
+        <router-link
+          :to="{
+            name: 'catalogPage',
+            params: {
+              sort: 'ASC',
+            },
+          }"
+        >
+          {{ $locale[$lang].sortBy.ascendingPrice }}
+        </router-link>
       </option>
       <option value="DESC">
-        {{ $locale[$lang].sortBy.descendingPrice }}
+        <router-link
+          :to="{
+            name: 'catalogPage',
+            params: {
+              sort: 'DESC',
+            },
+          }"
+        >
+          {{ $locale[$lang].sortBy.descendingPrice }}
+        </router-link>
       </option>
     </select>
   </div>
@@ -33,15 +53,21 @@ export default {
     sortedProducts() {
       let productUrl = this.$route.params.id;
       this.$router.push({
-        name: "catalogPage",
-        params: { sort: this.sortedCategory },
+        query: { page: this.$route.query.page, sort: this.sortedCategory },
       });
-      // this.$router.push({params: {plan: 'private'}})
       this.SORTED_PRODUCTS({
         productId: productUrl,
         sortedProduct: this.sortedCategory,
       });
     },
+  },
+
+  mounted() {
+    if (Object.keys(this.$route.query?.sort)) {
+      this.sortedCategory = this.$route.query.sort;
+    }else{
+      this.sortedCategory = "";
+    }
   },
 };
 </script>

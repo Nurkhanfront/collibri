@@ -24,7 +24,7 @@
     <div class="product_card_footer">
       <div class="card_price">
         <p>{{ productCard.current_price }} {{ $locale[$lang].tg }}.</p>
-        <p class="percent_price silver_text">
+        <p class="percent_price silver_text" v-if="productCard.sale > 0">
           {{ productCard.price }} {{ $locale[$lang].tg }}.
         </p>
       </div>
