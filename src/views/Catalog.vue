@@ -155,7 +155,7 @@ export default {
     this.loader = this.$store.state.loader;
     this.imgUrl = this.$store.state.imgUrl;
     let productUrl = this.$route.params.id;
-    let page = this.$route.params.page;
+    let page = this.$route.query.page;
     this.MORE_PRODUCTS({ productId: productUrl, page: page });
   },
 

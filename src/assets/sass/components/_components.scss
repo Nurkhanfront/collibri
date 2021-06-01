@@ -70,6 +70,27 @@ body {
         text-decoration: none;
         color: #000;
     }
+    .card_price {
+        display: flex;
+        align-items: baseline;
+    }
+    .percent {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #000;
+        color: #fff;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        font-size: 12px;
+        font-family: manrope_bold;
+    }
+    .percent_price {
+        font-size: 16px !important;
+        text-decoration: line-through;
+        margin-left: 10px;
+    }
     .like {
         position: absolute;
         top: 20px;

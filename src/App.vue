@@ -14,7 +14,7 @@
       </div>
     </div>
     <div v-else>
-      <router-view />
+      <router-view :key="$route.fullPath"/>
     </div>
     <Footer />
   </div>

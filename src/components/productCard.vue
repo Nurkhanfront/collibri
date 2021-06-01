@@ -3,6 +3,7 @@
     <span class="like" @click.stop="addFavorite(productCard)"
       ><i class="far fa-heart" :class="{ fas: favoriteActive }"></i>
     </span>
+    <span class="percent" v-if="productCard.sale">{{ productCard.sale }}%</span>
     <router-link
       :to="{
         name: 'product',
@@ -21,15 +22,20 @@
       </div>
     </router-link>
     <div class="product_card_footer">
-      <p>{{ productCard.current_price }} {{$locale[$lang].tg}}.</p>
+      <div class="card_price">
+        <p>{{ productCard.current_price }} {{ $locale[$lang].tg }}.</p>
+        <p class="percent_price silver_text">
+          {{ productCard.price }} {{ $locale[$lang].tg }}.
+        </p>
+      </div>
       <span
         class="add_cart"
         :class="{ active: activeCart }"
         @click="addToCart(productCard)"
       >
-        <img src="@/assets/images/bag_bg.svg" alt="" v-if="activeCart" />
-        <img src="@/assets/images/bag_outline.svg" alt="" v-else
-      /></span>
+        <img src="@/assets/images/active_card.svg" alt="" v-if="activeCart" />
+        <img src="@/assets/images/bag_bg.svg" alt="" v-else />
+      </span>
     </div>
   </div>
 </template>

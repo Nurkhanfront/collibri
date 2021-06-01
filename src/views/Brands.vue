@@ -53,7 +53,7 @@
                   <router-link
                     :to="{
                       name: 'brandProducts',
-                      params: { id: brand.id, slug: brand.title },
+                      params: { id: brand.id, slug: brand.title, page: 1},
                     }"
                     >{{ brand.title }}</router-link
                   >
