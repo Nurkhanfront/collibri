@@ -33,7 +33,7 @@
         :class="{ active: activeCart }"
         @click="addToCart(productCard)"
       >
-        <img src="@/assets/images/active_card.svg" alt="" v-if="activeCart" />
+        <img src="@/assets/images/active_card.svg" alt="" v-if="activeCart" class="active_cart" />
         <img src="@/assets/images/bag_bg.svg" alt="" v-else />
       </span>
     </div>
@@ -65,7 +65,7 @@ export default {
     inTheCart() {
       if (this.cartList) {
         this.cartList.filter((i) => {
-          if (i === this.productCard.id) {
+          if (i.id === this.productCard.id) {
             this.activeCart = true;
           }
         });
@@ -100,7 +100,7 @@ export default {
 
     addToCart(product) {
       this.activeCart = !this.activeCart;
-      this.$store.commit("ADD_TO_CART", product);
+      this.$store.commit("ADD_TO_CART", {product, count: 1});
     },
   },
 

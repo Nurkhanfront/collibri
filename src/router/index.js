@@ -7,6 +7,7 @@ import Register from "@/views/auth/Register";
 import Restore from "@/views/auth/Restore";
 import SendEmailStatus from "@/views/auth/SendEmailStatus";
 import AccountPage from "@/views/AccountPage";
+import orders from "@/components/order/orderItem.vue";
 
 Vue.use(VueRouter)
 
@@ -120,9 +121,13 @@ const routes = [{
         component: SendEmailStatus
     },
     {
-        path: '/my-account',
+        path: '/my-account/',
         name: 'AccountPage',
-        component: AccountPage
+        component: AccountPage,
+        children: [{
+            path: 'orders',
+            component: orders
+        }, ]
     },
 ]
 

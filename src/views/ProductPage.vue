@@ -157,7 +157,7 @@
                   </button>
                   <button
                     class="t_none m_none btn btn_black btn_border_radius"
-                    @click="addToCart(PRODUCT_ITEM.product)"
+                    @click="addToCart(PRODUCT_ITEM.product, countValue)"
                   >
                     {{ $locale[$lang].productPage.addToCard }}
                   </button>
@@ -319,6 +319,7 @@ export default {
   components: { VueSlickCarousel, VueRecaptcha, productCard },
   data: () => ({
     tab: "description",
+    cartText: 'Добавить в корзину',
     productData: null,
     countValue: 1,
     modal: false,
@@ -501,8 +502,8 @@ export default {
       }
     },
 
-    addToCart(product) {
-      this.$store.commit("ADD_TO_CART", product);
+    addToCart(product, countValue) {
+      this.$store.commit("ADD_TO_CART", {product, countValue});
       this.cartProductsList = JSON.parse(localStorage.getItem("cart_products"));
     },
   },

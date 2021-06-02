@@ -2,7 +2,7 @@
   <div class="cart p_page">
     <div class="container">
       <div class="back_link">
-        <a href="#" class="silver_text" @click.prevent="$router.go(-1)"
+        <a href="#" class="silver_text" @click.prevent="$router.push('/')"
           ><img src="@/assets/images/BACK.svg" alt="" /> {{$locale[$lang].buttons.backtoShopping}}</a
         >
       </div>
@@ -45,7 +45,6 @@ export default {
   data: () => ({
     cartData: null,
     count: 1,
-    cartLocal: JSON.parse(localStorage.getItem("cart_products")),
   }),
 
   methods: {
@@ -85,18 +84,23 @@ export default {
         return sum + el;
       });
 
-      localStorage.setItem("totalPrice", result);
       return result;
     },
   },
 
   mounted() {
-    let cartProductsId = JSON.parse(localStorage.getItem("cart_products"));
-    if (cartProductsId !== null && cartProductsId.length) {
+    let localstorageProductsId = JSON.parse(localStorage.getItem("cart_products"));
+    let productsId = [];
+    
+    localstorageProductsId.forEach(product => {
+      productsId.push(product.id)
+    });
+
+    if (localstorageProductsId !== null && localstorageProductsId.length) {
       this.$axios
         .get(`${this.$store.state.apiUrl}card-product`, {
           params: {
-            product_id: cartProductsId,
+            product_id: productsId,
             lang: this.$store.state.lang,
           },
         })

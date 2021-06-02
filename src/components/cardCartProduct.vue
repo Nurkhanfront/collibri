@@ -19,9 +19,11 @@
         ><i class="far fa-heart" :class="{ fas: favoriteActive }"></i>
       </span>
       <div class="product_count">
-        <button class="btn btn_add" @click="minusValue"><span>-</span></button>
+        <button class="btn btn_add" @click="minusValue(productCard)">
+          <span>-</span>
+        </button>
         <span class="total_count">{{ productCard.count }}</span>
-        <button class="btn btn_add" @click="plusValue(productCard.price)">
+        <button class="btn btn_add" @click="plusValue(productCard)">
           <span>+</span>
         </button>
       </div>
@@ -68,17 +70,48 @@ export default {
     minusValue() {
       if (this.productCard.count > 1) {
         this.productCard.count--;
+
+        this.setLocalStorageCount();
       }
     },
 
     plusValue() {
       this.productCard.count++;
+
+      this.setLocalStorageCount();
+    },
+
+    setLocalStorageCount() {
+      let localstorageCartData = JSON.parse(
+        localStorage.getItem("cart_products")
+      );
+
+      if (localstorageCartData.find((item) => item.id == this.productCard.id)) {
+        localstorageCartData.forEach((item, index) => {
+          if (item.id == this.productCard.id) {
+            localstorageCartData[index].count = this.productCard.count;
+          }
+        });
+      }
+
+      localStorage.setItem(
+        "cart_products",
+        JSON.stringify(localstorageCartData)
+      );
     },
   },
 
   mounted() {
     this.activeFavorite;
-    this.$set(this.productCard, "count", 1);
+    let localStorageProducts = JSON.parse(
+      localStorage.getItem("cart_products")
+    );
+
+    localStorageProducts.filter((item) => {
+      if (item.id === this.productCard.id && item.count) {
+        this.$set(this.productCard, "count", item.count);
+      }
+    });
   },
 
   created() {

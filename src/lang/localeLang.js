@@ -131,6 +131,15 @@ let locale = {
             deliveryDate: 'Дата доставки',
             deliveryAddress: 'Адрес доставки',
             toPay: 'К оплате:',
+            house: 'Дом',
+            building: 'Корпус',
+            entrance: 'Подьезд',
+            floor: 'Этаж',
+            apartment: 'Квартира',
+        },
+        deliveryText: {
+            delivery: 'Доставка',
+            freeDelivery: 'Бесплатная доставка',
         }
 
     },
@@ -268,6 +277,15 @@ let locale = {
             deliveryDate: 'Delivery date',
             deliveryAddress: 'Delivery address',
             toPay: 'To pay:',
+            house: 'house',
+            building: 'building',
+            entrance: 'entrance',
+            floor: 'floor',
+            apartment: 'apartment',
+        },
+        deliveryText: {
+            delivery: 'Delivery',
+            freeDelivery: 'Free shipping',
         }
 
     },

@@ -18,17 +18,14 @@
             {{ productCard.title }}
           </p>
           <div class="price m_none">
-            <p class="bold_text">
-              {{ productCard.price }}
-            </p>
+            <p class="bold_text" v-if="productCard.count > 1">{{ productCard.count }} <span>*</span></p>
+            <p class="bold_text">{{ productCard.price }} kzt</p>
           </div>
         </div>
       </div>
     </div>
     <div class="price d_none text-right">
-      <p class="bold_text">
-        {{ productCard.price }}
-      </p>
+      <p class="bold_text">{{ productCard.price }} kzt</p>
     </div>
     <div class="delete_product" @click="$emit('deleteProduct')">
       <img src="@/assets/images/delete_prod.svg" alt="" />

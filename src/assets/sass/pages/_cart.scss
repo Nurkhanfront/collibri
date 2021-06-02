@@ -20,6 +20,11 @@
         width: 35px !important;
         max-height: 35px;
     }
+    &:hover {
+        img {
+            transform: scale(.9);
+        }
+    }
 }
 
 .card_cart {

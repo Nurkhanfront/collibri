@@ -17,11 +17,7 @@
         <h1>{{ $locale[$lang].brandsPageTitle }}</h1>
       </div>
       <div class="popular_brands">
-        <span
-          v-for="brand in allBrands.popular"
-          :key="brand.id"
-          :id="brand.id"
-        >
+        <span v-for="brand in allBrands.popular" :key="brand.id" :id="brand.id">
           <router-link
             :to="{
               name: 'brandProducts',
@@ -34,7 +30,7 @@
       <div class="brands_block">
         <div class="brands_list">
           <a
-            :href="'#' + name"
+            :href="`#${name}`"
             v-for="(item, name) in allBrands.all"
             :key="name"
             >{{ name }}</a
@@ -53,7 +49,7 @@
                   <router-link
                     :to="{
                       name: 'brandProducts',
-                      params: { id: brand.id, slug: brand.title, page: 1},
+                      params: { id: brand.id, slug: brand.title, page: 1 },
                     }"
                     >{{ brand.title }}</router-link
                   >

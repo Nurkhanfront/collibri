@@ -5,25 +5,25 @@
         <h3>{{ $locale[$lang].orders.title }}</h3>
       </div>
     </div>
-    <loader v-if="loader"/>
+    <loader v-if="loader" />
     <div v-if="orderData">
       <div class="order_item" v-for="order in orderData.orders" :key="order.id">
-        <div class="order_number">
-          <p>№ {{ order.id }}</p>
-        </div>
         <div class="first_block">
           <div class="row">
             <div class="col-xl-10 col-lg-10">
+              <div class="order_number">
+                <p>№ {{ order.id }}</p>
+              </div>
               <div class="order_block">
                 <div class="row">
                   <div class="col-xl-3 col-lg-4 col-5">
                     <div class="order_titles">
-                      <p>{{ $locale[$lang].orders.status }}</p>
+                      <p >{{ $locale[$lang].orders.status }}</p>
                     </div>
                   </div>
                   <div class="col-xl-9 col-lg-8 col-7">
                     <div class="order_title_status">
-                      <p>{{ order.type_status }}</p>
+                      <p class="green_text">{{ order.type_status }}</p>
                     </div>
                   </div>
                 </div>
@@ -58,15 +58,19 @@
               <div class="row">
                 <div class="col-xl-3 col-lg-4">
                   <div class="order_titles">
-                    <p>{{ $locale[$lang].orders.deliveryAddress }}</p>
+                    <p >{{ $locale[$lang].orders.deliveryAddress }}</p>
                   </div>
                 </div>
                 <div class="col-xl-9 col-lg-8">
                   <div class="order_title_status">
-                    <p>
-                      {{ order.address.region }}{{ order.address.region
-                      }}{{ order.address.street }}
+                    <p v-if="order.address.street">
+                      {{ order.address.street }}<span>/</span>
                     </p>
+                    <p v-if="order.address.house">{{ $locale[$lang].orders.house }}-{{ order.address.house }}<span>/</span></p>
+                    <p v-if="order.address.building">{{ $locale[$lang].orders.building }}-{{ order.address.building }}<span>/</span></p>
+                    <p v-if="order.address.entrance">{{ $locale[$lang].orders.entrance }}-{{ order.address.entrance }}<span>/</span></p>
+                    <p v-if="order.address.floor">{{ $locale[$lang].orders.floor }}-{{ order.address.floor }}<span>/</span></p>
+                    <p v-if="order.address.apartment">{{ $locale[$lang].orders.apartment }}-{{ order.address.apartment }}</p>
                   </div>
                 </div>
               </div>
@@ -82,13 +86,12 @@
 </template>
 
 <script>
-import loader from "../loader";
-import Loader from '../loader.vue';
+import Loader from "../loader.vue";
 
 export default {
   name: "orderItem",
   components: {
-    Loader
+    Loader,
   },
   data: () => ({
     orderData: null,

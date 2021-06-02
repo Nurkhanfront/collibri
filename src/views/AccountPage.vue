@@ -19,23 +19,20 @@
         <div class="col-xl-3 col-lg-3 col-md-12 order_2">
           <div class="action_content">
             <div class="tab_actions">
-              <p
-                :class="{ tab_background_dark: current === 'data' }"
-                @click="updateTab('data')"
+              <router-link
+                to="/my-account"
               >
                 {{ $locale[$lang].accountPage.data }}
-              </p>
-              <p
-                :class="{ tab_background_dark: current === 'order' }"
-                @click="updateTab('order')"
-              >
+              </router-link>
+              <router-link to="/my-account/orders">
                 {{ $locale[$lang].accountPage.orders }}
-              </p>
+              </router-link>
             </div>
           </div>
         </div>
         <div class="col-xl-9 col-lg-9 col-md-12 order_1">
-          <div class="account_content" v-if="current === 'data'">
+          <router-view></router-view>
+          <div class="account_content" v-if="current === 'AccountPage'">
             <div class="contacts_form">
               <form autocomplete="stopdoingthat">
                 <div class="account_main_content">
@@ -80,17 +77,23 @@
                   <div class="row my-4">
                     <div class="col-xl-2">
                       <div class="font_600">
-                        <p class="mb-0 mt-4">{{$locale[$lang].placeholders.password}}</p>
+                        <p class="mb-0 mt-4">
+                          {{ $locale[$lang].placeholders.password }}
+                        </p>
                       </div>
                     </div>
                     <div class="col-xl-10 change_password">
                       <div class="row" v-if="changePassword">
                         <div class="col-xl-4">
-                          <label for="">{{$locale[$lang].placeholders.oldPassword}}</label>
+                          <label for="">{{
+                            $locale[$lang].placeholders.oldPassword
+                          }}</label>
                           <input
                             type="password"
                             name="password"
-                            :placeholder="$locale[$lang].placeholders.oldPassword"
+                            :placeholder="
+                              $locale[$lang].placeholders.oldPassword
+                            "
                             v-model.trim="oldPassword"
                             :class="{
                               invalid:
@@ -111,7 +114,9 @@
                           </span>
                         </div>
                         <div class="col-xl-4">
-                          <label for="">{{ $locale[$lang].placeholders.newPassword }}</label>
+                          <label for="">{{
+                            $locale[$lang].placeholders.newPassword
+                          }}</label>
                           <input
                             type="password"
                             v-model.trim="password"
@@ -131,7 +136,9 @@
                           </span>
                         </div>
                         <div class="col-xl-4">
-                          <label for="">{{$locale[$lang].placeholders.passwordConfirm}}</label>
+                          <label for="">{{
+                            $locale[$lang].placeholders.passwordConfirm
+                          }}</label>
                           <input
                             type="password"
                             v-model.trim="password_confirmation"
@@ -146,7 +153,7 @@
                               $v.password.$dirty &&
                               !$v.password_confirmation.sameAsPassword
                             "
-                            >{{$locale[$lang].errors.passwordMismatch}}</span
+                            >{{ $locale[$lang].errors.passwordMismatch }}</span
                           >
                         </div>
                       </div>
@@ -158,14 +165,14 @@
                               v-if="!changePassword"
                               @click.prevent="changePassword = true"
                             >
-                              {{$locale[$lang].buttons.edit}}
+                              {{ $locale[$lang].buttons.edit }}
                             </button>
                             <button
                               class="btn btn_outline_dark mt-2"
                               v-if="changePassword"
                               @click.prevent="saveNewPassword"
                             >
-                              {{$locale[$lang].buttons.saved}}
+                              {{ $locale[$lang].buttons.saved }}
                             </button>
                           </div>
                         </div>
@@ -195,11 +202,15 @@
                   </div>
                   <div class="margin_input">
                     <div class="address_text">
-                      <p class="font_600">{{$locale[$lang].orderingPage.address}}</p>
+                      <p class="font_600">
+                        {{ $locale[$lang].orderingPage.address }}
+                      </p>
                     </div>
                     <div class="row my-3">
                       <div class="col-xl-6 col-md-6">
-                        <p class="font_600">{{ $locale[$lang].accountPage.city }}</p>
+                        <p class="font_600">
+                          {{ $locale[$lang].accountPage.city }}
+                        </p>
                       </div>
                     </div>
                     <div class="row my-4">
@@ -266,7 +277,9 @@
                   <button class="btn btn_gray" @click.prevent="saveUserData">
                     {{ $locale[$lang].buttons.saved }}
                   </button>
-                  <p v-if="savedUserData">{{ $locale[$lang].accountPage.newDataSaved }}</p>
+                  <p v-if="savedUserData">
+                    {{ $locale[$lang].accountPage.newDataSaved }}
+                  </p>
                   <button class="btn btn_black" @click.prevent="logOut">
                     {{ $locale[$lang].buttons.goOut }}
                   </button>
@@ -274,7 +287,6 @@
               </form>
             </div>
           </div>
-          <orderItem v-if="current === 'order'" />
         </div>
       </div>
     </div>
@@ -294,7 +306,7 @@ export default {
   },
   data: () => ({
     options: "Город",
-    current: "data",
+    current: '',
     changePassword: false,
     name: "",
     first_name: "",
@@ -435,6 +447,7 @@ export default {
     },
   },
   mounted() {
+    this.current = this.$route.name;
     const userToken = $cookies.get("userToken");
     const userId = $cookies.get("userId");
     this.$axios

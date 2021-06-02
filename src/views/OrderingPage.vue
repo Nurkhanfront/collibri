@@ -10,17 +10,19 @@
     <div class="container">
       <div class="back_link">
         <a href="#" class="silver_text" @click.prevent="$router.go(-1)"
-          ><img src="@/assets/images/BACK.svg" alt="" />{{$locale[$lang].buttons.backtoShopping}}</a
+          ><img src="@/assets/images/BACK.svg" alt="" />{{
+            $locale[$lang].buttons.backtoShopping
+          }}</a
         >
       </div>
       <div class="ordering_wrapper">
         <div class="title_small">
-          <h1>{{$locale[$lang].orderingPage.checkout}}</h1>
+          <h1>{{ $locale[$lang].orderingPage.checkout }}</h1>
         </div>
         <div class="row contacts_data">
           <div class="col-xl-6 col-lg-6">
             <div class="title_block">
-              <h2>{{$locale[$lang].orderingPage.contactDetails}}</h2>
+              <h2>{{ $locale[$lang].orderingPage.contactDetails }}</h2>
               <form action="" class="ordering_form">
                 <div class="row">
                   <div class="col-xl-6">
@@ -71,12 +73,12 @@
                   </div>
                   <div class="col-xl-12 ordering_padding">
                     <div class="ordering_tabs">
-                      <p>{{$locale[$lang].orderingPage.delivery}}</p>
+                      <p>{{ $locale[$lang].orderingPage.delivery }}</p>
                     </div>
                   </div>
                   <div class="col-xl-12">
                     <div class="title_block ordering_padding">
-                      <p>{{$locale[$lang].orderingPage.address}}</p>
+                      <p>{{ $locale[$lang].orderingPage.address }}</p>
                     </div>
                     <div class="row">
                       <div class="col-xl-8 m_input">
@@ -114,7 +116,11 @@
                         />
                       </div>
                       <div class="col-xl-3 m_input">
-                        <input type="text" :placeholder="$locale[$lang].placeholders.floor" v-model="floor" />
+                        <input
+                          type="text"
+                          :placeholder="$locale[$lang].placeholders.floor"
+                          v-model="floor"
+                        />
                       </div>
                       <div class="col-xl-3 m_input">
                         <input
@@ -127,7 +133,7 @@
                   </div>
                   <div class="col-xl-12 ordering_padding">
                     <div class="title_block">
-                      <p>{{$locale[$lang].orderingPage.commentsOrder}}</p>
+                      <p>{{ $locale[$lang].orderingPage.commentsOrder }}</p>
                     </div>
                     <div class="row">
                       <div class="col-xl-12">
@@ -137,7 +143,9 @@
                           cols="30"
                           rows="10"
                           v-model="comment"
-                          :placeholder="$locale[$lang].orderingPage.commentsOrder"
+                          :placeholder="
+                            $locale[$lang].orderingPage.commentsOrder
+                          "
                         ></textarea>
                       </div>
                     </div>
@@ -155,7 +163,7 @@
           </div>
           <div class="col-xl-6 col-lg-6">
             <div class="title_block">
-              <h2>{{$locale[$lang].orderingPage.yourOrder}}</h2>
+              <h2>{{ $locale[$lang].orderingPage.yourOrder }}</h2>
             </div>
             <div v-if="cartData">
               <div class="your_order">
@@ -166,12 +174,21 @@
                   @deleteProduct="deleteProduct(index, card.id)"
                 />
               </div>
+              <div class="delivery_info">
+                <p v-if="totalPrice < 45000" class="red_text">{{ $locale[$lang].deliveryText.delivery }}: 1000 KZT </p>
+                <p v-else class="green_text">{{ $locale[$lang].deliveryText.freeDelivery }} </p>
+              </div>
               <div class="total">
-                <p>{{$locale[$lang].orderingPage.total}}: {{ totalPrice }} KZT</p>
+                <p v-if="totalPrice < 45000">
+                  {{ $locale[$lang].orderingPage.total }}: {{ totalPrice + 1000 }} KZT
+                </p>
+                <p v-else>
+                  {{ $locale[$lang].orderingPage.total }}: {{ totalPrice }} KZT
+                </p>
               </div>
             </div>
             <div v-else>
-              <h3>{{$locale[$lang].cartisEmpty}}</h3>
+              <h3>{{ $locale[$lang].cartisEmpty }}</h3>
             </div>
           </div>
           <div class="text-center d_none w-100 mt-5">
@@ -180,7 +197,7 @@
               class="btn btn_black mt-5 m-auto"
               @click="submit"
             >
-              {{$locale[$lang].orderingPage.yourOrder}}
+              {{ $locale[$lang].orderingPage.yourOrder }}
             </button>
           </div>
         </div>
@@ -284,12 +301,12 @@ export default {
             let url = response.data.url;
             window.location.href = url;
             this.loader = true;
-            localStorage.removeItem('cart_products')
+            localStorage.removeItem("cart_products");
           })
           .catch((error) => {
             this.loader = false;
           });
-      }else{
+      } else {
         this.loader = true;
         this.$axios
           .post(`${this.$store.state.apiUrl}get-order`, {
@@ -301,7 +318,7 @@ export default {
             let url = response.data.url;
             window.location.href = url;
             this.loader = true;
-            localStorage.removeItem('cart_products')
+            localStorage.removeItem("cart_products");
           })
           .catch((error) => {
             this.loader = false;
@@ -331,42 +348,49 @@ export default {
   },
 
   mounted() {
-    let cartProductsId = JSON.parse(localStorage.getItem("cart_products"));
-    if (cartProductsId !== null && cartProductsId.length) {
+    let localstorageProductsId = JSON.parse(
+      localStorage.getItem("cart_products")
+    );
+    let productsId = [];
+
+    localstorageProductsId.forEach((product) => {
+      productsId.push(product.id);
+    });
+
+    if (localstorageProductsId !== null && localstorageProductsId.length) {
       this.$axios
         .get(`${this.$store.state.apiUrl}card-product`, {
           params: {
-            product_id: cartProductsId,
+            product_id: productsId,
             lang: this.$store.state.lang,
-            token: $cookies.get("userToken"),
           },
         })
         .then((response) => (this.cartData = response.data));
-    }
-
+    };
+    
     const userToken = $cookies.get("userToken");
     const userId = $cookies.get("userId");
-    if(userToken !== null && userId !== null){
+    if (userToken !== null && userId !== null) {
       this.$axios
-      .post(`${this.$store.state.apiUrl}user-profile`, {
-        token: userToken,
-        user_id: userId,
-      })
-      .then((response) => {
-        let userData = response.data.user;
-        this.name = userData?.name;
-        this.email = userData?.email;
-        this.phone = userData?.phone;
-        this.street = userData?.street;
-        this.house = userData?.house;
-        this.building = userData?.building;
-        this.entrance = userData?.entrance;
-        this.floor = userData?.floor;
-        this.apartment = userData?.apartment;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .post(`${this.$store.state.apiUrl}user-profile`, {
+          token: userToken,
+          user_id: userId,
+        })
+        .then((response) => {
+          let userData = response.data.user;
+          this.name = userData?.name;
+          this.email = userData?.email;
+          this.phone = userData?.phone;
+          this.street = userData?.street;
+          this.house = userData?.house;
+          this.building = userData?.building;
+          this.entrance = userData?.entrance;
+          this.floor = userData?.floor;
+          this.apartment = userData?.apartment;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   },
 };

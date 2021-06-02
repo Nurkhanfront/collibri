@@ -94,25 +94,26 @@ export default new Vuex.Store({
             }
         },
 
-        ADD_TO_CART(state, product) {
+        ADD_TO_CART(state, { product, countValue }) {
+            product['count'] = countValue ? countValue : 1;
             let cartList = JSON.parse(localStorage.getItem('cart_products'));
-            localStorage.setItem('cart_products', JSON.stringify([product.id]))
+            localStorage.setItem('cart_products', JSON.stringify([product]))
             if (cartList == null) {
-                localStorage.setItem('cart_products', JSON.stringify([product.id]))
+                localStorage.setItem('cart_products', JSON.stringify([product]))
             } else if (state.cartLength == []) {
-                cartList.push(product.id)
+                cartList.push(product)
                 localStorage.setItem('cart_products', JSON.stringify(cartList))
                 state.cartLength = cartList.length
-            } else if (cartList.find(item => item == product.id)) {
+            } else if (cartList.find(item => item.id == product.id)) {
                 cartList.forEach((item, index) => {
-                    if (item == product.id) {
+                    if (item.id == product.id) {
                         cartList.splice(index, 1)
                     }
                 })
                 localStorage.setItem('cart_products', JSON.stringify(cartList))
                 state.cartLength = cartList.length
             } else {
-                cartList.push(product.id)
+                cartList.push(product)
                 state.cartLength = cartList.length
                 localStorage.setItem('cart_products', JSON.stringify(cartList))
             }
@@ -121,7 +122,7 @@ export default new Vuex.Store({
         DELETE_PRODUCT(state, id) {
             let cartList = JSON.parse(localStorage.getItem("cart_products"));
 
-            cartList = cartList.filter((t) => t !== id);
+            cartList = cartList.filter((t) => t.id !== id);
 
             state.cartLength = cartList.length
 

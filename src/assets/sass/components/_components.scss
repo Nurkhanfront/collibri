@@ -57,6 +57,29 @@ body {
 .like {
     .fas {
         color: #EA6C6C;
+        animation: like_anim 0.2s ease;
+    }
+    &:hover {
+        i {
+            transform: scale(.9);
+            color: #EA6C6C;
+        }
+    }
+}
+
+.active_cart {
+    animation: like_anim 0.2s ease;
+}
+
+@keyframes like_anim {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
     }
 }
 
