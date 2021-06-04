@@ -175,12 +175,17 @@
                 />
               </div>
               <div class="delivery_info">
-                <p v-if="totalPrice < 45000" class="red_text">{{ $locale[$lang].deliveryText.delivery }}: 1000 KZT </p>
-                <p v-else class="green_text">{{ $locale[$lang].deliveryText.freeDelivery }} </p>
+                <p v-if="totalPrice < 45000" class="red_text">
+                  {{ $locale[$lang].deliveryText.delivery }}: 1000 KZT
+                </p>
+                <p v-else class="green_text">
+                  {{ $locale[$lang].deliveryText.freeDelivery }}
+                </p>
               </div>
               <div class="total">
                 <p v-if="totalPrice < 45000">
-                  {{ $locale[$lang].orderingPage.total }}: {{ totalPrice + 1000 }} KZT
+                  {{ $locale[$lang].orderingPage.total }}:
+                  {{ totalPrice + 1000 }} KZT
                 </p>
                 <p v-else>
                   {{ $locale[$lang].orderingPage.total }}: {{ totalPrice }} KZT
@@ -197,7 +202,7 @@
               class="btn btn_black mt-5 m-auto"
               @click="submit"
             >
-              {{ $locale[$lang].orderingPage.yourOrder }}
+              {{ $locale[$lang].buttons.proceedToCheckout }}
             </button>
           </div>
         </div>
@@ -366,8 +371,8 @@ export default {
           },
         })
         .then((response) => (this.cartData = response.data));
-    };
-    
+    }
+
     const userToken = $cookies.get("userToken");
     const userId = $cookies.get("userId");
     if (userToken !== null && userId !== null) {
