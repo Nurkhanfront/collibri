@@ -3,7 +3,8 @@ let locale = {
         titleNewProducts: "Новинки",
         titleBestSellers: "Бестселлеры",
         titleBlog: "Блог",
-        brandPageTitle: 'Популярные бренды',
+        brandPageTitle: 'Бренды',
+        brandsPageTitle: 'Популярные бренды',
         otherArticlesPageTitle: 'Другие статьи',
         aboutCompanyPageTitle: 'О компании',
         contactsTitle: 'Контакты',
@@ -21,6 +22,7 @@ let locale = {
             btnMoreDetails: 'Подробнее',
             btnSeeAll: 'Смотреть все',
             shoWmore: 'Показать еще',
+            shoWmoreFilter: 'Показать все',
             send: 'Отправить',
             hide: 'Скрыть',
             proceedToCheckout: 'Перейти к оплате ',
@@ -77,6 +79,7 @@ let locale = {
             inStock: 'В НАЛИЧИИ',
             vendorCode: 'Артикул',
             addToCard: 'ДОБАВИТЬ В КОРЗИНУ',
+            addedToCart: 'Добавлено в корзину',
             productDescription: 'Описание товара',
             characteristics: 'Характеристики',
             share: 'Поделиться',
@@ -84,6 +87,7 @@ let locale = {
             brand: "Брэнд",
             requestACall: "Заказать звонок",
             applicationSent: "Заявка отправлена",
+            expectation: 'ОЖИДАНИЕ'
         },
         orderingPage: {
             checkout: 'Оформление заказа',
@@ -168,6 +172,7 @@ let locale = {
             btnSeeAll: 'See all',
             send: 'Send',
             shoWmore: 'Show more',
+            shoWmoreFilter: 'Show all',
             hide: 'Hide',
             proceedToCheckout: 'Proceed to checkout',
             ordering: 'PLACEMENT OF ORDER',
@@ -223,6 +228,7 @@ let locale = {
             inStock: 'IN STOCK',
             vendorCode: 'vendor code',
             addToCard: 'ADD TO SHOPPING CART',
+            addedToCart: 'Added to cart',
             productDescription: 'Product description',
             characteristics: 'Characteristics',
             share: 'Share',
@@ -230,6 +236,7 @@ let locale = {
             brand: "Brand",
             requestACall: "Request a call",
             applicationSent: "Application sent",
+            expectation: 'EXPECTATION'
         },
         orderingPage: {
             checkout: 'Checkout',

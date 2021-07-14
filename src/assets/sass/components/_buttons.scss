@@ -118,6 +118,7 @@
     position: relative;
     z-index: 11;
     font-family: manrope_medium;
+    text-transform: uppercase;
     &::after {
         content: '';
         width: 0;

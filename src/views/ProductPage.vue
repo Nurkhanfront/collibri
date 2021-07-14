@@ -96,8 +96,11 @@
             <div class="col-xl-6 col-lg-6">
               <div class="product_info">
                 <div class="product_info_top">
-                  <p class="green_text" v-if="PRODUCT_ITEM.product.stock > 0">
+                  <p class="green_text" v-if="Number(PRODUCT_ITEM.product.stock) === 1">
                     {{ $locale[$lang].productPage.inStock }}
+                  </p>
+                  <p class="red_text" v-if="Number(PRODUCT_ITEM.product.stock) === 2">
+                    {{ $locale[$lang].productPage.expectation }}
                   </p>
                   <div class="d-flex">
                     <p>
@@ -117,7 +120,14 @@
                   </p>
                   <h2 v-if="PRODUCT_ITEM.title">{{ PRODUCT_ITEM.title }}</h2>
                 </div>
-                <p class="product_text" v-if="PRODUCT_ITEM.product.country_name">{{ $locale[$lang].country }}:{{ PRODUCT_ITEM.product.country_name }}</p>
+                <p
+                  class="product_text"
+                  v-if="PRODUCT_ITEM.product.country_name"
+                >
+                  {{ $locale[$lang].country }}:{{
+                    PRODUCT_ITEM.product.country_name
+                  }}
+                </p>
                 <div
                   class="product_text"
                   v-html="PRODUCT_ITEM.product.title"
@@ -129,14 +139,21 @@
                   >
                     {{ PRODUCT_ITEM.product.price }} тг
                   </p>
-                  <p class="bold_text ">
+                  <p class="bold_text">
                     {{ PRODUCT_ITEM.product.current_price }} тг
                   </p>
                   <button
-                    class="t_block d_none m_none btn btn_black btn_border_radius"
+                    class="
+                      t_block
+                      d_none
+                      m_none
+                      btn btn_black btn_border_radius
+                    "
                     @click="addToCart(PRODUCT_ITEM.product)"
+                    :class="{ active: activeCart }"
                   >
-                    {{ $locale[$lang].productPage.addToCard }}
+                    {{ cartBtnText }}
+                    <div class="spin1" v-if="activeCart"></div>
                   </button>
                 </div>
                 <div class="buy_content">
@@ -158,8 +175,9 @@
                   <button
                     class="t_none m_none btn btn_black btn_border_radius"
                     @click="addToCart(PRODUCT_ITEM.product, countValue)"
+                    :class="{ active: activeCart }"
                   >
-                    {{ $locale[$lang].productPage.addToCard }}
+                    {{ cartBtnText }}
                   </button>
                 </div>
                 <button
@@ -171,8 +189,9 @@
                 <button
                   class="btn btn_black btn_border_radius d_none"
                   @click="addToCart(PRODUCT_ITEM.product)"
+                  :class="{ active: activeCart }"
                 >
-                  {{ $locale[$lang].productPage.addToCard }}
+                  {{ cartBtnText }}
                 </button>
               </div>
               <div class="description_tabs">
@@ -211,7 +230,10 @@
             <h2>{{ $locale[$lang].productPage.recommendedProduct }}</h2>
           </div>
           <div class="product_slider">
-            <VueSlickCarousel v-bind="settingsRecomendSlider">
+            <VueSlickCarousel
+              v-bind="settingsRecomendSlider"
+              :focusOnSelect="false"
+            >
               <productCard
                 v-for="(slide, idx) in PRODUCT_ITEM.recomend_products"
                 :key="idx"
@@ -317,9 +339,14 @@ import productCard from "./../components/productCard";
 
 export default {
   components: { VueSlickCarousel, VueRecaptcha, productCard },
+  metaInfo() {
+    return {
+      title: this.PRODUCT_ITEM?.page_meta.title !== null ? this.PRODUCT_ITEM?.page_meta.title  + ' | ' + 'Collibri' : this.PRODUCT_ITEM?.product.title + ' | ' + 'Collibri',
+    };
+  },
+
   data: () => ({
     tab: "description",
-    cartText: 'Добавить в корзину',
     productData: null,
     countValue: 1,
     modal: false,
@@ -331,10 +358,10 @@ export default {
     company: "",
     submitStatus: null,
     rec: false,
+    activeCart: false,
     favoriteActive: false,
     favoriteList: JSON.parse(localStorage.getItem("favorite")),
     cartProductsList: JSON.parse(localStorage.getItem("cart_products")),
-    cartBtnText: "",
     settingsRecomendSlider: {
       arrows: true,
       dots: false,
@@ -417,6 +444,14 @@ export default {
             this.favoriteActive = true;
           }
         });
+      }
+    },
+
+    cartBtnText() {
+      if (this.activeCart) {
+        return this.$locale[this.$lang].productPage.addedToCart;
+      } else {
+        return this.$locale[this.$lang].productPage.addToCard;
       }
     },
   },
@@ -503,8 +538,12 @@ export default {
     },
 
     addToCart(product, countValue) {
-      this.$store.commit("ADD_TO_CART", {product, countValue});
+      this.activeCart = true;
       this.cartProductsList = JSON.parse(localStorage.getItem("cart_products"));
+      this.$store.commit("ADD_TO_CART_PRODUCT", { product, countValue });
+      setTimeout(() => {
+        this.activeCart = false;
+      }, 2000);
     },
   },
 
@@ -536,6 +575,7 @@ export default {
       }
     });
   },
+
 };
 </script>
 

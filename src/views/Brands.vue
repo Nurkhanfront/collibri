@@ -17,7 +17,12 @@
         <h1>{{ $locale[$lang].brandsPageTitle }}</h1>
       </div>
       <div class="popular_brands">
-        <span v-for="brand in allBrands.popular" :key="brand.id" :id="brand.id">
+        <span
+          v-for="brand in allBrands.popular"
+          :key="brand.id"
+          :id="brand.id"
+          @click="categoryUrl(brand.id)"
+        >
           <router-link
             :to="{
               name: 'brandProducts',
@@ -35,6 +40,7 @@
             :key="name"
             >{{ name }}</a
           >
+          <a href="#">#</a>
         </div>
         <div class="brands_wrapper">
           <div v-for="(item, name) in allBrands.all" :key="name">
@@ -49,13 +55,36 @@
                   <router-link
                     :to="{
                       name: 'brandProducts',
-                      params: { id: brand.id, slug: brand.title, page: 1 },
+                      params: { id: brand.id, slug: brand.slug },
+                      query: {
+                        page: 1,
+                      },
                     }"
                     >{{ brand.title }}</router-link
                   >
                 </li>
               </ul>
             </div>
+          </div>
+          <div class="brands_column">
+            <span>#</span>
+            <ul>
+              <li
+                v-for="(item, index) in allBrands.other"
+                :key="index"
+                v-if="item.length"
+              >
+                <router-link
+                  v-for="brand in item"
+                  :key="brand.id"
+                  :to="{
+                    name: 'brandProducts',
+                    params: { id: brand.id, slug: brand.slug, page: 1 },
+                  }"
+                  >{{ brand.title }}</router-link
+                >
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -66,6 +95,11 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
+  metaInfo() {
+    return {
+      title: this.$store.state.metaTitle + ' | ' + 'Collibri',
+    };
+  },
   data: () => ({
     allBrands: null,
     imgUrl: null,
@@ -74,18 +108,23 @@ export default {
   methods: {
     ...mapActions(["GET_BRAND_PRODUCTS"]),
     categoryUrl(id) {
+      localStorage.removeItem("filter_id");
       this.GET_BRAND_PRODUCTS(id);
     },
   },
+
   mounted() {
     this.imgUrl = this.$store.state.imgUrl;
     this.$axios
       .get(
         `${this.$store.state.apiUrl}get-brands?lang=${this.$store.state.lang}`
       )
-      .then(
-        (response) => ((this.allBrands = response.data), (this.loader = false))
-      );
+
+      .then((response) => {
+        this.allBrands = response.data;
+        this.loader = false;
+        this.$store.state.metaTitle = response.data.page_meta.meta_title !== null ? response.data.page_meta.meta_title : 'Бренды';
+      });
   },
 };
 </script>

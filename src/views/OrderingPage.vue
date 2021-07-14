@@ -154,6 +154,7 @@
                 <button
                   type="button"
                   class="btn btn_black mt-5 m-0 m_none"
+                  :class="{disabled: cartData === null}"
                   @click="submit"
                 >
                   {{ $locale[$lang].buttons.proceedToCheckout }}
@@ -200,6 +201,7 @@
             <button
               type="button"
               class="btn btn_black mt-5 m-auto"
+              :class="{disabled: cartData === null}"
               @click="submit"
             >
               {{ $locale[$lang].buttons.proceedToCheckout }}

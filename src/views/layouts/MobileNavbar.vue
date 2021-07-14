@@ -5,7 +5,7 @@
         ><img src="@/assets/images/close.svg" alt=""
       /></span>
 
-      <form action="">
+      <form action="" @submit.prevent>
         <img src="@/assets/images/search_icon.svg" alt="" />
         <input
           type="text"
@@ -13,14 +13,15 @@
           autocomplete="off"
           @input="searchMobile"
           v-model="mobileSearchValue"
+          @keyup.enter="$router.push('/search')"
           id="input"
         />
       </form>
       <div class="formResults" v-if="searchData">
         <ul>
           <li
-            v-for="link in searchData.data"
-            :key="link.title"
+            v-for="(link, index) in searchData.data"
+            :key="index"
             @click="
               (searchValue = ''), (searchData = false), productUrl(link.slug)
             "
@@ -34,11 +35,8 @@
             >
           </li>
         </ul>
-      </div> 
-      <div
-        class="formResults"
-        v-else-if="searchData === null"
-      >
+      </div>
+      <div class="formResults" v-else-if="searchData === null">
         <p class="m-0">Совпадении нет !</p>
       </div>
     </div>
@@ -135,12 +133,13 @@ export default {
   data: () => ({
     mobileDropdown: null,
     mobileSearchValue: "",
-    searchData: '',
+    searchData: "",
   }),
 
   methods: {
     searchMobile(e) {
-      let mobileSearchValue = document.getElementById("input").value
+      let mobileSearchValue = document.getElementById("input").value;
+      localStorage.setItem("searchData", mobileSearchValue);
       let vm = this;
       if (mobileSearchValue.length > 2) {
         this.$axios
@@ -154,8 +153,8 @@ export default {
               vm.searchData = null;
             }
           });
-      }else{
-        vm.searchData = '';
+      } else {
+        vm.searchData = "";
       }
     },
 
@@ -168,11 +167,11 @@ export default {
     },
   },
   watch: {
-    mobileSearch(e){
-      if(!e){
-        document.getElementById("input").focus()
-        this.mobileSearchValue = ''
-        this.searchData = ''
+    mobileSearch(e) {
+      if (!e) {
+        document.getElementById("input").focus();
+        this.mobileSearchValue = "";
+        this.searchData = "";
       }
     },
     mobileMenu(item) {
@@ -181,6 +180,9 @@ export default {
       } else {
         document.body.style.overflow = "scroll";
       }
+    },
+    $route(to, from) {
+      this.searchData = null
     },
   },
 };

@@ -38,7 +38,7 @@
             >
           </div>
 
-          <sortedSelect/>
+          <sortedSelect  type="catalogProducts"/>
         </div>
         <div class="catalog_content" v-if="GET_PRODUCTS">
           <div class="row">
@@ -90,11 +90,18 @@ import products from "../components/products.vue";
 import sortedSelect from "../components/sortedSelect";
 
 export default {
-  components: { 
-    products, 
-    CategorySelect, 
-    sortedSelect 
+  components: {
+    products,
+    CategorySelect,
+    sortedSelect,
   },
+
+  metaInfo() {
+    return {
+      title: this.$store.state.metaTitle + " | " + "Collibri",
+    };
+  },
+
   data: () => ({
     lang: "ru",
     paramUrl: null,
@@ -106,6 +113,7 @@ export default {
     nextPage: null,
     categoryCount: 3,
     moreLoader: null,
+    meta_title: "efaef",
   }),
 
   methods: {
@@ -123,8 +131,16 @@ export default {
 
     filteredProducts() {
       if (this.CATALOG_FILTER.products) {
+        this.$store.state.metaTitle =
+          this.CATALOG_FILTER?.page_meta?.title !== null
+            ? this.CATALOG_FILTER?.page_meta?.title?.meta_title
+            : this.CATALOG_FILTER?.category?.title;
         return this.CATALOG_FILTER;
       } else {
+        this.$store.state.metaTitle =
+          this.CATEGORY_PRODUCTS?.page_meta?.title !== null
+            ? this.CATEGORY_PRODUCTS?.page_meta?.title?.meta_title
+            : this.CATEGORY_PRODUCTS?.category?.title;
         return this.CATEGORY_PRODUCTS;
       }
     },
@@ -156,7 +172,11 @@ export default {
     this.imgUrl = this.$store.state.imgUrl;
     let productUrl = this.$route.params.id;
     let page = this.$route.query.page;
-    this.MORE_PRODUCTS({ productId: productUrl, page: page, sort: this.$route.query.sort });
+    this.MORE_PRODUCTS({
+      productId: productUrl,
+      page: page,
+      sort: this.$route.query.sort,
+    });
   },
 
   watch: {

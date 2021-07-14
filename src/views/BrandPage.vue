@@ -22,7 +22,7 @@
           <router-link to="/brands">{{
             $locale[$lang].brandPageTitle
           }}</router-link>
-          <router-link to="#" class="off_link">{{
+          <router-link to="#" class="off_link" v-if="BRAND_PRODUCTS.brand.title">{{
             BRAND_PRODUCTS.brand.title
           }}</router-link>
         </div>
@@ -49,6 +49,11 @@ import products from "../components/products.vue";
 
 export default {
   components: { CategorySelect, products },
+  metaInfo() {
+    return {
+      title: "Брэнды" + " | " + "Collibri",
+    };
+  },
   data: () => ({
     brandData: null,
     filter_id: [],
@@ -70,15 +75,6 @@ export default {
       }
     },
 
-    addFilter() {
-      let productUrl = this.$route.params.id;
-      let allFilterId = this.filter_id;
-      this.FILTER_BRAND_PRODUCTS({
-        productId: productUrl,
-        brandId: allFilterId,
-      });
-    },
-
     toggleFilter() {
       this.productCategory = !this.productCategory;
     },
@@ -91,7 +87,8 @@ export default {
   created() {
     this.CATALOG_FILTER.products = null;
     let productUrl = this.$route.params.id;
-    this.GET_BRAND_PRODUCTS(productUrl);
+    let page = this.$route.query.page;
+    this.GET_BRAND_PRODUCTS({ id: productUrl, page: page });
     this.brandData = this.BRAND_PRODUCTS;
   },
 };

@@ -112,7 +112,6 @@ export default {
 
   watch: {
     $route(to, from) {
-      console.log(this.$route.params.page);
       this.currentPage = Number(this.$route.params.page);
     },
   },

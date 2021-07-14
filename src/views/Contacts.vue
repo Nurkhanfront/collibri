@@ -136,6 +136,12 @@ import { required, email, minLength } from "vuelidate/lib/validators";
 import VueRecaptcha from "vue-recaptcha";
 export default {
   components: { VueRecaptcha },
+  metaInfo() {
+    return {
+      title: this.$store.state.metaTitle + ' | ' + 'Collibri',
+    };
+  },
+
   data: () => ({
     contactsData: null,
     errors: [],
@@ -223,7 +229,12 @@ export default {
       .get(
         `${this.$store.state.apiUrl}get-contacts?lang=${this.$store.state.lang}`
       )
-      .then((response) => (this.contactsData = response.data));
+      .then((response) => {
+        this.contactsData = response.data;
+        this.$store.state.metaTitle = response.data.page_meta.meta_title;
+        // this.$store.state.metaDesctiption =
+        //   response.data.page_meta.meta_description;
+      });
   },
 };
 </script>

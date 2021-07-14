@@ -43,29 +43,35 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  props: ["type"],
   data: () => ({
     sortedCategory: "",
   }),
 
   methods: {
-    ...mapActions(["SORTED_PRODUCTS"]),
+    ...mapActions(["SORTED_PRODUCTS", "SORTED_SEARCH_PRODUCTS",]),
 
     sortedProducts() {
       let productUrl = this.$route.params.id;
       this.$router.push({
         query: { page: this.$route.query.page, sort: this.sortedCategory },
       });
-      this.SORTED_PRODUCTS({
-        productId: productUrl,
-        sortedProduct: this.sortedCategory,
-      });
+
+      if (this.type === "catalogProducts") {
+        this.SORTED_PRODUCTS({
+          productId: productUrl,
+          sortedProduct: this.sortedCategory,
+        });
+      }else if(this.type === "searchProducts"){
+        let searchData = localStorage.getItem("searchData");
+      }
     },
   },
 
   mounted() {
-    if (Object.keys(this.$route.query?.sort)) {
+    if (this.$route.query.sort !== undefined) {
       this.sortedCategory = this.$route.query.sort;
-    }else{
+    } else {
       this.sortedCategory = "";
     }
   },

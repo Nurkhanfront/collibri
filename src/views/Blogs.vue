@@ -24,8 +24,10 @@
                   alt="..."
                 />
                 <div class="card-body">
-                  <h5 class="card-title" v-if="blog.title">{{ blog.title.slice(0, 50) + " ..." }}</h5>
-                  <p class="card-text">{{ dateBlog(blog.created_at) }}</p>
+                  <h5 class="card-title" v-if="blog.title">
+                    {{ blog.title.slice(0, 50) + " ..." }}
+                  </h5>
+                  <p class="card-text">{{ dateBlog(blog.updated_at) }}</p>
                 </div>
               </router-link>
             </div>
@@ -37,20 +39,21 @@
 </template>
 
 <script>
+import { getDate } from "../modules/date";
+
 export default {
+  metaInfo() {
+    return {
+      title: this.$store.state.metaTitle + ' | ' + 'Collibri',
+    };
+  },
   data: () => ({
     blogsData: null,
     imgUrl: null,
   }),
   methods: {
     dateBlog(date) {
-      let getyear = new Date().getUTCFullYear(date);
-      let getmounth = new Date().getUTCMonth(date);
-      if (getmounth < 10) getmounth = "0" + getmounth;
-      let getday = new Date().getUTCDate(date);
-      if (getday < 10) getday = "0" + getday;
-
-      return getday + "." + getmounth + "." + getyear;
+      return getDate(date);
     },
   },
   mounted() {
@@ -59,8 +62,11 @@ export default {
       .get(
         `${this.$store.state.apiUrl}get-blogs?lang=${this.$store.state.lang}`
       )
-      .then((response) => (this.blogsData = response.data));
-    
+      .then((response) => {
+        this.blogsData = response.data;
+        this.$store.state.metaTitle = response.data.page_meta.meta_title;
+        // this.$store.state.metaDesctiption = response.data.page_meta.meta_description;
+      });
   },
 };
 </script>

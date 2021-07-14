@@ -108,6 +108,7 @@
         }
     }
     .review_info {
+        min-height: 30vh;
         .review_block_bg {
             position: absolute;
             right: 0;
@@ -257,6 +258,6 @@
 
 @media only screen and (min-width: 770px) and (max-width: 1024px) {
     .main_slider .slider_item {
-        height: 88vh;
+        height: 45vh;
     }
 }

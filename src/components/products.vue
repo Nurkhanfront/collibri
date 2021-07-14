@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="catalog_products" v-if="products.products.data.length > 0">
+    <div class="catalog_products" v-if="products">
       <div class="row">
         <div
           class="col-xl-4 col-md-6 col-lg-6"
@@ -37,7 +37,7 @@ export default {
   }),
 
   methods: {
-    ...mapActions(["MORE_BRAND_PRODUCTS", "MORE_PRODUCTS", "SORTED_PRODUCTS"]),
+    ...mapActions(["MORE_BRAND_PRODUCTS", "MORE_PRODUCTS", "SORTED_PRODUCTS", "FILTER_SEARCH_PRODUCTS"]),
 
     currentPage(num) {
       let productUrl = this.$route.params.id;
@@ -45,10 +45,22 @@ export default {
         this.$router
           .push({ query: { page: num, sort: this.$route.query.sort } })
           .catch((err) => {});
-        this.MORE_PRODUCTS({ productId: productUrl, page: num, sort: this.$route.query.sort });
+        this.MORE_PRODUCTS({
+          productId: productUrl,
+          page: num,
+          sort: this.$route.query.sort,
+        });
       } else if (this.type === "brandProducts") {
         this.$router.push({ query: { page: num } }).catch((err) => {});
         this.MORE_BRAND_PRODUCTS({ productId: productUrl, page: num });
+      } else if (this.type === "searchProducts") {
+        let searchData = localStorage.getItem("searchData");
+        this.$router.push({ query: { page: num, sort: this.$route.query.sort } }).catch((err) => {});
+        this.FILTER_SEARCH_PRODUCTS({
+          text: searchData,
+          page: num,
+          sort: this.$route.query.sort,
+        });
       }
     },
   },

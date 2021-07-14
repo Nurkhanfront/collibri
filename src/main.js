@@ -10,6 +10,7 @@ import VueSkeletonLoader from 'skeleton-loader-vue'
 import VueCookies from 'vue-cookies'
 import { locale, lang } from './lang/localeLang';
 import Paginate from 'vuejs-paginate'
+import VueMeta from 'vue-meta'
 
 import { VLazyImagePlugin } from "v-lazy-image";
 
@@ -34,6 +35,7 @@ Vue.component('paginate', Paginate)
 Vue.component('vue-skeleton-loader', VueSkeletonLoader);
 Vue.use(VueCookies);
 Vue.use(VLazyImagePlugin);
+Vue.use(VueMeta)
 
 
 

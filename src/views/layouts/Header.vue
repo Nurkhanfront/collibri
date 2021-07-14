@@ -9,20 +9,21 @@
             </router-link>
           </div>
           <div class="col-xl-5 m_none col-md-4 col-lg-5">
-            <form action="">
+            <form action="" @submit.prevent>
               <img src="@/assets/images/search_icon.svg" alt="" />
               <input
                 type="text"
                 placeholder="Поиск товара"
                 @input="keyUpSearch(searchValue)"
+                @keyup.enter="enterSearch"
                 v-model.trim="searchValue"
               />
             </form>
             <div class="formResults" v-if="searchData">
               <ul>
                 <li
-                  v-for="link in searchData.data"
-                  :key="link.title"
+                  v-for="(link, index) in searchData.data"
+                  :key="index"
                   @click="
                     (searchValue = ''),
                       (searchData = false),
@@ -118,9 +119,11 @@ export default {
     headerData: null,
     searchData: null,
     searchValue: "",
+    cartLengthWatch: "",
     favoriteList: null,
     mobileMenu: false,
     mobileSearch: false,
+    cartProductLength: JSON.parse(localStorage.getItem("cart_products")),
   }),
   computed: {
     ...mapGetters(["GET_FAVOURITE_COUNT", "GET_CART_LENGTH"]),
@@ -152,9 +155,23 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["GET_PRODUCTS", "GET_PRODUCT_PAGE"]),
+    ...mapActions(["GET_PRODUCTS", "GET_PRODUCT_PAGE", "FILTER_SEARCH_PRODUCTS",]),
+
+    enterSearch() {
+      this.$router.push("/search");
+      this.searchValue = "";
+      this.searchData = null;
+      let searchData = localStorage.getItem("searchData");
+      this.FILTER_SEARCH_PRODUCTS({
+          text: searchData,
+          filterId: '',
+          page: 1,
+          sort: this.$route.query?.sort,
+        });
+    },
 
     keyUpSearch(e) {
+      localStorage.setItem("searchData", e);
       let vm = this;
       if (e.length > 2) {
         this.$axios
@@ -216,7 +233,17 @@ export default {
     $route(to, from) {
       this.navDropdown = false;
       this.mobileSearch = false;
-      this.mobileMenu = false
+      this.mobileMenu = false;
+      localStorage.removeItem("filter_id");
+      if (to.name !== "search") {
+        localStorage.removeItem("searchData");
+      }
+      if (
+        to.path === "/search" &&
+        localStorage.getItem("searchData") === null
+      ) {
+        this.$router.push("/");
+      }
     },
   },
 };

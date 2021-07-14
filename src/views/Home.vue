@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <div class="loader_wrapper" v-if="loader">
       <div id="cube-loader">
         <div class="caption">
@@ -25,7 +25,9 @@
               <div class="slider_text col-lg-6">
                 <h2 v-if="item.title">{{ item.title }}</h2>
                 <p v-if="item.content">{{ item.content }}</p>
-                <a :href="item.url" class="btn btn_outline" v-if="item.url">{{ $locale[$lang].buttons.btnMoreDetails }}</a>
+                <a :href="item.url" class="btn btn_outline" v-if="item.url">{{
+                  $locale[$lang].buttons.btnMoreDetails
+                }}</a>
               </div>
             </div>
           </div>
@@ -47,7 +49,13 @@
                     params: { id: category.id, slug: category.slug },
                   }"
                 >
-                  <v-lazy-image :src="`${imgUrl + category.image}`" alt="" :src-placeholder="require('../assets/images/load_image.svg')" />
+                  <v-lazy-image
+                    :src="`${imgUrl + category.image}`"
+                    alt=""
+                    :src-placeholder="
+                      require('../assets/images/load_image.svg')
+                    "
+                  />
                   <p>{{ category.title }}</p>
                 </router-link>
               </div>
@@ -64,7 +72,13 @@
                     params: { id: category.id, slug: category.slug },
                   }"
                 >
-                  <v-lazy-image :src="`${imgUrl + category.image}`" alt="" :src-placeholder="require('../assets/images/load_image.svg')" />
+                  <v-lazy-image
+                    :src="`${imgUrl + category.image}`"
+                    alt=""
+                    :src-placeholder="
+                      require('../assets/images/load_image.svg')
+                    "
+                  />
                   <p>{{ category.title }}</p>
                 </router-link>
               </div>
@@ -88,55 +102,73 @@
                 <productCard :productCard="product"></productCard>
               </div>
             </div>
-            <router-link to="/new" class="btn btn_black"
-              >{{ $locale[$lang].buttons.btnSeeAll}}</router-link
-            >
+            <router-link to="/new" class="btn btn_black">{{
+              $locale[$lang].buttons.btnSeeAll
+            }}</router-link>
           </div>
         </div>
       </div>
 
-      <div class="review_block p_block">
-        <div
-          class="review_block_bg"
-          :style="{
-            'background-image': `url(${imgUrl + mainData.block_sales.image})`,
-          }"
-        ></div>
-        <div class="container">
-          <div class="review_info row">
-            <div class="col-xl-7">
-              <div class="block_title">
-                <h2>{{ mainData.block_sales.title }}</h2>
-              </div>
-              <div class="review_info_text">
-                <p>{{ mainData.block_sales.content }}</p>
-              </div>
-              <router-link
-                class="btn btn_outline"
-                :to="{
-                  name: 'product',
-                  params: { id: mainData.block_sales.url },
-                }"
-              >
-                Подробнее</router-link
-              >
-            </div>
+      <div class="review_block_wrapper">
+        <VueSlickCarousel
+          :arrows="true"
+          :infinite="false"
+          :adaptiveHeight="true"
+        >
+          <div
+            class="review_block p_block"
+            v-for="(sale, index) in mainData.block_sales"
+            :key="index"
+          >
             <div
-              class="col-xl-5 review_block_bg"
+              class="review_block_bg"
               :style="{
-                'background-image': `url(${
-                  imgUrl + mainData.block_sales.image
-                })`,
+                'background-image': `url(${imgUrl + sale.image})`,
               }"
             ></div>
+            <div class="container">
+              <div class="review_info row">
+                <div class="col-xl-7">
+                  <div class="block_title">
+                    <h2>{{ sale.title }}</h2>
+                  </div>
+                  <div class="review_info_text">
+                    <p>{{ sale.content }}</p>
+                  </div>
+                  <a
+                    v-if="sale.url.match(/^https:/)"
+                    :href="sale.url"
+                    target="blank"
+                    class="btn btn_outline"
+                    >{{ $locale[$lang].buttons.btnMoreDetails }}</a
+                  >
+                  <router-link
+                    v-else
+                    class="btn btn_outline"
+                    :to="{
+                      name: 'product',
+                      params: { id: sale.url },
+                    }"
+                  >
+                    {{ $locale[$lang].buttons.btnMoreDetails }}</router-link
+                  >
+                </div>
+                <div
+                  class="col-xl-5 review_block_bg"
+                  :style="{
+                    'background-image': `url(${imgUrl + sale.image})`,
+                  }"
+                ></div>
+              </div>
+            </div>
           </div>
-        </div>
+        </VueSlickCarousel>
       </div>
 
-      <div class="main_products p_block">
+      <div class="main_products p_block" v-if="mainData.products.best.length">
         <div class="container">
           <div class="title">
-            <h2>{{ $locale[$lang].titleBestSellers}}</h2>
+            <h2>{{ $locale[$lang].titleBestSellers }}</h2>
           </div>
           <div class="main_products_content">
             <div class="row">
@@ -148,16 +180,16 @@
                 <productCard :productCard="product"></productCard>
               </div>
             </div>
-            <router-link to="/best" class="btn btn_black"
-              >{{ $locale[$lang].buttons.btnSeeAll }}</router-link
-            >
+            <router-link to="/best" class="btn btn_black">{{
+              $locale[$lang].buttons.btnSeeAll
+            }}</router-link>
           </div>
         </div>
       </div>
 
       <div class="main_blog p_block">
         <div class="title">
-          <h2>{{ $locale[$lang].titleBlog}}</h2>
+          <h2>{{ $locale[$lang].titleBlog }}</h2>
         </div>
         <div class="container">
           <div class="main_blog_content">
@@ -185,7 +217,13 @@
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 m_none">
                 <div class="main_blog_img">
-                  <v-lazy-image :src="imgUrl + mainData.block_blog.image" :src-placeholder="require('../assets/images/load_image.svg')" alt=""  />
+                  <v-lazy-image
+                    :src="imgUrl + mainData.block_blog.image"
+                    :src-placeholder="
+                      require('../assets/images/load_image.svg')
+                    "
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
@@ -202,7 +240,10 @@ import productCard from "./../components/productCard";
 
 export default {
   components: { VueSlickCarousel, productCard },
-
+  metaInfo: {
+    title: "Главная",
+  },
+  
   data: () => ({
     mainData: null,
     lang: localStorage.getItem("lang"),

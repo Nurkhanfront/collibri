@@ -54,7 +54,7 @@ const routes = [{
             import ('../views/Brands.vue')
     },
     {
-        path: '/brands-inner/:slug/id=:id&page=:page',
+        path: '/brands-inner/:slug/id=:id',
         name: 'brandProducts',
         component: () =>
             import ('../views/BrandPage.vue')
@@ -94,6 +94,12 @@ const routes = [{
         name: 'ordering-page',
         component: () =>
             import ('../views/OrderingPage.vue')
+    },
+    {
+        path: '/search',
+        name: 'search',
+        component: () =>
+            import ('../views/SearchPage.vue')
     },
     {
         path: '/login',
@@ -137,7 +143,7 @@ const router = new VueRouter({
     routes,
     scrollBehavior(to, from, savedPosition) {
         return { x: 0, y: 0 }
-    }
+    },
 })
 
 export default router

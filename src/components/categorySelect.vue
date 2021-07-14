@@ -10,11 +10,7 @@
       <span class="close_btn" @click="mobileFilter = false"
         ><img src="@/assets/images/close.svg" alt=""
       /></span>
-      <div
-        
-        v-for="item in categories.filters.slice(0, categoryCount)"
-        :key="item.id"
-      >
+      <div v-for="item in allFilter().slice(0, categoryCount)" :key="item.id">
         <div v-if="item.filter_items.length" class="category_select">
           <p class="bold_text">{{ item.title }}</p>
           <ul>
@@ -44,16 +40,14 @@
     </div>
     <div
       class="products_select_wrapper products_select_mobile m_none"
-      v-if="categories.filters"
+      v-if="allFilter()"
     >
       <span class="close_btn" alt=""></span>
-      <div
-        
-        v-for="item in categories.filters.slice(0, categoryCount)"
-        :key="item.id"
-      >
-        <div v-if="item.filter_items.length" class="category_select">
-          <p class="bold_text">{{ item.title }}</p>
+      <div v-for="item in allFilter().slice(0, categoryCount)" :key="item.id">
+        <div class="category_select">
+          <p class="bold_text">
+            {{ item.title }}
+          </p>
           <ul>
             <li v-for="filter in item.filter_items" :key="filter.id">
               <label class="custom-checkbox">
@@ -72,7 +66,7 @@
       <a
         href="#"
         @click.prevent="allCategories"
-        v-if="categories.filters.length > 3"
+        v-if="allFilter().length > 3"
         >{{ allCategoriesText }}</a
       >
     </div>
@@ -88,10 +82,15 @@ export default {
     productCategory: null,
     categoryCount: 3,
     filter_id: [],
+    allFilterItems: [],
     mobileFilter: false,
   }),
   methods: {
-    ...mapActions(["FILTER_PRODUCTS", "FILTER_BRAND_PRODUCTS"]),
+    ...mapActions([
+      "FILTER_PRODUCTS",
+      "FILTER_BRAND_PRODUCTS",
+      "FILTER_SEARCH_PRODUCTS",
+    ]),
 
     allCategories() {
       if (this.categoryCount === 3) {
@@ -101,9 +100,22 @@ export default {
       }
     },
 
+    allFilter() {
+      if (this.categories?.filters) {
+        var result = this.categories.filters.filter((i) => {
+          return i.filter_items.length > 0;
+        });
+        return result;
+      }
+    },
+
     addFilter() {
-      this.$route.query.page = 1;
-      console.log(this.$route.query);
+      if (this.$route.query?.sort) {
+        this.$router.push({query: { page: 1, sort: this.$route.query.sort }}).catch(err => {})
+      } else {
+        this.$router.push({query: { page: 1 }}).catch(err => {})
+      }
+
       localStorage.setItem("filter_id", JSON.stringify(this.filter_id));
       let productUrl = this.$route.params.id;
       let allFilterId = this.filter_id;
@@ -120,6 +132,14 @@ export default {
           brandId: allFilterId,
           page: 1,
         });
+      } else if (this.type === "searchProducts") {
+        let searchData = localStorage.getItem("searchData");
+        this.FILTER_SEARCH_PRODUCTS({
+          text: searchData,
+          filterId: allFilterId,
+          page: 1,
+          sort: this.$route.query?.sort,
+        });
       }
     },
 
@@ -131,7 +151,7 @@ export default {
   computed: {
     allCategoriesText() {
       if (this.categoryCount === 3) {
-        return this.$locale[this.$lang].buttons.shoWmore;
+        return this.$locale[this.$lang].buttons.shoWmoreFilter;
       } else {
         return this.$locale[this.$lang].buttons.hide;
       }
@@ -157,6 +177,14 @@ export default {
       this.FILTER_BRAND_PRODUCTS({
         productId: productUrl,
         brandId: localFilterId,
+        page: this.$route.query.page,
+        sort: this.$route.query?.sort,
+      });
+    } else if (this.type === "searchProducts") {
+      let searchData = localStorage.getItem("searchData");
+      this.FILTER_SEARCH_PRODUCTS({
+        text: searchData,
+        filterId: localFilterId,
         page: this.$route.query.page,
         sort: this.$route.query?.sort,
       });

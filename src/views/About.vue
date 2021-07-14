@@ -13,18 +13,18 @@
     >
       <div class="container">
         <div class="row" v-if="idx % 2">
-          <div class="col-xl-6">
+          <div class="col-xl-6 col-lg-6">
             <img :src="imgUrl + item.image" alt="" />
           </div>
-          <div class="col-xl-6">
+          <div class="col-xl-6 col-lg-6">
             <p v-html="item.title"></p>
           </div>
         </div>
         <div class="row" v-else>
-          <div class="col-xl-6">
+          <div class="col-xl-6 col-lg-6">
             <p v-html="item.title"></p>
           </div>
-          <div class="col-xl-6">
+          <div class="col-xl-6 col-lg-6">
             <img :src="imgUrl + item.image" alt="" />
           </div>
         </div>
@@ -35,6 +35,10 @@
 
 <script>
 export default {
+  metaInfo: {
+    title: "О нас",
+    titleTemplate: "%s | Collibri",
+  },
   data: () => ({
     aboutData: null,
     imgUrl: null,

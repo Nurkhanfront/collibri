@@ -31,7 +31,7 @@
       <span
         class="add_cart"
         :class="{ active: activeCart }"
-        @click="addToCart(productCard)"
+        @click.stop="addToCart(productCard)"
       >
         <img src="@/assets/images/active_card.svg" alt="" v-if="activeCart" class="active_cart" />
         <img src="@/assets/images/bag_bg.svg" alt="" v-else />

@@ -21,7 +21,9 @@ export default new Vuex.Store({
         moreLoader: null,
         catalogDropdown: false,
         cartData: [],
-        totalPrice: null
+        totalPrice: null,
+        metaTitle: '',
+        metaDesctiption: ''
     },
     mutations: {
         SET_PRODUCTS(state, products) {
@@ -41,6 +43,10 @@ export default new Vuex.Store({
         },
 
         FILTER_BRAND_PRODUCTS(state, products) {
+            state.catalogFilter = products;
+        },
+
+        FILTER_SEARCH_PRODUCTS(state, products) {
             state.catalogFilter = products;
         },
 
@@ -73,12 +79,14 @@ export default new Vuex.Store({
 
         ADD_FAVORITES(state, product) {
             let favoriteStorage = JSON.parse(localStorage.getItem('favorite'));
+            localStorage.setItem('favorite', JSON.stringify([product]))
             if (favoriteStorage == null) {
                 localStorage.setItem('favorite', JSON.stringify([product]))
-            } else if (state.favoritesArray == []) {
+                state.favoritesArray = JSON.parse(localStorage.getItem('favorite'))
+            } else if (favoriteStorage == []) {
                 favoriteStorage.push(product)
                 localStorage.setItem('favorite', JSON.stringify(favoriteStorage))
-                state.favoritesArray = favoriteStorage.length
+                state.favoritesArray = favoriteStorage
             } else if (favoriteStorage.find(item => item.id == product.id)) {
                 favoriteStorage.forEach((item, index) => {
                     if (item.id == product.id) {
@@ -86,10 +94,10 @@ export default new Vuex.Store({
                     }
                 })
                 localStorage.setItem('favorite', JSON.stringify(favoriteStorage))
-                state.favoritesArray = favoriteStorage.length
+                state.favoritesArray = favoriteStorage
             } else {
                 favoriteStorage.push(product)
-                state.favoritesArray = favoriteStorage.length
+                state.favoritesArray = favoriteStorage
                 localStorage.setItem('favorite', JSON.stringify(favoriteStorage))
             }
         },
@@ -99,11 +107,12 @@ export default new Vuex.Store({
             let cartList = JSON.parse(localStorage.getItem('cart_products'));
             localStorage.setItem('cart_products', JSON.stringify([product]))
             if (cartList == null) {
-                localStorage.setItem('cart_products', JSON.stringify([product]))
-            } else if (state.cartLength == []) {
+                localStorage.setItem('cart_products', JSON.stringify([product]));
+                state.cartLength = localStorage.getItem('cart_products');
+            } else if (cartList == []) {
                 cartList.push(product)
                 localStorage.setItem('cart_products', JSON.stringify(cartList))
-                state.cartLength = cartList.length
+                state.cartLength = cartList;
             } else if (cartList.find(item => item.id == product.id)) {
                 cartList.forEach((item, index) => {
                     if (item.id == product.id) {
@@ -111,11 +120,32 @@ export default new Vuex.Store({
                     }
                 })
                 localStorage.setItem('cart_products', JSON.stringify(cartList))
-                state.cartLength = cartList.length
+                state.cartLength = cartList
             } else {
                 cartList.push(product)
-                state.cartLength = cartList.length
+                state.cartLength = cartList
                 localStorage.setItem('cart_products', JSON.stringify(cartList))
+            }
+        },
+
+        ADD_TO_CART_PRODUCT(state, { product, countValue }) {
+            product['count'] = countValue ? countValue : 1;
+            let cartList = JSON.parse(localStorage.getItem('cart_products'));
+            if (cartList && cartList.find(item => item.id == product.id)) {
+                cartList.filter((i) => {
+                    if (i.id === product.id) {
+                        i.count = countValue;
+                        localStorage.setItem('cart_products', JSON.stringify(cartList))
+                    }
+                })
+                return false
+            } else if (cartList !== null) {
+                cartList.push(product);
+                localStorage.setItem('cart_products', JSON.stringify(cartList));
+                state.cartLength = localStorage.getItem('cart_products');
+            } else {
+                localStorage.setItem('cart_products', JSON.stringify([product]))
+                state.cartLength = localStorage.getItem('cart_products');
             }
         },
 
@@ -138,8 +168,6 @@ export default new Vuex.Store({
             state.totalPrice = state.totalPrice.reduce(function(sum, el) {
                 return sum + el;
             });
-
-            // return state.totalPrice;
         }
 
 
@@ -164,13 +192,14 @@ export default new Vuex.Store({
                 });
         },
 
-        GET_BRAND_PRODUCTS({ commit, state }, id) {
+        GET_BRAND_PRODUCTS({ commit, state }, { id, page }) {
             state.loader = true
             axios
                 .get(`${state.apiUrl}get-brand-products`, {
                     params: {
                         lang: state.lang,
-                        brand_id: id
+                        brand_id: id,
+                        page: page
                     }
                 })
                 .then(function(response) {
@@ -182,13 +211,33 @@ export default new Vuex.Store({
                 });
         },
 
-        FILTER_BRAND_PRODUCTS({ commit, state }, { productId, brandId }) {
+        GET_SEARCH_PRODUCTS({ commit, state }, { text, page }) {
+            state.loader = true
+            axios
+                .get(`${state.apiUrl}search-page`, {
+                    params: {
+                        lang: state.lang,
+                        text: text,
+                        page: page
+                    }
+                })
+                .then(function(response) {
+                    const products = response.data;
+                    commit('SET_BRAND_PRODUCTS', products);
+                    setTimeout(() => {
+                        state.loader = false
+                    }, 100);
+                });
+        },
+
+        FILTER_BRAND_PRODUCTS({ commit, state }, { productId, brandId, page }) {
             let brand_id = brandId;
             axios.get(`${state.apiUrl}get-brand-products`, {
                     params: {
                         lang: state.lang,
                         brand_id: productId,
                         filter_id: brand_id,
+                        page: page
                     }
                 })
                 .then((response) => {
@@ -199,6 +248,44 @@ export default new Vuex.Store({
                     console.log(error);
                 });
         },
+
+        FILTER_SEARCH_PRODUCTS({ commit, state }, { text, filterId, page, sort }) {
+            axios.get(`${state.apiUrl}search-page`, {
+                    params: {
+                        lang: state.lang,
+                        text: text,
+                        filter_id: filterId,
+                        page: page,
+                        order_by: sort
+                    }
+                })
+                .then((response) => {
+                    const products = response.data;
+                    commit('FILTER_SEARCH_PRODUCTS', products);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        SORTED_SEARCH_PRODUCTS({ commit, state }, { text, page, sortedProduct }) {
+            axios.get(`${state.apiUrl}search-page`, {
+                    params: {
+                        lang: state.lang,
+                        text: text,
+                        page: page,
+                        order_by: sortedProduct,
+                    }
+                })
+                .then((response) => {
+                    const products = response.data;
+                    commit('FILTER_SEARCH_PRODUCTS', products);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
 
         FILTER_PRODUCTS({ commit, state }, { productId, filterId, sort, page }) {
             let filter_id = filterId;

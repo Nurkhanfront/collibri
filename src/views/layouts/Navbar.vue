@@ -23,7 +23,7 @@
               <div class="container">
                 <div class="row">
                   <div
-                    class="col-xl-3 dropdown_links"
+                    class="col-xl-3 col-lg-4 col-md-6 dropdown_links"
                     v-for="category in categories"
                     :key="category.id"
                   >

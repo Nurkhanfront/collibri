@@ -44,8 +44,10 @@
                     alt="..."
                   />
                   <div class="card-body">
-                    <h5 class="card-title" v-if="blog.title">{{ blog.title }}</h5>
-                    <p class="card-text">13.04.2020</p>
+                    <h5 class="card-title" v-if="blog.title">
+                      {{ blog.title }}
+                    </h5>
+                    <p class="card-text">{{ dateBlog(blog.updated_at) }}</p>
                   </div>
                 </router-link>
               </div>
@@ -58,12 +60,23 @@
 </template>
 
 <script>
+import { getDate } from "../modules/date";
+
 export default {
+  metaInfo() {
+    return {
+      title: this.$store.state.metaTitle + ' | ' + 'Collibri',
+    };
+  },
+
   data: () => ({
     blogPage: null,
     imgUrl: null,
   }),
   methods: {
+    dateBlog(date) {
+      return getDate(date);
+    },
     otherBlogs() {
       let urlBlog = this.$route.params.id;
       this.$store.state.loader = true;
@@ -82,7 +95,10 @@ export default {
       .get(
         `${this.$store.state.apiUrl}get-blog?lang=${this.$store.state.lang}&slug=${urlBlog}`
       )
-      .then((response) => (this.blogPage = response.data));
+      .then((response) => {
+        this.blogPage = response.data;
+        this.$store.state.metaTitle = response.data.page_meta.title !== null ? response.data.page_meta.title?.meta_title : response.data.blog.title;
+      });
   },
 };
 </script>
